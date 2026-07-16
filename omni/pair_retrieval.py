@@ -179,6 +179,20 @@ class PairRetrieval:
             return HALF
         return 0.0
 
+    def _rank_credit(self, w, tcw):
+        """Rank-side credit: IDENTITY outranks kinship (the halving cascade: 1, 1/2,
+        1/4). The gate-side credit treats strong kin as membership; the rank side must
+        not — full kin credit let unrelated meanings saturate to the exact meaning's
+        score and win by store order (measured: 'story has those things' routed to
+        'pay-per-view events' at 1.00)."""
+        if w in tcw:
+            return 1.0
+        if (self._kin_top(w) & tcw) or any(w in self._kin_top(x) for x in tcw):
+            return HALF
+        if (self._kin_hop2(w) & tcw) or any(w in self._kin_hop2(x) for x in tcw):
+            return HALF * HALF
+        return 0.0
+
     def taught_binding(self, query_text, taught_prompt_text, tcw=None):
         """THE routing/loss decision, in one place — serving, the training loss, and the
         calibration gate (train_eval/binding_calibration.py) all call THIS, so the
@@ -330,12 +344,21 @@ class PairRetrieval:
         # taught precedence (the FAQ law) at the lock 1/2 — own ukey first, then global
         qcw = set(_content_words(tokenize(text.lower())))
         best_t, best_o = None, 0.0
+        q_den = sum(self._rarity(w) for w in qcw) or 1.0
         for tp in self._taught_pairs():
             tcw = set(tp["cw"])
             if not tcw:
                 continue
-            o = self.taught_binding(text, tp["prompt"], tcw=tcw)
-            if o >= TAUGHT_LOCK and o > best_o + (0.0 if tp["ukey"] == ukey else 0.15):
+            # GATE: coverage at the lock (taught_binding — the calibration-gated measure)
+            if self.taught_binding(text, tp["prompt"], tcw=tcw) < TAUGHT_LOCK:
+                continue
+            # RANK: how much of the QUERY's information this meaning explains. Coverage
+            # saturates at volume (any small meaning contained in the query gates at 1.0);
+            # the winner must be the meaning that explains the most query information —
+            # the exact meaning explains ~all of it and beats every generic squatter
+            # (measured: memorization 12% at 960 held meanings under first-gated-wins).
+            o = sum(self._rarity(w) * self._rank_credit(w, tcw) for w in qcw) / q_den
+            if o > best_o + (0.0 if tp["ukey"] == ukey else 0.15):
                 best_t, best_o = tp, o
         cands = self.retrieve(text, history, topn=10)
 
