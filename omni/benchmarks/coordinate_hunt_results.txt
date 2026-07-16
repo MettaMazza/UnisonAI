@@ -1,0 +1,91 @@
+[foldprobe] run 'coordinate-hunt-round2' registered 92eb5570c4d605e8
+[coordinate-hunt] control first:
+  CONTROL GPT-2 c_fc L0              row-major+identity+walsh                      12.69x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+identity+dct                        14.44x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+identity+haar                        4.78x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+gray-code+walsh                     12.70x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+gray-code+dct                       10.57x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+gray-code+haar                       4.93x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+x3 mod n+walsh                       7.10x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+x3 mod n+dct                        11.94x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+x3 mod n+haar                        2.81x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+x5 mod n+walsh                       5.78x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+x5 mod n+dct                        11.77x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+x5 mod n+haar                        2.21x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+affine 3i+1+walsh                    7.29x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+affine 3i+1+dct                     12.02x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+affine 3i+1+haar                     2.80x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+joint row-col gray+walsh            12.70x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+joint row-col gray+dct              10.95x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+joint row-col gray+haar              4.87x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+bit-plane+walsh                     12.85x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+bit-plane+dct                        3.17x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+block-morton-2^4+walsh              12.47x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+block-morton-2^4+dct                14.43x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+block-morton-2^4+haar                4.94x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+block-morton-2^8+walsh              12.70x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+block-morton-2^8+dct                 9.20x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+block-morton-2^8+haar                2.10x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+block-morton-2^10+walsh             13.02x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              row-major+block-morton-2^10+dct                9.23x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              col-major+identity+walsh                       8.09x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              col-major+identity+dct                        13.47x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              block-transpose-64+identity+walsh             12.26x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              block-transpose-64+identity+dct               14.30x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              block-transpose-64+identity+haar               4.59x  <-- WAKE
+  CONTROL GPT-2 c_fc L0              best  14.44x @ row-major+identity+dct
+  Qwen3.6-27B token_embd.weight      row-major+identity+walsh                       9.88x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+identity+dct                        12.39x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+gray-code+walsh                      9.92x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+gray-code+dct                        9.71x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+x3 mod n+walsh                       9.85x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+x3 mod n+dct                        10.96x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+x5 mod n+walsh                      12.70x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+x5 mod n+dct                        12.89x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+affine 3i+1+walsh                   10.01x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+affine 3i+1+dct                     11.22x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+joint row-col gray+walsh            10.00x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+joint row-col gray+dct               9.59x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+bit-plane+walsh                      9.58x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+bit-plane+dct                        2.68x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+block-morton-2^4+walsh               9.90x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+block-morton-2^4+dct                12.30x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+block-morton-2^8+walsh               9.77x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+block-morton-2^8+dct                 7.52x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+block-morton-2^11+walsh              9.83x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      row-major+block-morton-2^11+dct                6.62x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      col-major+identity+walsh                       3.96x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      col-major+identity+dct                         4.27x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      col-major+identity+haar                        2.52x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      block-transpose-64+identity+dct                2.54x  <-- WAKE
+  Qwen3.6-27B token_embd.weight      best  12.89x @ row-major+x5 mod n+dct
+  Qwen3.6-27B blk.0.attn_qkv.weight  best   1.55x @ block-transpose-64+identity+haar  (quiet at all coordinates tried)
+  Qwen3.6-27B blk.0.ffn_gate.weight  best   1.28x @ row-major+x5 mod n+dct  (quiet at all coordinates tried)
+  Kimi-K2.6-1T token_embd.weight     row-major+identity+walsh                       9.67x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+identity+dct                        15.98x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+gray-code+walsh                      9.75x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+gray-code+dct                       10.04x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+x3 mod n+walsh                      10.18x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+x3 mod n+dct                        13.71x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+x5 mod n+walsh                       9.91x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+x5 mod n+dct                        13.52x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+affine 3i+1+walsh                    9.91x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+affine 3i+1+dct                     13.50x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+joint row-col gray+walsh             9.68x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+joint row-col gray+dct               9.83x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+bit-plane+walsh                      9.68x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+bit-plane+dct                        3.72x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+block-morton-2^4+walsh               9.59x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+block-morton-2^4+dct                16.67x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+block-morton-2^8+walsh               9.69x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+block-morton-2^8+dct                 8.15x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+block-morton-2^11+walsh              9.73x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     row-major+block-morton-2^11+dct                7.11x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     col-major+identity+dct                         4.21x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     block-transpose-64+identity+walsh              2.32x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     block-transpose-64+identity+dct                3.92x  <-- WAKE
+  Kimi-K2.6-1T token_embd.weight     best  16.67x @ row-major+block-morton-2^4+dct
+  Kimi-K2.6-1T blk.5.attn_q_a.weight best   1.03x @ block-transpose-64+identity+haar  (quiet at all coordinates tried)
+  Kimi-K2.6-1T blk.5.ffn_gate_shexp.weight best   1.49x @ col-major+identity+dct  (quiet at all coordinates tried)
+
+COORDINATE HUNT ROUND 2 COMPLETE -- 47 wake(s)

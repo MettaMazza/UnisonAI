@@ -1,0 +1,12 @@
+corpus: 541358 chars, vocab 164
+LEARNED-wpe  seed=1  val=1.8684  pos-params=16384  (427s)
+LEARNED-wpe  seed=2  val=1.8645  pos-params=16384  (435s)
+LEARNED-wpe  seed=3  val=1.9305  pos-params=16384  (406s)
+DERIVED-walsh seed=1  val=1.9888  pos-params=0  (394s)
+DERIVED-walsh seed=2  val=2.0141  pos-params=0  (443s)
+DERIVED-walsh seed=3  val=2.0780  pos-params=0  (468s)
+
+LEARNED mean val loss: 1.8878
+DERIVED mean val loss: 2.0269
+VERDICT: learned wins -- recorded
+RUNG 4 COMPLETE

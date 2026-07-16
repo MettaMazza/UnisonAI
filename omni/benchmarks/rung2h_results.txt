@@ -1,0 +1,7 @@
+R1-DISTILL-Qwen-32B (reasoning) blk.0.ffn_gate.weight blocks=12  MEDIAN   1.18x  (min 1.15 max 1.25)
+R1-DISTILL-Qwen-32B (reasoning) blk.32.ffn_gate.weight blocks=12  MEDIAN   1.53x  (min 1.40 max 1.63)
+R1-DISTILL-Qwen-32B (reasoning) blk.63.ffn_up.weight blocks=12  MEDIAN   0.99x  (min 0.96 max 1.01)
+qwen2.5-coder-32b (sibling) blk.0.ffn_gate.weight blocks=12  MEDIAN   1.19x  (min 1.07 max 1.29)
+qwen2.5-coder-32b (sibling) blk.32.ffn_gate.weight blocks=12  MEDIAN   1.93x  (min 1.72 max 2.10)
+qwen2.5-coder-32b (sibling) blk.63.ffn_up.weight blocks=12  MEDIAN   0.99x  (min 0.97 max 1.00)
+RUNG 2h COMPLETE

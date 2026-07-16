@@ -1,0 +1,15 @@
+reference logits computed on 16 fixed prompts
+=== LAW-BEARING CLASS (c_fc, all 12 layers) ===
+fold   c_fc   keep= 0.5000  KL=  0.2160  top1-agree= 0.75
+quant  c_fc   keep= 0.5000  KL= -0.0000  top1-agree= 1.00
+fold   c_fc   keep= 0.2500  KL=  2.2849  top1-agree= 0.19
+quant  c_fc   keep= 0.2500  KL=  0.0017  top1-agree= 1.00
+fold   c_fc   keep= 0.1250  KL=  5.0422  top1-agree= 0.00
+quant  c_fc   keep= 0.1250  KL=  3.6447  top1-agree= 0.12
+fold   c_fc   keep= 0.0625  KL=  8.1853  top1-agree= 0.00
+quant  c_fc   keep= 0.0625  KL=  5.4994  top1-agree= 0.06
+fold beats matched quantization at 0/4 budgets (rung taken at >=2)
+=== CONTROL: LAW-QUIET CLASS (c_proj) at keep=0.25 ===
+fold   c_proj keep= 0.2500  KL=  0.6912  top1-agree= 0.50
+fold   c_fc   keep= 0.2500  KL=  2.2849  top1-agree= 0.19
+RUNG 3 COMPLETE

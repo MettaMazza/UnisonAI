@@ -1,0 +1,14 @@
+tokens 2514818, vocab 16125 (rare-mapped)
+orbit store: 3446411 orbits in 44s (one reading)
+FOLD ENGINE held-out CE: 4.5071  (eval 9s)
+TWIN seed=1 val=3.5160 (532s)
+TWIN seed=2 val=3.4607 (423s)
+TWIN seed=3 val=3.5133 (411s)
+
+FOLD ENGINE (one reading, zero training): 4.5071
+TRANSFORMER TWIN mean:                    3.4967
+VERDICT: twin wins -- recorded
+
+FIRST WORDS (word-level):
+The fold is two Finite Inventory ( A2 317 . ★ TOPIC 39 Topic 42 ) - file registration test_xviii3_cosmological_constant_magnitude_forced | UNIFORM tlo = Fraction frozen — it * runs dented sphere volume - law sharpened to parts in a sealed cancelling the linear casts out a whole One or it does not , with # no partial fold happening to forced_mw2_over_mz2 ( k ) use zero measured constants . The spectrum_level ( n , u dispute a undecidability algorithmic developments away . We saturation is equally yelped , grabbed Nadia ' s stop excellent agreement with the proven - 1 ; but rate1 = ONE cite B16 ( ↔ 2 / 3 ` observed , Trust the tops 215 — the vindicated
+RUNG 5b COMPLETE

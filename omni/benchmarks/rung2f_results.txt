@@ -1,0 +1,38 @@
+  Qwen3.5-4B         blk.0.ffn_gate.weight              [dense] margin    1.89x
+  Qwen3.5-4B         blk.16.ffn_gate.weight             [dense] margin    1.64x
+  Qwen3.5-4B         blk.31.ffn_up.weight               [dense] margin    1.01x
+SCALE-POINT Qwen3.5-4B (4e+09 params): best margin 1.89x
+  Llama-3.1-8B       blk.0.ffn_gate.weight              [dense] margin    4.21x
+  Llama-3.1-8B       blk.17.ffn_gate.weight             [dense] margin    8.23x
+  Llama-3.1-8B       blk.31.ffn_up.weight               [dense] margin    1.01x
+SCALE-POINT Llama-3.1-8B (8e+09 params): best margin 8.23x
+  gpt-oss-20b        blk.0.ffn_gate_exps.bias           [expert0] margin    1.00x
+  gpt-oss-20b        blk.12.ffn_gate_exps.bias          [expert0] margin    1.02x
+  gpt-oss-20b blk.23.ffn_up_exps.weight: FAIL can only specify one unknown dimension
+SCALE-POINT gpt-oss-20b (2e+10 params): best margin 1.02x
+  Qwen3.6-27B        blk.0.ffn_gate.weight              [dense] margin    1.69x
+  Qwen3.6-27B        blk.32.ffn_gate.weight             [dense] margin    1.71x
+  Qwen3.6-27B        blk.63.ffn_up.weight               [dense] margin    1.00x
+SCALE-POINT Qwen3.6-27B (3e+10 params): best margin 1.71x
+  Llama-3.3-70B      blk.0.ffn_gate.weight              [dense] margin   17.16x
+  Llama-3.3-70B      blk.40.ffn_gate.weight             [dense] margin    3.04x
+  Llama-3.3-70B      blk.79.ffn_up.weight               [dense] margin    1.01x
+SCALE-POINT Llama-3.3-70B (7e+10 params): best margin 17.16x
+  gpt-oss-120b       blk.0.ffn_gate_exps.bias           [expert0] margin    1.01x
+  gpt-oss-120b       blk.14.ffn_gate_exps.bias          [expert0] margin    1.21x
+  gpt-oss-120b       blk.28.ffn_gate_exps.bias          [expert0] margin    1.02x
+SCALE-POINT gpt-oss-120b (1e+11 params): best margin 1.21x
+  Qwen3-235B blk.0.ffn_gate_exps.weight: FAIL can only specify one unknown dimension
+  Qwen3-235B blk.12.ffn_up_exps.weight: FAIL can only specify one unknown dimension
+  Qwen3-235B blk.24.ffn_up_exps.weight: FAIL can only specify one unknown dimension
+SCALE-POINT Qwen3-235B (2e+11 params): best margin 0.00x
+  Qwen3-480B blk.0.ffn_gate_exps.weight: FAIL can only specify one unknown dimension
+  Qwen3-480B blk.5.ffn_gate_exps.weight: FAIL can only specify one unknown dimension
+  Qwen3-480B blk.9.ffn_up_exps.weight: FAIL can only specify one unknown dimension
+SCALE-POINT Qwen3-480B (5e+11 params): best margin 0.00x
+  DeepSeek-R1-671B   blk.0.ffn_gate.weight              [dense] margin  131.81x
+  DeepSeek-R1-671B   blk.5.ffn_gate_shexp.weight        [dense] margin   62.70x
+  DeepSeek-R1-671B   blk.8.ffn_up_shexp.weight          [dense] margin    1.00x
+SCALE-POINT DeepSeek-R1-671B (7e+11 params): best margin 131.81x
+Kimi-K2.6-1T: no ffn tensors in shard
+RUNG 2f COMPLETE

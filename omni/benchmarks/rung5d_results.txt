@@ -1,0 +1,5 @@
+RUNG 5d RESULTS -- uniform floor 4.6024, full-twin-shaped floor 3.8164, same-day twin mean 3.4292
+k= 16/128  loud-shaped 4.1188 (61.5% of gap) vs random-shaped 4.5409 (7.8%) | OK
+k= 32/128  loud-shaped 3.8676 (93.5% of gap) vs random-shaped 4.4361 (21.2%) | OK
+k= 64/128  loud-shaped 3.7985 (102.3% of gap) vs random-shaped 4.1808 (53.6%) | OK
+VERDICT (pre-registered rule): SUPPORTED -- the twin's loud fold content transfers INTO the counted engine as a counted prior

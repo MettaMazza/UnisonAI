@@ -1,0 +1,8 @@
+time	suite	n	system	correct	pct
+2026-07-09 10:49	MMLU-test-subset	128	unison-own	9	7.0
+2026-07-11 07:40	MMLU-test-subset	128	unison-own	0	0.0
+2026-07-11 08:13	MMLU-test-subset	128	gemma4:26b	111	86.7
+2026-07-11 09:37	MMLU-test-subset	128	qwen3.6-27b:latest	108	84.4
+2026-07-11 09:53	MMLU-test-subset	128	gpt-oss-20b:latest	99	77.3
+2026-07-11 09:58	MMLU-test-subset	128	qwen3:8b	94	73.4
+2026-07-11 10:00	MMLU-test-subset	128	llama3.2:3b	59	46.1

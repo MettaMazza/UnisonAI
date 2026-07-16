@@ -1,0 +1,115 @@
+    4.18x  [embedding] cond_stage_model.transformer.text_model.embeddings.token_embedding.weight
+    5.55x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.0.mlp.fc1.weight
+    1.05x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.0.mlp.fc2.weight
+    8.28x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.1.mlp.fc1.weight
+    1.01x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.1.mlp.fc2.weight
+    4.39x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.10.mlp.fc1.weight
+    1.24x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.10.mlp.fc2.weight
+    4.97x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.11.mlp.fc1.weight
+    2.17x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.11.mlp.fc2.weight
+    7.79x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.2.mlp.fc1.weight
+    0.97x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.2.mlp.fc2.weight
+    8.44x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.3.mlp.fc1.weight
+    0.99x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.3.mlp.fc2.weight
+    7.83x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.4.mlp.fc1.weight
+    0.98x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.4.mlp.fc2.weight
+    7.71x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.5.mlp.fc1.weight
+    0.99x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.5.mlp.fc2.weight
+    8.38x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.6.mlp.fc1.weight
+    0.96x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.6.mlp.fc2.weight
+    7.80x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.7.mlp.fc1.weight
+    0.99x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.7.mlp.fc2.weight
+    6.21x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.8.mlp.fc1.weight
+    1.04x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.8.mlp.fc2.weight
+    5.81x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.9.mlp.fc1.weight
+    1.01x  [ff       ] cond_stage_model.transformer.text_model.encoder.layers.9.mlp.fc2.weight
+    2.69x  [other    ] model.diffusion_model.input_blocks.10.0.emb_layers.1.weight
+    4.04x  [other    ] model.diffusion_model.input_blocks.11.0.emb_layers.1.weight
+    0.98x  [ff       ] model.diffusion_model.input_blocks.4.1.transformer_blocks.0.ff.net.0.proj.weight
+    0.99x  [ff       ] model.diffusion_model.input_blocks.4.1.transformer_blocks.0.ff.net.2.weight
+    1.00x  [ff       ] model.diffusion_model.input_blocks.5.1.transformer_blocks.0.ff.net.0.proj.weight
+    0.96x  [ff       ] model.diffusion_model.input_blocks.5.1.transformer_blocks.0.ff.net.2.weight
+    2.40x  [other    ] model.diffusion_model.input_blocks.7.0.emb_layers.1.weight
+    0.99x  [attention] model.diffusion_model.input_blocks.7.1.transformer_blocks.0.attn1.to_k.weight
+    0.96x  [attention] model.diffusion_model.input_blocks.7.1.transformer_blocks.0.attn1.to_out.0.weight
+    0.97x  [attention] model.diffusion_model.input_blocks.7.1.transformer_blocks.0.attn1.to_q.weight
+    1.04x  [attention] model.diffusion_model.input_blocks.7.1.transformer_blocks.0.attn1.to_v.weight
+    0.99x  [attention] model.diffusion_model.input_blocks.7.1.transformer_blocks.0.attn2.to_out.0.weight
+    1.02x  [attention] model.diffusion_model.input_blocks.7.1.transformer_blocks.0.attn2.to_q.weight
+    1.03x  [ff       ] model.diffusion_model.input_blocks.7.1.transformer_blocks.0.ff.net.0.proj.weight
+    0.97x  [ff       ] model.diffusion_model.input_blocks.7.1.transformer_blocks.0.ff.net.2.weight
+    2.62x  [other    ] model.diffusion_model.input_blocks.8.0.emb_layers.1.weight
+    1.02x  [attention] model.diffusion_model.input_blocks.8.1.transformer_blocks.0.attn1.to_k.weight
+    0.96x  [attention] model.diffusion_model.input_blocks.8.1.transformer_blocks.0.attn1.to_out.0.weight
+    1.00x  [attention] model.diffusion_model.input_blocks.8.1.transformer_blocks.0.attn1.to_q.weight
+    1.08x  [attention] model.diffusion_model.input_blocks.8.1.transformer_blocks.0.attn1.to_v.weight
+    0.95x  [attention] model.diffusion_model.input_blocks.8.1.transformer_blocks.0.attn2.to_out.0.weight
+    0.96x  [attention] model.diffusion_model.input_blocks.8.1.transformer_blocks.0.attn2.to_q.weight
+    1.42x  [ff       ] model.diffusion_model.input_blocks.8.1.transformer_blocks.0.ff.net.0.proj.weight
+    1.00x  [ff       ] model.diffusion_model.input_blocks.8.1.transformer_blocks.0.ff.net.2.weight
+    3.93x  [other    ] model.diffusion_model.middle_block.0.emb_layers.1.weight
+    1.01x  [attention] model.diffusion_model.middle_block.1.transformer_blocks.0.attn1.to_k.weight
+    0.98x  [attention] model.diffusion_model.middle_block.1.transformer_blocks.0.attn1.to_out.0.weight
+    1.02x  [attention] model.diffusion_model.middle_block.1.transformer_blocks.0.attn1.to_q.weight
+    0.98x  [attention] model.diffusion_model.middle_block.1.transformer_blocks.0.attn1.to_v.weight
+    1.03x  [attention] model.diffusion_model.middle_block.1.transformer_blocks.0.attn2.to_out.0.weight
+    1.00x  [attention] model.diffusion_model.middle_block.1.transformer_blocks.0.attn2.to_q.weight
+    1.93x  [ff       ] model.diffusion_model.middle_block.1.transformer_blocks.0.ff.net.0.proj.weight
+    1.01x  [ff       ] model.diffusion_model.middle_block.1.transformer_blocks.0.ff.net.2.weight
+    3.45x  [other    ] model.diffusion_model.middle_block.2.emb_layers.1.weight
+    3.64x  [other    ] model.diffusion_model.output_blocks.0.0.emb_layers.1.weight
+    2.69x  [other    ] model.diffusion_model.output_blocks.1.0.emb_layers.1.weight
+    1.33x  [other    ] model.diffusion_model.output_blocks.2.0.emb_layers.1.weight
+    1.42x  [other    ] model.diffusion_model.output_blocks.3.0.emb_layers.1.weight
+    0.94x  [attention] model.diffusion_model.output_blocks.3.1.transformer_blocks.0.attn1.to_k.weight
+    0.98x  [attention] model.diffusion_model.output_blocks.3.1.transformer_blocks.0.attn1.to_out.0.weight
+    0.98x  [attention] model.diffusion_model.output_blocks.3.1.transformer_blocks.0.attn1.to_q.weight
+    0.96x  [attention] model.diffusion_model.output_blocks.3.1.transformer_blocks.0.attn1.to_v.weight
+    0.96x  [attention] model.diffusion_model.output_blocks.3.1.transformer_blocks.0.attn2.to_out.0.weight
+    1.00x  [attention] model.diffusion_model.output_blocks.3.1.transformer_blocks.0.attn2.to_q.weight
+    1.07x  [ff       ] model.diffusion_model.output_blocks.3.1.transformer_blocks.0.ff.net.0.proj.weight
+    0.98x  [ff       ] model.diffusion_model.output_blocks.3.1.transformer_blocks.0.ff.net.2.weight
+    1.41x  [other    ] model.diffusion_model.output_blocks.4.0.emb_layers.1.weight
+    0.98x  [attention] model.diffusion_model.output_blocks.4.1.transformer_blocks.0.attn1.to_k.weight
+    0.99x  [attention] model.diffusion_model.output_blocks.4.1.transformer_blocks.0.attn1.to_out.0.weight
+    1.01x  [attention] model.diffusion_model.output_blocks.4.1.transformer_blocks.0.attn1.to_q.weight
+    0.94x  [attention] model.diffusion_model.output_blocks.4.1.transformer_blocks.0.attn1.to_v.weight
+    1.02x  [attention] model.diffusion_model.output_blocks.4.1.transformer_blocks.0.attn2.to_out.0.weight
+    1.00x  [attention] model.diffusion_model.output_blocks.4.1.transformer_blocks.0.attn2.to_q.weight
+    1.10x  [ff       ] model.diffusion_model.output_blocks.4.1.transformer_blocks.0.ff.net.0.proj.weight
+    1.00x  [ff       ] model.diffusion_model.output_blocks.4.1.transformer_blocks.0.ff.net.2.weight
+    1.36x  [other    ] model.diffusion_model.output_blocks.5.0.emb_layers.1.weight
+    0.98x  [attention] model.diffusion_model.output_blocks.5.1.transformer_blocks.0.attn1.to_k.weight
+    1.02x  [attention] model.diffusion_model.output_blocks.5.1.transformer_blocks.0.attn1.to_out.0.weight
+    1.00x  [attention] model.diffusion_model.output_blocks.5.1.transformer_blocks.0.attn1.to_q.weight
+    1.03x  [attention] model.diffusion_model.output_blocks.5.1.transformer_blocks.0.attn1.to_v.weight
+    1.02x  [attention] model.diffusion_model.output_blocks.5.1.transformer_blocks.0.attn2.to_out.0.weight
+    1.01x  [attention] model.diffusion_model.output_blocks.5.1.transformer_blocks.0.attn2.to_q.weight
+    1.05x  [ff       ] model.diffusion_model.output_blocks.5.1.transformer_blocks.0.ff.net.0.proj.weight
+    0.99x  [ff       ] model.diffusion_model.output_blocks.5.1.transformer_blocks.0.ff.net.2.weight
+    1.03x  [ff       ] model.diffusion_model.output_blocks.6.1.transformer_blocks.0.ff.net.0.proj.weight
+    0.98x  [ff       ] model.diffusion_model.output_blocks.6.1.transformer_blocks.0.ff.net.2.weight
+    0.96x  [ff       ] model.diffusion_model.output_blocks.7.1.transformer_blocks.0.ff.net.0.proj.weight
+    0.99x  [ff       ] model.diffusion_model.output_blocks.7.1.transformer_blocks.0.ff.net.2.weight
+    1.00x  [ff       ] model.diffusion_model.output_blocks.8.1.transformer_blocks.0.ff.net.0.proj.weight
+    1.02x  [ff       ] model.diffusion_model.output_blocks.8.1.transformer_blocks.0.ff.net.2.weight
+    1.28x  [other    ] model.diffusion_model.time_embed.2.weight
+
+=== TOP 10 BY MARGIN ===
+    8.44x [ff] cond_stage_model.transformer.text_model.encoder.layers.3.mlp.fc1.weight real=0.009458 null=0.001120
+    8.38x [ff] cond_stage_model.transformer.text_model.encoder.layers.6.mlp.fc1.weight real=0.009385 null=0.001120
+    8.28x [ff] cond_stage_model.transformer.text_model.encoder.layers.1.mlp.fc1.weight real=0.009881 null=0.001194
+    7.83x [ff] cond_stage_model.transformer.text_model.encoder.layers.4.mlp.fc1.weight real=0.008689 null=0.001110
+    7.80x [ff] cond_stage_model.transformer.text_model.encoder.layers.7.mlp.fc1.weight real=0.008698 null=0.001115
+    7.79x [ff] cond_stage_model.transformer.text_model.encoder.layers.2.mlp.fc1.weight real=0.008479 null=0.001089
+    7.71x [ff] cond_stage_model.transformer.text_model.encoder.layers.5.mlp.fc1.weight real=0.009206 null=0.001194
+    6.21x [ff] cond_stage_model.transformer.text_model.encoder.layers.8.mlp.fc1.weight real=0.008123 null=0.001308
+    5.81x [ff] cond_stage_model.transformer.text_model.encoder.layers.9.mlp.fc1.weight real=0.007434 null=0.001280
+    5.55x [ff] cond_stage_model.transformer.text_model.encoder.layers.0.mlp.fc1.weight real=0.007555 null=0.001361
+
+=== CLASS MEDIANS ===
+ff: median 1.03x over 46 tensors
+embedding: median 4.18x over 1 tensors
+other: median 2.62x over 13 tensors
+attention: median 1.00x over 36 tensors
+RUNG 2 ARM A COMPLETE

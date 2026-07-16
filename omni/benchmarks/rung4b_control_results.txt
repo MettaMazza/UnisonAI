@@ -1,0 +1,8 @@
+corpus: 541358 chars, vocab 164
+FROZEN-SOFTMAX seed=1  val=2.4336  (409s)
+FROZEN-SOFTMAX seed=2  val=2.4175  (401s)
+FROZEN-SOFTMAX seed=3  val=2.4407  (477s)
+
+trained-softmax 1.8878 | cascade 2.6010 | frozen-softmax 2.4306
+ATTRIBUTION: frozen-directions cost = +0.5428 | cascade-law cost = +0.1704
+RUNG 4b-CONTROL COMPLETE

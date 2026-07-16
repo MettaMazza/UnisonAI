@@ -1,0 +1,7 @@
+R1 blk.0.ffn_gate.weight           keep=0.250 (= 9.2b)  fold-relMSE 8.6469e-02  quant-relMSE 2.2969e-03  -> quant wins
+R1 blk.0.ffn_gate.weight           keep=0.125 (= 4.6b)  fold-relMSE 1.7757e-01  quant-relMSE 9.3112e-01  -> FOLD WINS
+R1 blk.5.ffn_gate_shexp.weight     keep=0.250 (= 9.5b)  fold-relMSE 1.5914e-01  quant-relMSE 1.2210e-03  -> quant wins
+R1 blk.5.ffn_gate_shexp.weight     keep=0.125 (= 4.8b)  fold-relMSE 3.0220e-01  quant-relMSE 9.3339e-01  -> FOLD WINS
+R1 blk.3.ffn_up_shexp.weight       keep=0.250 (= 9.5b)  fold-relMSE 2.7621e-01  quant-relMSE 4.5571e-05  -> quant wins
+R1 blk.3.ffn_up_shexp.weight       keep=0.125 (= 4.8b)  fold-relMSE 4.9738e-01  quant-relMSE 3.8153e-02  -> quant wins
+RUNG 3c COMPLETE

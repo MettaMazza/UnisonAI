@@ -1,0 +1,52 @@
+[foldprobe] run 'role-census' registered 2849c0ceb6c8c524
+  DeepSeek-R1-671B attention   role=performer family=quiet  forced=quiet  OK
+  DeepSeek-R1-671B contraction role=performer family=quiet  forced=quiet  OK
+  DeepSeek-R1-671B embedding   role=geometry  family=colour forced=colour OK
+  DeepSeek-R1-671B expansion   role=selection family=colour forced=binary x
+  GPT-2            attention   role=performer family=quiet  forced=quiet  OK
+  GPT-2            contraction role=performer family=quiet  forced=quiet  OK
+  GPT-2            embedding   role=geometry  family=colour forced=colour OK
+  GPT-2            expansion   role=selection family=binary forced=binary OK
+  Kimi-K2.6-1T     attention   role=performer family=quiet  forced=quiet  OK
+  Kimi-K2.6-1T     contraction role=performer family=quiet  forced=quiet  OK
+  Kimi-K2.6-1T     embedding   role=geometry  family=colour forced=colour OK
+  Kimi-K2.6-1T     expansion   role=selection family=quiet  forced=binary x
+  Llama-3.1-8B     attention   role=performer family=quiet  forced=quiet  OK
+  Llama-3.1-8B     contraction role=performer family=quiet  forced=quiet  OK
+  Llama-3.1-8B     embedding   role=geometry  family=binary forced=colour x
+  Llama-3.1-8B     expansion   role=selection family=binary forced=binary OK
+  Llama-3.3-70B    attention   role=performer family=quiet  forced=quiet  OK
+  Llama-3.3-70B    contraction role=performer family=quiet  forced=quiet  OK
+  Llama-3.3-70B    embedding   role=geometry  family=binary forced=colour x
+  Llama-3.3-70B    expansion   role=selection family=quiet  forced=binary x
+  Qwen3.5-4B       attention   role=performer family=quiet  forced=quiet  OK
+  Qwen3.5-4B       contraction role=performer family=quiet  forced=quiet  OK
+  Qwen3.5-4B       embedding   role=geometry  family=colour forced=colour OK
+  Qwen3.5-4B       expansion   role=selection family=quiet  forced=binary x
+  Qwen3.6-27B      attention   role=performer family=quiet  forced=quiet  OK
+  Qwen3.6-27B      contraction role=performer family=quiet  forced=quiet  OK
+  Qwen3.6-27B      embedding   role=geometry  family=colour forced=colour OK
+  Qwen3.6-27B      expansion   role=selection family=quiet  forced=binary x
+  R1-Distill-32B   attention   role=performer family=quiet  forced=quiet  OK
+  R1-Distill-32B   contraction role=performer family=quiet  forced=quiet  OK
+  R1-Distill-32B   embedding   role=geometry  family=colour forced=colour OK
+  R1-Distill-32B   expansion   role=selection family=colour forced=binary x
+  gemma-2-9b       attention   role=performer family=quiet  forced=quiet  OK
+  gemma-2-9b       contraction role=performer family=quiet  forced=quiet  OK
+  gemma-2-9b       embedding   role=geometry  family=colour forced=colour OK
+  gemma-2-9b       expansion   role=selection family=quiet  forced=binary x
+  gemma-4-31B      attention   role=performer family=quiet  forced=quiet  OK
+  gemma-4-31B      contraction role=performer family=quiet  forced=quiet  OK
+  gemma-4-31B      embedding   role=geometry  family=colour forced=colour OK
+  gemma-4-31B      expansion   role=selection family=quiet  forced=binary x
+  gpt-oss-20b      attention   role=performer family=quiet  forced=quiet  OK
+  gpt-oss-20b      contraction role=performer family=quiet  forced=quiet  OK
+  gpt-oss-20b      embedding   role=geometry  family=colour forced=colour OK
+  gpt-oss-20b      expansion   role=selection family=quiet  forced=binary x
+
+--- census ---
+  geometry:   colour 9/11 woken (binary 2, quiet 0)  colour-majority=True
+  selection:  binary 2/11  (colour 2, quiet 7)  -- the S316 value-signature re-read is the refinement
+  performer:  all quiet = True  (colour 0, binary 0, quiet 22)
+
+ROLE CENSUS: family-follows-role SUPPORTED on the recorded reading (geometry->colour majority + performers all quiet); selection->binary at 2/11, the value-signature re-read pending.

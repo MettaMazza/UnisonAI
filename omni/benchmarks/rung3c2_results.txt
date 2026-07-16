@@ -1,0 +1,4 @@
+R1 blk.0.ffn_gate.weight           keep=0.1216  fold 1.8150e-01  blockquant4.5b 4.5333e-03  -> blockquant wins
+R1 blk.5.ffn_gate_shexp.weight     keep=0.1184  fold 3.1313e-01  blockquant4.5b 1.6628e-02  -> blockquant wins
+R1 blk.3.ffn_up_shexp.weight       keep=0.1184  fold 5.1313e-01  blockquant4.5b 9.9269e-03  -> blockquant wins
+RUNG 3c-II COMPLETE

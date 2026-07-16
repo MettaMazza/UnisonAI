@@ -1,0 +1,50 @@
+
+=== SD1.5 token_embedding.weight [49408, 768]: 33554432 coefficients (2^25) ===
+self-test (bit-reversal, must match exactly): PASS
+  fraction       real  shuffle-max   gaussian    verdict
+   6.1e-05   0.004605     0.001101   0.001100  STRUCTURE
+   4.9e-04   0.010529     0.006893   0.006896  STRUCTURE
+   3.9e-03   0.043455     0.039713   0.039698  STRUCTURE
+elapsed 28.3s
+
+=== SD1.5 proj.weight [10240, 1280]: 8388608 coefficients (2^23) ===
+self-test (bit-reversal, must match exactly): PASS
+  fraction       real  shuffle-max   gaussian    verdict
+   6.1e-05   0.001130     0.001107   0.001089  STRUCTURE
+   4.9e-04   0.006967     0.006912   0.006868  STRUCTURE
+   3.9e-03   0.039823     0.039759   0.039658  STRUCTURE
+elapsed 11.1s
+
+=== SDXL token_embedding.weight [49408, 1280]: 33554432 coefficients (2^25) ===
+self-test (bit-reversal, must match exactly): PASS
+  fraction       real  shuffle-max   gaussian    verdict
+   6.1e-05   0.001915     0.001101   0.001099  STRUCTURE
+   4.9e-04   0.007789     0.006889   0.006895  STRUCTURE
+   3.9e-03   0.040723     0.039688   0.039697  STRUCTURE
+elapsed 29.3s
+
+=== SDXL proj.weight [10240, 1280]: 8388608 coefficients (2^23) ===
+self-test (bit-reversal, must match exactly): PASS
+  fraction       real  shuffle-max   gaussian    verdict
+   6.1e-05   0.001169     0.001109   0.001089  STRUCTURE
+   4.9e-04   0.007016     0.006911   0.006868  STRUCTURE
+   3.9e-03   0.039923     0.039740   0.039658  STRUCTURE
+elapsed 8.1s
+
+=== Kokoro bert.module.encoder.albert_layer_groups.0.albert_layers.0.ffn_output.weight: 1048576 coefficients (2^20) ===
+self-test (bit-reversal, must match exactly): PASS
+  fraction       real  shuffle-max   gaussian    verdict
+   6.1e-05   0.001166     0.001090   0.001102  STRUCTURE
+   4.9e-04   0.007110     0.006948   0.006910  STRUCTURE
+   3.9e-03   0.040317     0.039865   0.039830  STRUCTURE
+elapsed 0.7s
+
+=== Kokoro bert.module.encoder.albert_layer_groups.0.albert_layers.0.ffn.weight: 1048576 coefficients (2^20) ===
+self-test (bit-reversal, must match exactly): PASS
+  fraction       real  shuffle-max   gaussian    verdict
+   6.1e-05   0.003978     0.001104   0.001102  STRUCTURE
+   4.9e-04   0.010869     0.006938   0.006910  STRUCTURE
+   3.9e-03   0.043893     0.039913   0.039830  STRUCTURE
+elapsed 0.6s
+
+RUNG 1 (VALIDATED OBJECTS) COMPLETE

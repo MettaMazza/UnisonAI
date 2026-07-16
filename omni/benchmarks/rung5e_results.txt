@@ -1,0 +1,7 @@
+RUNG 5e RESULTS -- same-day twin 3.4292, 5d loud-hard reference 3.7985 (parsed live)
+A0 baseline        flood 4.6024   no-flood 4.4587   (== rematch, identity held)
+A1 fold-mix       flood 3.4899   no-flood 3.1907   <- REACHES the twin (no-flood)
+A2 kin floor      flood 4.8398   no-flood 4.6612
+A3 mix + kin      flood 3.5374   no-flood 3.2047   <- REACHES the twin (no-flood)
+A4 mix + loud64   flood 3.3750   no-flood 3.1344   <- REACHES the twin (flood)   <- REACHES the twin (no-flood)
+BEST fold-stack arm: 3.1344 vs twin 3.4292 -- the word-scale gap CLOSES within the fold

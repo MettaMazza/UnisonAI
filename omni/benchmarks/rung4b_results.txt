@@ -1,0 +1,9 @@
+corpus: 541358 chars, vocab 164
+CASCADE seed=1  val=2.6028  (516s)
+CASCADE seed=2  val=2.5960  (563s)
+CASCADE seed=3  val=2.6041  (610s)
+
+BASELINE (recorded, trained softmax): 1.8878
+CASCADE mean val loss: 2.6010
+VERDICT: softmax baseline wins -- recorded
+RUNG 4b COMPLETE

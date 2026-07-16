@@ -1,0 +1,39 @@
+=== ARM D: GPT-2 (full-precision canonical LLM) ===
+wte (token embedding)                                   row   79.30x   col  230.27x
+L0 mlp.c_fc                                             row   12.69x   col    8.12x
+L0 mlp.c_proj                                           row    0.99x   col    0.96x
+L1 mlp.c_fc                                             row    8.57x   col    6.42x
+L1 mlp.c_proj                                           row    1.01x   col    1.01x
+L2 mlp.c_fc                                             row    4.08x   col    3.07x
+L2 mlp.c_proj                                           row    1.07x   col    1.22x
+L3 mlp.c_fc                                             row    3.37x   col    2.53x
+L3 mlp.c_proj                                           row    1.33x   col    1.65x
+L4 mlp.c_fc                                             row    5.54x   col    3.61x
+L4 mlp.c_proj                                           row    1.09x   col    1.40x
+L5 mlp.c_fc                                             row    4.79x   col    3.20x
+L5 mlp.c_proj                                           row    1.09x   col    1.20x
+L6 mlp.c_fc                                             row    6.28x   col    4.18x
+L6 mlp.c_proj                                           row    1.00x   col    1.05x
+L7 mlp.c_fc                                             row    5.88x   col    3.91x
+L7 mlp.c_proj                                           row    1.01x   col    0.98x
+L8 mlp.c_fc                                             row    8.00x   col    5.39x
+L8 mlp.c_proj                                           row    0.98x   col    1.00x
+L9 mlp.c_fc                                             row    7.25x   col    5.00x
+L9 mlp.c_proj                                           row    1.00x   col    1.00x
+L10 mlp.c_fc                                            row    6.65x   col    4.50x
+L10 mlp.c_proj                                          row    1.00x   col    1.06x
+L11 mlp.c_fc                                            row    8.91x   col    5.95x
+L11 mlp.c_proj                                          row    2.01x   col    2.80x
+GPT-2 best margin: 230.27x over 25 tensors
+=== ARM E: Llama-3.1-8B dequantized (Q4_K/Q6_K survival) ===
+L0 ffn_gate [Q4_K]                                      row    4.21x   col    4.24x
+L0 ffn_down [Q6_K]                                      row    1.00x   col    1.00x
+L8 ffn_gate [Q4_K]                                      row    6.50x   col    6.42x
+L8 ffn_down [Q4_K]                                      row    1.00x   col    0.99x
+L16 ffn_gate [Q4_K]                                     row    8.43x   col    8.48x
+L16 ffn_down [Q6_K]                                     row    1.00x   col    1.00x
+L24 ffn_gate [Q4_K]                                     row    4.85x   col    4.81x
+L24 ffn_down [Q6_K]                                     row    1.00x   col    1.00x
+L31 ffn_gate [Q4_K]                                     row    3.74x   col    3.75x
+L31 ffn_down [Q6_K]                                     row    1.00x   col    1.00x
+ARMS D+E COMPLETE

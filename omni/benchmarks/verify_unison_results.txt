@@ -1,0 +1,48 @@
+PASS E1 forced locks  [ctx=6 lock=1/3 kin=1/6 sight=32]
+PASS E1b halt on fitted value
+FAIL E2 wake  [2057706 orbits, 741524 sents, 59s]
+PASS E3 taught fact recalled  [Your favourite instrument is the harp.]
+FAIL E4 correction exact  [(silence)]
+PASS E4b correction persisted
+PASS E5 deixis  [nice to meet me. how am I? you are my developer.]
+PASS E6 stutter law
+PASS E7 informative shared-focus
+PASS E8 anaphora law
+PASS E9 greeting own-store  [0.3s: Yougreeo,j now and studiate]
+PASS E10 eye deterministic+distinct  [checkerboard = one Walsh token: w8x8p]
+PASS E10b recognition via own spectrum  [share 1.00]
+PASS E11 fold ear spectra (Parseval-certified)  [32 sound tokens]
+PASS E11b transcription  [0s: The field holds the one.  (word accuracy = transcriber-model grade; upgradeable)]
+PASS E11c sound paired+persisted
+PASS E12 voice (Kokoro)  [0s, 90156b]
+PASS E13 exact_math tool
+PASS E14 graduation ledger
+PASS E14b score above corrections  [losing correction falls through]
+PASS E15 STaR reasoning filter
+PASS E16 ZPD picks nearest the lock
+PASS E17 VOICE label (own)  [VOICE: UNISON (own held memory) | learning me]
+FAIL E18 LIVE relay + VOICE label  [3s]
+PASS E18b relayed answer owned  [repeat 1.3s, no relay -- ck at the lock (itinerary,town,ljubljana); spike 1]
+PASS E19 LIVE video watched  [9s: This is a bit of a tease, isn't it? You've given me three sn]
+FAIL E20 correction survives rebirth  [Got: The capital of our]
+PASS E20b fact survives rebirth  [Your favourite instrument is the harp.]
+PASS E20c sight survives rebirth
+PASS E20d graduation survives rebirth
+PASS E23 native voice after one teaching  [replay 0.00s, no synthesis model]
+PASS E24 native ear after one hearing  [That's a good thing, it's like the bird's head.]
+PASS E25 agent toolkit + path jail
+PASS E26 progress instrument appends
+PASS E21 M5 bounded round-trip
+PASS E22 long sentence held  [1037 chars]
+PASS E27 babble organ: whole-or-silent, never a reprint  [0 emitted / 8 silent / 0 violations]
+PASS E28 one-lock fusion invariants  [0/8 fused, all parts at the lock]
+PASS E29 fold-mix single-level collapse exact  [mixture == the one holding level]
+PASS E30 ladder depth bound forced  [bound 2 = GEN_B; rung 1]
+PASS E31 graph genesis: 7 roots + complete mesh  [7 roots, 21 mesh edges]
+PASS E32 node births: one per write, one root each, idempotent  [236 nodes, 0 orphans]
+PASS E33 edge counts monotone + persisted  [count 1->2]
+PASS E34 turn co-binding: served fact edges to its speaker  [edge count 2]
+PASS E35 shortcut only at closure  [n: +0 nodes; y: +1 node]
+PASS E36 per-user fact isolation  ['Your name is Ljubljana.' / 'Your name is Trieste.']
+PASS E37 speaker-keyed session organs  [confusion isolated; deictic keys scoped; impersonal keys shared]
+TOTAL: 43/47

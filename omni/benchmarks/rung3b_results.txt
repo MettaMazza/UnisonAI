@@ -1,0 +1,17 @@
+=== ARM A: packing sweep (keep=0.25 / 0.125) ===
+row-major  keep= 0.250  KL=  2.2849  agree= 0.19
+col-major  keep= 0.250  KL=  1.3606  agree= 0.19
+morton     keep= 0.250  KL=  2.2082  agree= 0.31
+row-major  keep= 0.125  KL=  5.0422  agree= 0.00
+col-major  keep= 0.125  KL=  4.4208  agree= 0.06
+morton     keep= 0.125  KL=  7.3799  agree= 0.00
+=== ARM B: spectrum + exceptions vs quantization at matched bits ===
+spec+exc 4b split=75/25  KL=  5.2059  agree= 0.00
+spec+exc 4b split=50/50  KL=  4.8684  agree= 0.12
+spec+exc 4b split=25/75  KL=  4.8644  agree= 0.00
+quantize 4b                KL=  3.2144  agree= 0.12
+spec+exc 3b split=75/25  KL=  6.8961  agree= 0.00
+spec+exc 3b split=50/50  KL=  5.8253  agree= 0.00
+spec+exc 3b split=25/75  KL=  6.6372  agree= 0.00
+quantize 3b                KL=  5.8414  agree= 0.00
+RUNG 3b COMPLETE

@@ -1,0 +1,35 @@
+CAPABILITY MAP RESULTS -- regenerated from results.jsonl (reg f56b5339ad01df48)
+  wte        loud   k=n/64  KL  0.00000 agree 1.00
+  wte        random k=n/64  KL  0.00000 agree 1.00
+  wte        loud   k=n/16  KL  0.00000 agree 1.00
+  wte        random k=n/16  KL  0.00000 agree 1.00
+  c_fc-early loud   k=n/64  KL  3.06494 agree 0.00
+  c_fc-early random k=n/64  KL  0.02225 agree 0.81
+  c_fc-early loud   k=n/16  KL  3.14367 agree 0.00
+  c_fc-early random k=n/16  KL  0.10182 agree 0.62
+  c_fc-mid   loud   k=n/64  KL  3.02814 agree 0.19
+  c_fc-mid   random k=n/64  KL  0.01785 agree 0.75
+  c_fc-mid   loud   k=n/16  KL  3.10667 agree 0.25
+  c_fc-mid   random k=n/16  KL  0.08821 agree 0.75
+  c_fc-late  loud   k=n/64  KL  2.51353 agree 0.25
+  c_fc-late  random k=n/64  KL  0.01151 agree 0.94
+  c_fc-late  loud   k=n/16  KL  2.31762 agree 0.25
+  c_fc-late  random k=n/16  KL  0.04748 agree 0.81
+  VERDICT: 24 attributions at both budgets
+  wte        loud   k=n/64  KL 42.80606 agree 0.00
+  wte        random k=n/64  KL  7.43405 agree 0.00
+  wte        loud   k=n/16  KL 66.88752 agree 0.00
+  wte        random k=n/16  KL 22.04409 agree 0.00
+  c_fc-early loud   k=n/64  KL  3.06494 agree 0.00
+  c_fc-early random k=n/64  KL  0.02225 agree 0.81
+  c_fc-early loud   k=n/16  KL  3.14367 agree 0.00
+  c_fc-early random k=n/16  KL  0.10182 agree 0.62
+  c_fc-mid   loud   k=n/64  KL  3.02814 agree 0.19
+  c_fc-mid   random k=n/64  KL  0.01785 agree 0.75
+  c_fc-mid   loud   k=n/16  KL  3.10667 agree 0.25
+  c_fc-mid   random k=n/16  KL  0.08821 agree 0.75
+  c_fc-late  loud   k=n/64  KL  2.51353 agree 0.25
+  c_fc-late  random k=n/64  KL  0.01151 agree 0.94
+  c_fc-late  loud   k=n/16  KL  2.31762 agree 0.25
+  c_fc-late  random k=n/16  KL  0.04748 agree 0.81
+  VERDICT: 32 attributions at both budgets

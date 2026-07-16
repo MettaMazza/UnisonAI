@@ -1,0 +1,16 @@
+CONTROL GPT-2 h.0.mlp.c_fc               blocks=1  MEDIAN  12.69x  (min 12.69 max 12.69)
+CONTROL GPT-2 wte                        blocks=9  MEDIAN  67.62x  (min 54.61 max 74.72)
+gpt-oss-20b blk.0.ffn_gate_exps.weight   blocks=1  MEDIAN   1.00x  (min 1.00 max 1.00)
+gpt-oss-20b blk.12.ffn_gate_exps.weight  blocks=1  MEDIAN   0.86x  (min 0.86 max 0.86)
+gpt-oss-120b blk.0.ffn_gate_exps.weight  blocks=1  MEDIAN   1.07x  (min 1.07 max 1.07)
+gpt-oss-120b blk.14.ffn_gate_exps.weight blocks=1  MEDIAN   1.06x  (min 1.06 max 1.06)
+Qwen3-235B blk.0.ffn_gate_exps.weight    blocks=1  MEDIAN   0.76x  (min 0.76 max 0.76)
+Qwen3-235B blk.12.ffn_up_exps.weight     blocks=1  MEDIAN   0.93x  (min 0.93 max 0.93)
+Qwen3-480B blk.0.ffn_gate_exps.weight    blocks=1  MEDIAN   0.89x  (min 0.89 max 0.89)
+Qwen3-480B blk.5.ffn_gate_exps.weight    blocks=1  MEDIAN   0.91x  (min 0.91 max 0.91)
+DeepSeek-R1-671B blk.0.ffn_gate.weight   blocks=12  MEDIAN  43.25x  (min 38.33 max 45.79)
+DeepSeek-R1-671B blk.5.ffn_gate_shexp.weight blocks=3  MEDIAN  47.10x  (min 46.15 max 48.87)
+Traceback (most recent call last):
+  File "/Users/mettamazza/Desktop/Smithian Fold Theory/fold_ai/rung2f_rowblock.py", line 56, in <module>
+    for t in (cands[0], cands[len(cands)//2]):
+IndexError: list index out of range

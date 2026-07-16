@@ -1,0 +1,9 @@
+=== ARM B: packings (margin at 6.1e-5) ===
+STRONG(text fc1 L3) row-major   :     8.44x
+STRONG(text fc1 L3) column-major:    12.11x
+THIN(vision ff) row-major   :     1.00x
+THIN(vision ff) column-major:     1.72x
+=== ARM C: untrained negative control (He-init, matched shapes) ===
+shape-of-STRONG:     0.98x  (must sit ~1.0x)
+shape-of-THIN:     0.97x  (must sit ~1.0x)
+RUNG 2 ARMS B+C COMPLETE

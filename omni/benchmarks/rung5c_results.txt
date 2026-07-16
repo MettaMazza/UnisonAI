@@ -1,0 +1,5 @@
+RUNG 5c RESULTS -- baseline 3.4605, counted engine 4.5071
+k= 16/128  LOUD-class: loud 7.2814 vs random 9.4652 (margin +2.1837) | QUIET-class: loud 4.8497 vs random 5.5085 (margin +0.6588) | loud_k below counted engine | OK
+k= 32/128  LOUD-class: loud 5.2175 vs random 8.9259 (margin +3.7084) | QUIET-class: loud 4.0999 vs random 5.2776 (margin +1.1777) | loud_k below counted engine | OK
+k= 64/128  LOUD-class: loud 3.6943 vs random 7.4609 (margin +3.7666) | QUIET-class: loud 3.5757 vs random 4.6647 (margin +1.0889) | loud_k BEATS counted engine | OK
+VERDICT (pre-registered rule): SUPPORTED -- the twin's advantage lives in the dyadically-loud subspace

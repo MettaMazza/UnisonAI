@@ -1,0 +1,9 @@
+corpus: 541358 chars, vocab 164; engine reads training text ONCE
+orbit store built in 26s -- 2158484 held orbits
+eval in 3s over 81920 predictions
+
+TRANSFORMER TWIN (trained, 48,000 gradient readings): 1.8878
+FOLD-NATIVE SEED (text read ONCE, zero training):      1.2891
+VERDICT: FOLD-NATIVE WINS/TIES -- the rung is taken
+axes: build 26s vs ~420s training x3 seeds; passes over data 1 vs ~11; fact-edit cost: write one orbit vs retrain
+RUNG 5-NATIVE COMPLETE

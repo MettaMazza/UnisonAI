@@ -1,0 +1,4 @@
+Kimi-K2.6-1T blk.0.ffn_gate.weight       blocks=12  MEDIAN   1.00x  (min 0.97 max 1.02)
+Kimi-K2.6-1T blk.3.ffn_gate_exps.weight  blocks=1  MEDIAN   0.96x  (min 0.96 max 0.96)
+Kimi-K2.6-1T blk.5.ffn_gate_shexp.weight blocks=3  MEDIAN   1.06x  (min 1.02 max 1.06)
+KIMI COMPLETE

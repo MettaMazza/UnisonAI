@@ -1,0 +1,75 @@
+[foldprobe] run 'reasoning-decode' registered 63961544409e02f1
+The following generation flags are not valid and may be ignored: ['output_attentions', 'output_hidden_states']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+
+[P1] activation spectrometer -- GPT-2 MLP pre-activations:
+  L 0 activation margin   9.86x   (weight margin on record 12.7x)
+  L 1 activation margin   7.64x   (weight margin on record 8.5x)
+  L 2 activation margin   4.51x   (weight margin on record 4.1x)
+  L 3 activation margin   3.11x   (weight margin on record 3.4x)
+  L 4 activation margin   7.12x   (weight margin on record 5.5x)
+  L 5 activation margin   4.76x   (weight margin on record 4.8x)
+  L 6 activation margin   7.27x   (weight margin on record 6.3x)
+  L 7 activation margin   2.69x   (weight margin on record 5.9x)
+  L 8 activation margin   5.26x   (weight margin on record 8.0x)
+  L 9 activation margin   5.41x   (weight margin on record 7.3x)
+  L10 activation margin   1.00x   (weight margin on record 6.7x)
+  L11 activation margin   1.08x   (weight margin on record 8.8x)
+
+[P2] attention-cascade decoder -- GPT-2:
+  L 0 median TV: cascade 0.2403  uniform 0.3128  shuffled-null 0.2403  CASCADE CLOSER
+  L 1 median TV: cascade 0.2252  uniform 0.3693  shuffled-null 0.2252  CASCADE CLOSER
+  L 2 median TV: cascade 0.2113  uniform 0.4227  shuffled-null 0.2113  CASCADE CLOSER
+  L 3 median TV: cascade 0.1948  uniform 0.5315  shuffled-null 0.1948  CASCADE CLOSER
+  L 4 median TV: cascade 0.2503  uniform 0.5714  shuffled-null 0.2503  CASCADE CLOSER
+  L 5 median TV: cascade 0.3233  uniform 0.6525  shuffled-null 0.3233  CASCADE CLOSER
+  L 6 median TV: cascade 0.3108  uniform 0.6183  shuffled-null 0.3108  CASCADE CLOSER
+  L 7 median TV: cascade 0.3850  uniform 0.6761  shuffled-null 0.3850  CASCADE CLOSER
+  L 8 median TV: cascade 0.3078  uniform 0.6208  shuffled-null 0.3078  CASCADE CLOSER
+  L 9 median TV: cascade 0.4128  uniform 0.7116  shuffled-null 0.4128  CASCADE CLOSER
+  L10 median TV: cascade 0.3882  uniform 0.6921  shuffled-null 0.3882  CASCADE CLOSER
+  L11 median TV: cascade 0.3102  uniform 0.5911  shuffled-null 0.3102  CASCADE CLOSER
+  cascade closer than uniform in 12/12 layers
+
+[P3] thought-trace fold map -- qwen3:8b:
+
+REASONING DECODE COMPLETE
+
+--- P2/P3 rerun (corrected simplex null; native think mode) ---
+P3 RERUN COMPLETE
+[foldprobe] run 'reasoning-decode' registered 63961544409e02f1
+The following generation flags are not valid and may be ignored: ['output_attentions', 'output_hidden_states']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+
+[P1] activation spectrometer -- GPT-2 MLP pre-activations:
+
+[P2] attention-cascade decoder -- GPT-2:
+  L 0 median TV: cascade 0.2403  uniform 0.3128  shuffled-null 0.1979  CASCADE CLOSER
+  L 1 median TV: cascade 0.2252  uniform 0.3693  shuffled-null 0.1912  CASCADE CLOSER
+  L 2 median TV: cascade 0.2113  uniform 0.4227  shuffled-null 0.1962  CASCADE CLOSER
+  L 3 median TV: cascade 0.1948  uniform 0.5315  shuffled-null 0.1948  CASCADE CLOSER
+  L 4 median TV: cascade 0.2503  uniform 0.5714  shuffled-null 0.1965  CASCADE CLOSER
+  L 5 median TV: cascade 0.3233  uniform 0.6525  shuffled-null 0.1865  CASCADE CLOSER
+  L 6 median TV: cascade 0.3108  uniform 0.6183  shuffled-null 0.1950  CASCADE CLOSER
+  L 7 median TV: cascade 0.3850  uniform 0.6761  shuffled-null 0.1938  CASCADE CLOSER
+  L 8 median TV: cascade 0.3078  uniform 0.6208  shuffled-null 0.1981  CASCADE CLOSER
+  L 9 median TV: cascade 0.4128  uniform 0.7116  shuffled-null 0.1967  CASCADE CLOSER
+  L10 median TV: cascade 0.3882  uniform 0.6921  shuffled-null 0.1909  CASCADE CLOSER
+  L11 median TV: cascade 0.3102  uniform 0.5911  shuffled-null 0.1857  CASCADE CLOSER
+  cascade closer than uniform in 12/12 layers
+
+[P3] thought-trace fold map -- qwen3:8b:
+  skipped If a train travels 180 km in 2 hours and: think 2803 / answer 0 chars
+  skipped A rectangle's length is twice its width : think 2813 / answer 0 chars
+  skipped If 3 machines make 3 widgets in 3 minute: think 3341 / answer 0 chars
+  skipped What is the sum of the first 20 positive: think 2753 / answer 0 chars
+
+REASONING DECODE COMPLETE
+[foldprobe] run 'reasoning-decode' registered 63961544409e02f1
+
+[P3] thought-trace fold map -- qwen3:8b:
+  skipped If a train travels 180 km in 2 hours and: think 9185 / answer 0 chars
+  rep-mass think 0.602 vs answer 0.341 (gap 0.261, null 0.000)  branching 1.13/1.06
+  rep-mass think 0.765 vs answer 0.562 (gap 0.203, null 0.000)  branching 1.16/1.09
+  rep-mass think 0.473 vs answer 0.450 (gap 0.023, null 0.000)  branching 1.09/1.06
+  P3: mean gap 0.162 vs null 0.000 -> ratio 172488.2x (COUNTED STRUCTURE)
+
+REASONING DECODE COMPLETE

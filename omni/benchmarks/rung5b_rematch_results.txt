@@ -1,0 +1,15 @@
+tokens 2561832, vocab 16529 (rare-mapped; June arena was 2514818/16125)
+train-split orbits: 5026665 in 20s (one reading)
+prose SNAPSHOT loaded: 7649785 orbits from 643 Gutenberg books in 15s
+FOLD ENGINE (today) held-out CE: 4.6024  (eval 40s)
+DECOMPOSITION depth-6, train only (flood withheld): 4.4587
+TWIN(today) seed=1 val=3.4533 (104s)
+TWIN(today) seed=2 val=3.4179 (105s)
+TWIN(today) seed=3 val=3.4164 (106s)
+
+JUNE RECORD  newborn engine: 4.5071   twin mean: 3.4967   (June text)
+TODAY  twin mean (seeds 1,2,3):     3.4292
+TODAY  engine, depth 6 + flood:     4.6024   <- the registered rematch number
+TODAY  engine, depth 6, no flood:   4.4587   (decomposition)
+VERDICT: twin still leads by 1.1732 nats on today's text -- residual is rung 5d's target
+RUNG 5b REMATCH COMPLETE

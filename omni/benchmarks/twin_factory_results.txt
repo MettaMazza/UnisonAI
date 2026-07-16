@@ -1,0 +1,125 @@
+[foldprobe] run 'twin-factory-6ab' registered 6232a28576d1d61b
+[twin-factory] building corpus...
+  2000000 tokens, vocab 17398
+
+[baseline] training 2048 steps...
+  [baseline] checkpoint 2^0 = 1 (loss 9.926, 4s)
+  [baseline] checkpoint 2^1 = 2 (loss 9.880, 7s)
+  [baseline] checkpoint 2^2 = 4 (loss 9.813, 10s)
+  [baseline] checkpoint 2^3 = 8 (loss 9.574, 13s)
+  [baseline] checkpoint 2^4 = 16 (loss 8.966, 18s)
+  [baseline] checkpoint 2^5 = 32 (loss 8.150, 27s)
+  [baseline] checkpoint 2^6 = 64 (loss 7.133, 41s)
+  [baseline] checkpoint 2^7 = 128 (loss 6.348, 67s)
+  [baseline] checkpoint 2^8 = 256 (loss 6.059, 123s)
+  [baseline] checkpoint 2^9 = 512 (loss 5.849, 222s)
+  [baseline] checkpoint 2^10 = 1024 (loss 4.818, 406s)
+  [baseline] checkpoint 2^11 = 2048 (loss 4.638, 656s)
+  [baseline] held-out CE 5.3447 (pinned as the factory reference)
+
+[optimizer] training 2048 steps...
+  [optimizer] checkpoint 2^0 = 1 (loss 9.926, 4s)
+  [optimizer] checkpoint 2^1 = 2 (loss 9.928, 6s)
+  [optimizer] checkpoint 2^2 = 4 (loss 9.938, 9s)
+  [optimizer] checkpoint 2^3 = 8 (loss 9.896, 11s)
+  [optimizer] checkpoint 2^4 = 16 (loss 9.751, 14s)
+  [optimizer] checkpoint 2^5 = 32 (loss 9.271, 18s)
+  [optimizer] checkpoint 2^6 = 64 (loss 7.795, 23s)
+  [optimizer] checkpoint 2^7 = 128 (loss 7.077, 31s)
+  [optimizer] checkpoint 2^8 = 256 (loss 6.798, 44s)
+  [optimizer] checkpoint 2^9 = 512 (loss 6.631, 67s)
+  [optimizer] checkpoint 2^10 = 1024 (loss 6.047, 151s)
+  [optimizer] checkpoint 2^11 = 2048 (loss 5.954, 384s)
+
+[wdecay] training 2048 steps...
+  [wdecay] checkpoint 2^0 = 1 (loss 9.926, 4s)
+  [wdecay] checkpoint 2^1 = 2 (loss 9.880, 7s)
+  [wdecay] checkpoint 2^2 = 4 (loss 9.813, 10s)
+  [wdecay] checkpoint 2^3 = 8 (loss 9.574, 14s)
+  [wdecay] checkpoint 2^4 = 16 (loss 8.967, 19s)
+  [wdecay] checkpoint 2^5 = 32 (loss 8.152, 27s)
+  [wdecay] checkpoint 2^6 = 64 (loss 7.137, 40s)
+  [wdecay] checkpoint 2^7 = 128 (loss 6.351, 65s)
+  [wdecay] checkpoint 2^8 = 256 (loss 6.064, 109s)
+  [wdecay] checkpoint 2^9 = 512 (loss 5.854, 182s)
+  [wdecay] checkpoint 2^10 = 1024 (loss 4.834, 260s)
+  [wdecay] checkpoint 2^11 = 2048 (loss 4.657, 527s)
+
+[lrsched] training 2048 steps...
+  [lrsched] checkpoint 2^0 = 1 (loss 9.926, 5s)
+  [lrsched] checkpoint 2^1 = 2 (loss 9.880, 8s)
+  [lrsched] checkpoint 2^2 = 4 (loss 9.813, 11s)
+  [lrsched] checkpoint 2^3 = 8 (loss 9.574, 15s)
+  [lrsched] checkpoint 2^4 = 16 (loss 8.966, 20s)
+  [lrsched] checkpoint 2^5 = 32 (loss 8.150, 27s)
+  [lrsched] checkpoint 2^6 = 64 (loss 7.134, 41s)
+  [lrsched] checkpoint 2^7 = 128 (loss 6.350, 66s)
+  [lrsched] checkpoint 2^8 = 256 (loss 6.065, 115s)
+  [lrsched] checkpoint 2^9 = 512 (loss 5.868, 202s)
+  [lrsched] checkpoint 2^10 = 1024 (loss 4.945, 263s)
+  [lrsched] checkpoint 2^11 = 2048 (loss 5.052, 560s)
+
+[dropout] training 2048 steps...
+  [dropout] checkpoint 2^0 = 1 (loss 9.922, 4s)
+  [dropout] checkpoint 2^1 = 2 (loss 9.882, 7s)
+  [dropout] checkpoint 2^2 = 4 (loss 9.813, 11s)
+  [dropout] checkpoint 2^3 = 8 (loss 9.580, 14s)
+  [dropout] checkpoint 2^4 = 16 (loss 8.974, 20s)
+  [dropout] checkpoint 2^5 = 32 (loss 8.153, 28s)
+  [dropout] checkpoint 2^6 = 64 (loss 7.134, 43s)
+  [dropout] checkpoint 2^7 = 128 (loss 6.358, 69s)
+  [dropout] checkpoint 2^8 = 256 (loss 6.074, 108s)
+  [dropout] checkpoint 2^9 = 512 (loss 5.866, 157s)
+  [dropout] checkpoint 2^10 = 1024 (loss 4.875, 309s)
+  [dropout] checkpoint 2^11 = 2048 (loss 4.737, 664s)
+
+[dataorder] training 2048 steps...
+  [dataorder] checkpoint 2^0 = 1 (loss 9.931, 4s)
+  [dataorder] checkpoint 2^1 = 2 (loss 9.912, 7s)
+  [dataorder] checkpoint 2^2 = 4 (loss 9.781, 11s)
+  [dataorder] checkpoint 2^3 = 8 (loss 9.567, 15s)
+  [dataorder] checkpoint 2^4 = 16 (loss 9.041, 20s)
+  [dataorder] checkpoint 2^5 = 32 (loss 8.163, 28s)
+  [dataorder] checkpoint 2^6 = 64 (loss 6.974, 42s)
+  [dataorder] checkpoint 2^7 = 128 (loss 6.428, 65s)
+  [dataorder] checkpoint 2^8 = 256 (loss 5.905, 110s)
+  [dataorder] checkpoint 2^9 = 512 (loss 5.400, 183s)
+  [dataorder] checkpoint 2^10 = 1024 (loss 5.278, 251s)
+  [dataorder] checkpoint 2^11 = 2048 (loss 4.664, 490s)
+
+[rlpass] training 2048 steps...
+  [rlpass] checkpoint 2^0 = 1 (loss 9.926, 4s)
+  [rlpass] checkpoint 2^1 = 2 (loss 9.880, 7s)
+  [rlpass] checkpoint 2^2 = 4 (loss 9.813, 10s)
+  [rlpass] checkpoint 2^3 = 8 (loss 9.574, 14s)
+  [rlpass] checkpoint 2^4 = 16 (loss 8.966, 19s)
+  [rlpass] checkpoint 2^5 = 32 (loss 8.150, 27s)
+  [rlpass] checkpoint 2^6 = 64 (loss 7.133, 40s)
+  [rlpass] checkpoint 2^7 = 128 (loss 6.348, 64s)
+  [rlpass] checkpoint 2^8 = 256 (loss 6.059, 110s)
+  [rlpass] checkpoint 2^9 = 512 (loss 5.849, 195s)
+  [rlpass] checkpoint 2^10 = 1024 (loss 4.818, 289s)
+  [rlpass] checkpoint 2^11 = 2048 (loss 4.638, 527s)
+  [rlpass] RL pass (REINFORCE, 256 steps)...
+  [rlpass] RL pass done
+
+TWIN FACTORY COMPLETE -- deposition curves in results.jsonl (instrument='deposition')
+
+=== DEPOSITION READING (from results.jsonl, instrument='deposition', 920 rows) ===
+
+6b -- WHEN: the GRADIENT STREAM wakes at step 4 (margin > 2x on the ff
+class) in every AdamW recipe, while the weights themselves stay sub-wake
+through 2^11 at this tiny scale (ff swell to ~1.18-1.25 by step 2048,
+visible but under the bar). The law arrives through the update stream
+essentially immediately; the weights accumulate it slowly.
+
+6a -- WHAT: the OPTIMIZER is the discriminating ingredient. SGD+momentum's
+gradient stream wakes late (step 32 vs 4) and its ff weights never develop
+the swell (0.96-0.98 flat through 2048); every AdamW variant does
+(1.24-1.25 at 2048; dropout arm 1.79, the largest single final margin).
+wdecay / lrsched / dataorder track the baseline curve -- not the variable.
+The RL pass drifts ff upward 1.24 -> 1.27 across 256 REINFORCE steps
+(directionally consistent with the reasoning-RL hypothesis, miniature scale).
+
+wte stays flat (0.97) at this scale -- consistent with the coordinate-hunt
+finding that embedding loudness is a property of mature, full-scale models.

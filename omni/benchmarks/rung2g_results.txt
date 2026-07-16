@@ -1,0 +1,25 @@
+  CONTROL GPT-2 c_fc L0        identity                  12.69x
+  CONTROL GPT-2 c_fc L0        bit-reversal(self-test)   12.67x
+  CONTROL GPT-2 c_fc L0        gray-code                 12.77x <-- WAKE
+  CONTROL GPT-2 c_fc L0        x3 mod n                   7.18x <-- WAKE
+  CONTROL GPT-2 c_fc L0        x5 mod n                   6.00x <-- WAKE
+  CONTROL GPT-2 c_fc L0        affine 3i+1                7.19x <-- WAKE
+  CONTROL GPT-2 c_fc L0        transpose                  8.10x <-- WAKE
+  CONTROL GPT-2 c_fc L0        block-transpose-64        12.41x <-- WAKE
+  Qwen3-27B gate L0            identity                   1.11x
+  Qwen3-27B gate L0            bit-reversal(self-test)    1.10x
+  Qwen3-27B gate L0            gray-code                  1.11x
+  Qwen3-27B gate L0            x3 mod n                   1.16x
+  Qwen3-27B gate L0            x5 mod n                   1.24x
+  Qwen3-27B gate L0            affine 3i+1                1.11x
+  Qwen3-27B gate L0            transpose                  1.01x
+  Qwen3-27B gate L0            block-transpose-64         1.11x
+  Kimi-1T shexp L5             identity                   1.06x
+  Kimi-1T shexp L5             bit-reversal(self-test)    1.06x
+  Kimi-1T shexp L5             gray-code                  1.06x
+  Kimi-1T shexp L5             x3 mod n                   1.05x
+  Kimi-1T shexp L5             x5 mod n                   1.07x
+  Kimi-1T shexp L5             affine 3i+1                1.04x
+  Kimi-1T shexp L5             transpose                  1.07x
+  Kimi-1T shexp L5             block-transpose-64         1.06x
+RUNG 2g COMPLETE

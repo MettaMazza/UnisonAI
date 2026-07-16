@@ -1,0 +1,162 @@
+[foldprobe] run 'checkpoint-telescope-7a' registered 63fe3bb7b91bb3e0
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [00:00<00:00,  2.70it/s]Fetching 3 files:  67%|██████▋   | 2/3 [00:39<00:23, 23.27s/it]Fetching 3 files: 100%|██████████| 3/3 [00:42<00:00, 13.83s/it]Fetching 3 files: 100%|██████████| 3/3 [00:42<00:00, 14.09s/it]
+  step      0  embed_in     walsh   0.98x  dct   1.00x  haar   1.00x  beyond 0/3
+  step      0  dense_h_to_4 walsh   0.98x  dct   0.98x  haar   1.02x  beyond 0/3
+  step      0  dense_h_to_4 walsh   0.94x  dct   0.99x  haar   1.01x  beyond 0/3
+  step      0  dense_h_to_4 walsh   0.99x  dct   1.03x  haar   0.98x  beyond 0/3
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [00:00<00:00,  2.02it/s]Fetching 3 files:  67%|██████▋   | 2/3 [00:29<00:17, 17.37s/it]Fetching 3 files: 100%|██████████| 3/3 [00:43<00:00, 15.83s/it]Fetching 3 files: 100%|██████████| 3/3 [00:43<00:00, 14.56s/it]
+  step      1  embed_in     walsh   0.98x  dct   1.00x  haar   1.00x  beyond 0/3
+  step      1  dense_h_to_4 walsh   0.98x  dct   0.98x  haar   1.02x  beyond 0/3
+  step      1  dense_h_to_4 walsh   0.94x  dct   0.99x  haar   1.01x  beyond 0/3
+  step      1  dense_h_to_4 walsh   0.99x  dct   1.03x  haar   0.98x  beyond 0/3
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [00:00<00:00,  3.44it/s]Fetching 3 files:  67%|██████▋   | 2/3 [00:33<00:19, 19.63s/it]Fetching 3 files: 100%|██████████| 3/3 [00:42<00:00, 14.77s/it]Fetching 3 files: 100%|██████████| 3/3 [00:42<00:00, 14.15s/it]
+  step      2  embed_in     walsh   0.98x  dct   1.00x  haar   1.00x  beyond 0/3
+  step      2  dense_h_to_4 walsh   0.98x  dct   0.98x  haar   1.02x  beyond 0/3
+  step      2  dense_h_to_4 walsh   0.94x  dct   0.99x  haar   1.01x  beyond 0/3
+  step      2  dense_h_to_4 walsh   0.99x  dct   1.03x  haar   0.98x  beyond 0/3
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [00:00<00:00,  3.58it/s]Fetching 3 files:  67%|██████▋   | 2/3 [00:32<00:18, 18.92s/it]Fetching 3 files: 100%|██████████| 3/3 [00:42<00:00, 14.88s/it]Fetching 3 files: 100%|██████████| 3/3 [00:42<00:00, 14.11s/it]
+  step      4  embed_in     walsh   0.98x  dct   1.00x  haar   1.00x  beyond 0/3
+  step      4  dense_h_to_4 walsh   0.98x  dct   0.98x  haar   1.02x  beyond 0/3
+  step      4  dense_h_to_4 walsh   0.94x  dct   0.99x  haar   1.01x  beyond 0/3
+  step      4  dense_h_to_4 walsh   0.99x  dct   1.03x  haar   0.98x  beyond 0/3
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [00:00<00:00,  3.71it/s]Fetching 3 files:  67%|██████▋   | 2/3 [00:41<00:24, 24.35s/it]Fetching 3 files: 100%|██████████| 3/3 [00:41<00:00, 13.83s/it]
+  step      8  embed_in     walsh   0.98x  dct   1.00x  haar   1.00x  beyond 0/3
+  step      8  dense_h_to_4 walsh   0.98x  dct   0.98x  haar   1.02x  beyond 0/3
+  step      8  dense_h_to_4 walsh   0.94x  dct   0.99x  haar   1.01x  beyond 0/3
+  step      8  dense_h_to_4 walsh   0.99x  dct   1.03x  haar   0.98x  beyond 0/3
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [00:00<00:00,  3.55it/s]Fetching 3 files:  67%|██████▋   | 2/3 [00:41<00:24, 24.57s/it]Fetching 3 files: 100%|██████████| 3/3 [00:41<00:00, 13.95s/it]
+  step     16  embed_in     walsh   0.98x  dct   1.00x  haar   1.00x  beyond 0/3
+  step     16  dense_h_to_4 walsh   0.98x  dct   0.98x  haar   1.02x  beyond 0/3
+  step     16  dense_h_to_4 walsh   0.94x  dct   0.99x  haar   1.01x  beyond 0/3
+  step     16  dense_h_to_4 walsh   0.99x  dct   1.03x  haar   0.98x  beyond 0/3
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [00:00<00:00,  2.74it/s]Fetching 3 files:  67%|██████▋   | 2/3 [00:41<00:24, 24.46s/it]Fetching 3 files: 100%|██████████| 3/3 [00:41<00:00, 13.90s/it]
+  step     32  embed_in     walsh   0.98x  dct   1.00x  haar   1.00x  beyond 0/3
+  step     32  dense_h_to_4 walsh   0.98x  dct   0.98x  haar   1.02x  beyond 0/3
+  step     32  dense_h_to_4 walsh   0.94x  dct   0.99x  haar   1.01x  beyond 0/3
+  step     32  dense_h_to_4 walsh   0.99x  dct   1.03x  haar   0.98x  beyond 0/3
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [00:00<00:00,  3.63it/s]Fetching 3 files:  67%|██████▋   | 2/3 [00:32<00:18, 18.92s/it]Fetching 3 files: 100%|██████████| 3/3 [00:42<00:00, 14.85s/it]Fetching 3 files: 100%|██████████| 3/3 [00:42<00:00, 14.09s/it]
+  step     64  embed_in     walsh   0.98x  dct   1.00x  haar   1.00x  beyond 0/3
+  step     64  dense_h_to_4 walsh   0.98x  dct   0.98x  haar   1.02x  beyond 0/3
+  step     64  dense_h_to_4 walsh   0.94x  dct   0.99x  haar   1.01x  beyond 0/3
+  step     64  dense_h_to_4 walsh   0.99x  dct   1.03x  haar   0.98x  beyond 0/3
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [00:00<00:00,  3.57it/s]Fetching 3 files:  67%|██████▋   | 2/3 [00:41<00:24, 24.21s/it]Fetching 3 files: 100%|██████████| 3/3 [00:41<00:00, 13.75s/it]
+  step    128  embed_in     walsh   0.99x  dct   1.00x  haar   1.00x  beyond 0/3
+  step    128  dense_h_to_4 walsh   0.99x  dct   0.98x  haar   1.02x  beyond 0/3
+  step    128  dense_h_to_4 walsh   0.94x  dct   0.99x  haar   1.01x  beyond 0/3
+  step    128  dense_h_to_4 walsh   0.99x  dct   1.02x  haar   0.98x  beyond 0/3
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [00:00<00:00,  3.61it/s]Fetching 3 files:  67%|██████▋   | 2/3 [00:41<00:24, 24.45s/it]Fetching 3 files: 100%|██████████| 3/3 [00:41<00:00, 13.38s/it]Fetching 3 files: 100%|██████████| 3/3 [00:41<00:00, 13.95s/it]
+  step    256  embed_in     walsh   1.01x  dct   1.02x  haar   1.00x  beyond 3/3
+  step    256  dense_h_to_4 walsh   0.99x  dct   0.98x  haar   1.02x  beyond 0/3
+  step    256  dense_h_to_4 walsh   0.94x  dct   0.99x  haar   1.02x  beyond 0/3
+  step    256  dense_h_to_4 walsh   0.99x  dct   1.03x  haar   0.98x  beyond 0/3
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [00:00<00:00,  3.60it/s]Fetching 3 files:  67%|██████▋   | 2/3 [00:40<00:23, 23.93s/it]Fetching 3 files: 100%|██████████| 3/3 [00:41<00:00, 13.54s/it]Fetching 3 files: 100%|██████████| 3/3 [00:41<00:00, 13.98s/it]
+  step    512  embed_in     walsh   1.21x  dct   1.20x  haar   0.99x  beyond 3/3
+  step    512  dense_h_to_4 walsh   1.00x  dct   0.98x  haar   1.01x  beyond 0/3
+  step    512  dense_h_to_4 walsh   0.95x  dct   1.01x  haar   1.03x  beyond 0/3
+  step    512  dense_h_to_4 walsh   1.00x  dct   1.02x  haar   1.01x  beyond 0/3
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [00:00<00:00,  4.88it/s]Fetching 3 files:  67%|██████▋   | 2/3 [00:38<00:22, 22.59s/it]Fetching 3 files: 100%|██████████| 3/3 [00:40<00:00, 13.37s/it]Fetching 3 files: 100%|██████████| 3/3 [00:40<00:00, 13.62s/it]
+  step   1000  embed_in     walsh   2.47x  dct   2.44x  haar   0.99x  beyond 3/3
+  step   1000  dense_h_to_4 walsh   4.79x  dct   3.44x  haar   1.01x  beyond 3/3
+  step   1000  dense_h_to_4 walsh   2.21x  dct   1.94x  haar   1.02x  beyond 3/3
+  step   1000  dense_h_to_4 walsh   4.63x  dct   3.64x  haar   1.01x  beyond 3/3
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [00:00<00:00,  2.98it/s]Fetching 3 files:  67%|██████▋   | 2/3 [00:40<00:24, 24.01s/it]Fetching 3 files: 100%|██████████| 3/3 [00:40<00:00, 13.64s/it]
+  step   4000  embed_in     walsh   8.63x  dct   8.22x  haar   1.00x  beyond 3/3
+  step   4000  dense_h_to_4 walsh   9.90x  dct   7.63x  haar   1.03x  beyond 3/3
+  step   4000  dense_h_to_4 walsh  12.50x  dct  10.42x  haar   2.24x  beyond 3/3
+  step   4000  dense_h_to_4 walsh  18.75x  dct  14.91x  haar   1.01x  beyond 3/3
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [00:00<00:00,  3.54it/s]Fetching 3 files:  67%|██████▋   | 2/3 [00:41<00:24, 24.10s/it]Fetching 3 files: 100%|██████████| 3/3 [00:41<00:00, 13.68s/it]
+  step  16000  embed_in     walsh   5.66x  dct   5.46x  haar   1.00x  beyond 3/3
+  step  16000  dense_h_to_4 walsh   9.19x  dct   7.60x  haar   1.05x  beyond 3/3
+  step  16000  dense_h_to_4 walsh   7.09x  dct   5.55x  haar   2.30x  beyond 3/3
+  step  16000  dense_h_to_4 walsh   9.09x  dct   7.73x  haar   1.26x  beyond 3/3
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [00:00<00:00,  3.34it/s]Fetching 3 files:  67%|██████▋   | 2/3 [00:33<00:19, 19.54s/it]Fetching 3 files: 100%|██████████| 3/3 [00:39<00:00, 13.64s/it]Fetching 3 files: 100%|██████████| 3/3 [00:39<00:00, 13.31s/it]
+  step  64000  embed_in     walsh   5.32x  dct   5.14x  haar   0.99x  beyond 3/3
+  step  64000  dense_h_to_4 walsh   5.95x  dct   4.95x  haar   1.09x  beyond 3/3
+  step  64000  dense_h_to_4 walsh   4.82x  dct   3.63x  haar   2.85x  beyond 3/3
+  step  64000  dense_h_to_4 walsh   7.01x  dct   5.99x  haar   1.41x  beyond 3/3
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [00:00<00:00,  3.80it/s]Fetching 3 files:  67%|██████▋   | 2/3 [00:41<00:24, 24.34s/it]Fetching 3 files: 100%|██████████| 3/3 [00:41<00:00, 13.82s/it]
+  step 143000  embed_in     walsh   5.31x  dct   5.12x  haar   0.99x  beyond 3/3
+  step 143000  dense_h_to_4 walsh   6.38x  dct   5.28x  haar   1.13x  beyond 3/3
+  step 143000  dense_h_to_4 walsh   4.16x  dct   3.21x  haar   2.71x  beyond 3/3
+  step 143000  dense_h_to_4 walsh   7.53x  dct   5.92x  haar   2.20x  beyond 3/3
+
+step-0 control (embed at null): CLEAN
+CHECKPOINT TELESCOPE COMPLETE
+
+=== 7a-II: the scaling ladder (410M + 1.4B), appended 2026-07-15 02:57 ===
+[foldprobe] run 'checkpoint-telescope-7a-pythia-410m' registered ce0def583b7bdf55
+  step      0  embed_in     walsh   1.00x  dct   0.99x  haar   1.00x  beyond 2/3
+  step      0  dense_h_to_4 walsh   1.01x  dct   1.01x  haar   0.99x  beyond 1/3
+  step      0  dense_h_to_4 walsh   1.00x  dct   1.00x  haar   0.99x  beyond 0/3
+  step      0  dense_h_to_4 walsh   0.98x  dct   0.99x  haar   0.99x  beyond 0/3
+  step    256  embed_in     walsh   1.00x  dct   0.99x  haar   1.00x  beyond 2/3
+  step    256  dense_h_to_4 walsh   1.01x  dct   1.01x  haar   0.99x  beyond 1/3
+  step    256  dense_h_to_4 walsh   1.00x  dct   1.00x  haar   0.99x  beyond 0/3
+  step    256  dense_h_to_4 walsh   0.98x  dct   0.99x  haar   0.99x  beyond 0/3
+  step    512  embed_in     walsh   1.02x  dct   1.01x  haar   1.00x  beyond 3/3
+  step    512  dense_h_to_4 walsh   1.01x  dct   1.00x  haar   0.99x  beyond 2/3
+  step    512  dense_h_to_4 walsh   1.02x  dct   1.01x  haar   0.99x  beyond 2/3
+  step    512  dense_h_to_4 walsh   1.01x  dct   1.02x  haar   0.99x  beyond 3/3
+  step   1000  embed_in     walsh   1.69x  dct   1.61x  haar   1.00x  beyond 3/3
+  step   1000  dense_h_to_4 walsh   3.39x  dct   2.69x  haar   0.99x  beyond 3/3
+  step   1000  dense_h_to_4 walsh   3.23x  dct   2.48x  haar   1.00x  beyond 3/3
+  step   1000  dense_h_to_4 walsh   3.07x  dct   2.53x  haar   0.99x  beyond 3/3
+  step   2000  embed_in     walsh   4.86x  dct   4.53x  haar   1.00x  beyond 3/3
+  step   2000  dense_h_to_4 walsh   9.81x  dct   7.63x  haar   1.00x  beyond 3/3
+  step   2000  dense_h_to_4 walsh   9.73x  dct   7.40x  haar   1.00x  beyond 3/3
+  step   2000  dense_h_to_4 walsh   9.28x  dct   7.43x  haar   1.00x  beyond 3/3
+  step   4000  embed_in     walsh   6.64x  dct   6.18x  haar   1.00x  beyond 3/3
+  step   4000  dense_h_to_4 walsh   9.22x  dct   7.13x  haar   1.00x  beyond 3/3
+  step   4000  dense_h_to_4 walsh  14.62x  dct  11.47x  haar   0.98x  beyond 3/3
+  step   4000  dense_h_to_4 walsh  17.33x  dct  13.83x  haar   1.02x  beyond 3/3
+  step   8000  embed_in     walsh   7.94x  dct   7.41x  haar   1.00x  beyond 3/3
+  step   8000  dense_h_to_4 walsh   8.19x  dct   6.46x  haar   1.02x  beyond 3/3
+  step   8000  dense_h_to_4 walsh  15.58x  dct  12.42x  haar   1.02x  beyond 3/3
+  step   8000  dense_h_to_4 walsh  21.56x  dct  16.95x  haar   1.04x  beyond 3/3
+  step  16000  embed_in     walsh   7.41x  dct   6.91x  haar   0.99x  beyond 3/3
+  step  16000  dense_h_to_4 walsh   8.72x  dct   7.06x  haar   1.03x  beyond 3/3
+  step  16000  dense_h_to_4 walsh  14.37x  dct  11.17x  haar   1.05x  beyond 3/3
+  step  16000  dense_h_to_4 walsh  20.47x  dct  15.85x  haar   1.07x  beyond 3/3
+  step  64000  embed_in     walsh   5.08x  dct   4.73x  haar   1.00x  beyond 3/3
+  step  64000  dense_h_to_4 walsh  10.60x  dct   8.52x  haar   1.03x  beyond 3/3
+  step  64000  dense_h_to_4 walsh  11.65x  dct   9.19x  haar   1.07x  beyond 3/3
+  step  64000  dense_h_to_4 walsh  11.08x  dct   8.70x  haar   1.26x  beyond 3/3
+  step 143000  embed_in     walsh   5.93x  dct   5.52x  haar   1.00x  beyond 3/3
+  step 143000  dense_h_to_4 walsh  12.61x  dct  10.19x  haar   1.03x  beyond 3/3
+  step 143000  dense_h_to_4 walsh  11.47x  dct   9.09x  haar   1.13x  beyond 3/3
+  step 143000  dense_h_to_4 walsh   9.85x  dct   7.93x  haar   1.42x  beyond 3/3
+step-0 control (embed at null): NOT CLEAN -- investigate
+CHECKPOINT TELESCOPE COMPLETE
+[foldprobe] run 'checkpoint-telescope-7a-pythia-1.4b' registered 8d60d498409a821b
+  step      0  embed_in     walsh   1.00x  dct   1.00x  haar   1.00x  beyond 0/3
+  step      0  dense_h_to_4 walsh   1.00x  dct   1.00x  haar   0.99x  beyond 0/3
+  step      0  dense_h_to_4 walsh   1.00x  dct   1.01x  haar   1.00x  beyond 1/3
+  step    256  embed_in     walsh   1.00x  dct   1.00x  haar   1.00x  beyond 1/3
+  step    256  dense_h_to_4 walsh   1.00x  dct   1.00x  haar   0.99x  beyond 0/3
+  step    256  dense_h_to_4 walsh   1.00x  dct   1.01x  haar   1.00x  beyond 1/3
+  step    512  embed_in     walsh   1.01x  dct   1.01x  haar   1.00x  beyond 3/3
+  step    512  dense_h_to_4 walsh   1.01x  dct   1.01x  haar   0.99x  beyond 3/3
+  step    512  dense_h_to_4 walsh   1.07x  dct   1.06x  haar   1.00x  beyond 3/3
+  step   1000  embed_in     walsh   2.56x  dct   2.36x  haar   1.00x  beyond 3/3
+  step   1000  dense_h_to_4 walsh   5.78x  dct   4.79x  haar   0.99x  beyond 3/3
+  step   1000  dense_h_to_4 walsh   3.29x  dct   2.73x  haar   1.00x  beyond 3/3
+  step   2000  embed_in     walsh   4.91x  dct   4.58x  haar   1.00x  beyond 3/3
+  step   2000  dense_h_to_4 walsh  11.71x  dct   9.67x  haar   0.99x  beyond 3/3
+  step   2000  dense_h_to_4 walsh   9.33x  dct   7.53x  haar   1.00x  beyond 3/3
+  step   4000  embed_in     walsh   7.17x  dct   6.74x  haar   1.00x  beyond 3/3
+  step   4000  dense_h_to_4 walsh  11.05x  dct   9.16x  haar   0.99x  beyond 3/3
+  step   4000  dense_h_to_4 walsh   9.25x  dct   7.51x  haar   1.00x  beyond 3/3
+  step   8000  embed_in     walsh   9.50x  dct   8.92x  haar   1.00x  beyond 3/3
+  step   8000  dense_h_to_4 walsh   9.76x  dct   8.09x  haar   1.00x  beyond 3/3
+  step   8000  dense_h_to_4 walsh  14.25x  dct  11.55x  haar   1.00x  beyond 3/3
+  step  16000  embed_in     walsh   9.57x  dct   9.00x  haar   1.00x  beyond 3/3
+  step  16000  dense_h_to_4 walsh   9.16x  dct   7.57x  haar   1.01x  beyond 3/3
+  step  16000  dense_h_to_4 walsh  13.83x  dct  11.21x  haar   1.02x  beyond 3/3
+  step  64000  embed_in     walsh   5.24x  dct   4.96x  haar   0.99x  beyond 3/3
+  step  64000  dense_h_to_4 walsh   8.41x  dct   6.97x  haar   1.01x  beyond 3/3
+  step  64000  dense_h_to_4 walsh  10.03x  dct   8.08x  haar   1.09x  beyond 3/3
+  step 143000  embed_in     walsh   5.40x  dct   5.10x  haar   0.99x  beyond 3/3
+  step 143000  dense_h_to_4 walsh   9.78x  dct   8.10x  haar   1.01x  beyond 3/3
+  step 143000  dense_h_to_4 walsh   9.55x  dct   7.70x  haar   1.12x  beyond 3/3
+step-0 control (embed at null): CLEAN
+CHECKPOINT TELESCOPE COMPLETE

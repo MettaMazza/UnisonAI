@@ -1,0 +1,48 @@
+[foldprobe] run 'basis-atlas-7b-round2-slant' registered 99f9c5109501110b
+  GPT-2            embedding    walsh   60.85  dct  130.45  haar    1.15  slant   60.67   loudest=dct
+  GPT-2            attention    walsh    1.00  dct    0.98  haar    1.08  slant    0.96   loudest=haar
+  GPT-2            expansion    walsh    6.28  dct    6.38  haar    4.96  slant    6.51   loudest=slant
+  GPT-2            contraction  walsh    1.00  dct    1.00  haar    0.98  slant    1.02   loudest=slant
+  Qwen3.5-4B       embedding    walsh    5.17  dct    9.62  haar    1.10  slant    5.10   loudest=dct
+  Qwen3.5-4B       attention    walsh    1.00  dct    0.99  haar    1.47  slant    0.98   loudest=haar
+  Qwen3.5-4B       expansion    walsh    1.24  dct    1.98  haar    1.42  slant    1.19   loudest=dct
+  Qwen3.5-4B       contraction  walsh    0.99  dct    1.00  haar    1.40  slant    0.99   loudest=haar
+  Llama-3.1-8B     embedding    walsh   13.32  dct   11.35  haar    0.99  slant   12.90   loudest=walsh
+  Llama-3.1-8B     attention    walsh    1.39  dct    1.28  haar    1.30  slant    1.39   loudest=walsh
+  Llama-3.1-8B     expansion    walsh    3.03  dct    2.49  haar    1.39  slant    2.99   loudest=walsh
+  Llama-3.1-8B     contraction  walsh    1.00  dct    1.00  haar    0.98  slant    1.00   loudest=walsh
+  gemma-2-9b       embedding    walsh   26.76  dct   57.61  haar    0.98  slant   26.29   loudest=dct
+  gemma-2-9b       attention    walsh    0.97  dct    1.02  haar    1.27  slant    0.98   loudest=haar
+  gemma-2-9b       expansion    walsh    1.06  dct    1.29  haar    1.11  slant    1.07   loudest=dct
+  gemma-2-9b       contraction  walsh    0.99  dct    0.99  haar    0.99  slant    0.99   loudest=haar
+  gpt-oss-20b      embedding    walsh   10.35  dct   66.03  haar    0.97  slant   10.83   loudest=dct
+  gpt-oss-20b      attention    walsh    1.10  dct    1.64  haar    1.40  slant    1.09   loudest=dct
+  gpt-oss-20b      expansion    walsh    1.00  dct    1.21  haar    1.43  slant    0.99   loudest=haar
+  gpt-oss-20b      contraction  walsh    1.01  dct    1.06  haar    1.16  slant    1.05   loudest=haar
+  Qwen3.6-27B      embedding    walsh    9.88  dct   12.39  haar    0.99  slant    9.92   loudest=dct
+  Qwen3.6-27B      attention    walsh    0.98  dct    1.00  haar    1.14  slant    0.98   loudest=haar
+  Qwen3.6-27B      expansion    walsh    1.12  dct    1.16  haar    1.02  slant    1.09   loudest=dct
+  Qwen3.6-27B      contraction  walsh    1.00  dct    1.00  haar    1.02  slant    0.98   loudest=haar
+  gemma-4-31B      embedding    walsh    4.44  dct   12.53  haar    0.99  slant    4.49   loudest=dct
+  gemma-4-31B      attention    walsh    1.01  dct    0.99  haar    1.68  slant    1.01   loudest=haar
+  gemma-4-31B      expansion    walsh    1.06  dct    1.81  haar    1.13  slant    1.05   loudest=dct
+  gemma-4-31B      contraction  walsh    1.00  dct    0.99  haar    0.98  slant    0.98   loudest=walsh
+  R1-Distill-32B   embedding    walsh    4.75  dct    7.90  haar    1.02  slant    4.81   loudest=dct
+  R1-Distill-32B   attention    walsh    1.11  dct    1.21  haar    1.04  slant    1.07   loudest=dct
+  R1-Distill-32B   expansion    walsh    1.98  dct    3.17  haar    1.02  slant    1.95   loudest=dct
+  R1-Distill-32B   contraction  walsh    1.03  dct    1.08  haar    1.16  slant    1.04   loudest=haar
+  Llama-3.3-70B    embedding    walsh    5.86  dct    5.28  haar    0.97  slant    6.04   loudest=slant
+  Llama-3.3-70B    attention    walsh    1.26  dct    1.11  haar    1.07  slant    1.22   loudest=walsh
+  Llama-3.3-70B    expansion    walsh    1.14  dct    1.08  haar    1.32  slant    1.15   loudest=haar
+  Llama-3.3-70B    contraction  walsh    0.97  dct    1.00  haar    0.98  slant    0.97   loudest=dct
+  DeepSeek-R1-671B embedding    walsh    6.74  dct   12.83  haar    1.02  slant    6.92   loudest=dct
+  DeepSeek-R1-671B attention    walsh    1.00  dct    0.99  haar    1.01  slant    1.01   loudest=slant
+  DeepSeek-R1-671B expansion    walsh    1.35  dct    2.08  haar    1.30  slant    1.39   loudest=dct
+  DeepSeek-R1-671B contraction  walsh    0.99  dct    0.99  haar    0.99  slant    0.98   loudest=haar
+  Kimi-K2.6-1T     embedding    walsh    9.67  dct   15.80  haar    1.07  slant    9.71   loudest=dct
+  Kimi-K2.6-1T     attention    walsh    0.97  dct    0.98  haar    0.99  slant    0.98   loudest=haar
+  Kimi-K2.6-1T     expansion    walsh    1.03  dct    1.11  haar    1.02  slant    1.02   loudest=dct
+  Kimi-K2.6-1T     contraction  walsh    0.99  dct    0.99  haar    1.01  slant    1.02   loudest=slant
+
+TWO-BASIS LAW: embeddings DCT-loudest 9/11 woken; expansions Walsh-loudest 1/4 woken -> NOT SUPPORTED AS STATED -- the pattern above is the finding
+BASIS ATLAS COMPLETE

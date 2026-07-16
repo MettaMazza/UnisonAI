@@ -1,0 +1,15 @@
+wte (token embedding)            PASS (3/3 fractions; margin 79.3x)
+L0 mlp.c_fc (expansion)          PASS (3/3 fractions; margin 12.7x)
+L1 mlp.c_fc (expansion)          PASS (3/3 fractions; margin 8.5x)
+L2 mlp.c_fc (expansion)          PASS (3/3 fractions; margin 4.1x)
+L3 mlp.c_fc (expansion)          PASS (3/3 fractions; margin 3.4x)
+L4 mlp.c_fc (expansion)          PASS (3/3 fractions; margin 5.5x)
+L5 mlp.c_fc (expansion)          PASS (3/3 fractions; margin 4.8x)
+L6 mlp.c_fc (expansion)          PASS (3/3 fractions; margin 6.3x)
+L7 mlp.c_fc (expansion)          PASS (3/3 fractions; margin 5.9x)
+L8 mlp.c_fc (expansion)          PASS (3/3 fractions; margin 8.0x)
+L9 mlp.c_fc (expansion)          PASS (3/3 fractions; margin 7.3x)
+L10 mlp.c_fc (expansion)         PASS (3/3 fractions; margin 6.7x)
+L11 mlp.c_fc (expansion)         PASS (3/3 fractions; margin 8.8x)
+
+LLM PRESENCE VERDICT: 13/13 tensors, 39/39 registered checks
