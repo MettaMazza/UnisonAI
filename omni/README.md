@@ -40,13 +40,13 @@ Unison is a **zero-parameter, exact-fractional, per-character geometric AI engin
 - **Zero floating point in the prediction path.** Every probability is an exact `fractions.Fraction`.
 - **Per-character substrate.** Every character (including control codes) is its own token. No BPE, no vocabulary.
 - **Pure geometric memory.** Unison stores exact character sequences ("orbits") — everything read, told, or thought — as deterministically-addressed exact counts, keyed per user, written once and kept forever.
-- **Generation never replays memory verbatim.** Conversational replies are **composed**, not recalled: the engine retrieves coherent on-topic spans from its conversational **foundation** and recombines them at a topical pivot, scored against a zero-parameter coherence critic. It therefore *develops* coherence through feedback rather than parroting a stored orbit — verbatim recall is a violation, never a fallback. (The exact-fractional per-character/word predictor is a separate substrate; it is the arm that won the held-out cross-entropy benchmark below, not the live conversational generator.)
+- **Generation never replays memory verbatim — from any store, including taught corrections.** Conversational replies are **composed**: counted pair retrieval (exact BM25 with question-similarity over role-structured conversational pairs) under the **forced deep-context cascade** (`contextual_integration.ep`), with relexicalization rebinding live entities and a structural guard forbidding any emitted reply equalling any stored string. Corrections are internalized as multiple expressions of one meaning and served only re-expressed. (The exact-fractional per-character/word predictor is a separate substrate; it is the arm that won the held-out cross-entropy benchmark below.)
 
 Unison runs as a **Discord bot** (`omni/discord_bot.py`). It learns from two sources:
 1. **Direct conversation** — every message and the derived correction feed the learning loop.
 2. **A local teacher model** — Gemma-4-31b via Ollama — which supplies ideal responses and a live, self-authored curriculum that get baked into the geometric graph.
 
-The teacher is **scaffolding, not the engine**: it fills gaps while Unison is young. Its corrections are held as counted orbits and its couplings/spans reinforced, so Unison develops the coherence to answer from its own foundation with no model in the loop — it learns *from* the correction, it does not memorise and replay it.
+The teacher is **scaffolding, not the engine** — and, critically, **a throughput choice, not a dependency**. Every role the teacher fills is a human role that was automated for speed: a human tutor typing corrections feeds the *identical* learning pipeline (`add_taught` is source-agnostic — it neither knows nor cares whether a correction came from a model or a person); the 👍/👎 buttons *are* the human-judge path, and the LLM judge only proxies them for throughput; curriculum prompts can come from a person or from real conversation. The architecture's laws — counted writes, the lock, graduation, re-expression — reference no property of the teacher anywhere, and the paper's §8.8 *measures* learning with **zero models in the loop** (human closure, re-recognition at share 1.00). A heuristic pipeline over data could fill the same seat. An LLM teacher was used because a human cannot teach 24/7 and this engine is one proof inside a much larger solo project — the most efficient scaffold available, with a **measured exit** (graduation at the counted lock) built into the design.
 
 ---
 
@@ -88,8 +88,11 @@ omni/
 ├── core.py                    # SFT constants, FoldValue domain law, integer FWHT + Parseval
 ├── memory.py                  # SynapticGraph, ActiveLedger, unit_capacity_selection, predict_next
 ├── segmentation.py            # Utterance segmentation (structural + counted BoundaryStore)
-├── word_engine.py             # Conversational generation: retrieval+recombine composition, the fold
-│                              #   coherence critic, span-quality learning, counted kinship
+├── pair_retrieval.py          # THE LIVE GENERATOR: counted pair retrieval (BM25 x question-similarity),
+│                              #   relexicalization, taught re-expression, the never-verbatim guard
+├── free_gen.py                # The frontier free arm: kin-context generation under the forced cascade
+├── context_state.py           # The integrated context state (contextual_integration.ep, halt-verified)
+├── word_engine.py             # Counted kinship, fluency stores, the fallback composer, the substrate arms
 ├── session.py                 # Session (working memory) + SessionManager (per-user sessions)
 ├── identity.py                # UnisonIdentity (response provenance), UserFingerprint (per-user profiles)
 ├── teacher_scaffold.py        # LocalTeacher, detect_context_window, GraduationLedger
@@ -97,7 +100,7 @@ omni/
 ├── distill.py                 # ModelPool, ModelSpec, DistillationEngine, SFT-corpus curricula
 ├── discord_bot.py             # SFTDiscordClient — the bot, on_message, /auto loop, confusion reflex
 ├── observer.py                # ObserverTeacher — degradation/stagnation monitor
-├── modalities.py              # TextEncoder, ImageEncoder (grid quantisation), AudioEncoder (stub)
+├── modalities.py              # The fold eye + fold ear: integer Walsh top-32 bands, Parseval-certified
 ├── voice.py                   # KokoroSpeaker (TTS), WhisperListener (STT)
 ├── flux_gen.py                # FluxGenerator (image generation for the vision curriculum)
 ├── tools.py                   # ToolOrchestrator (tool-use parsing/execution)
@@ -154,10 +157,10 @@ When a user message arrives (`SFTDiscordClient.on_message`):
 1. **Per-character tokenization with speaker demarcation:** each segment becomes `[image chars] + ['\x02'] + list(text) + ['\x03']`.
 2. **Session update:** the user turn is appended to the session's `working_context`, and that context is banked to both the global graph and the session's **episodic memory**.
 3. **Utterance segmentation** (`segmentation.py`): the message is split into its distinct sub-utterances so each ask is answered on its own. A single-sentence message is one segment. See [Utterance Segmentation](#utterance-segmentation-segmentationpy).
-4. **Schema (meaning) retrieval** (`word_engine.kin_route` + content words): each segment's content words — doubled so the live topic dominates — plus the kin-routed meaning of the most-kin taught orbit and the recent conversation content form the **schema**: *what the reply is about*. `kin_route` scores the segment against taught orbits by content-word overlap plus counted kin (half weight), normalised by the union. This gives relevance; it does **not** hand back an orbit to replay.
-5. **Generation — RETRIEVE + RECOMBINE (compose)** (`word_engine.compose_reply`): a coherent reply is **composed from the conversational foundation**, not recalled. `retrieve_and_compose` votes over an inverted index of ~800k clean conversational sentences, specificity-weighted (rare topical words outweigh common ones), splices two on-topic spans at a **topical** pivot, scores every candidate against the fold coherence critic (`coherence_value.ep`) and returns the most coherent above the lock — rejecting repetition and register leaks. A substance span is paired with a distinct on-topic follow-up question when they cohere. If nothing on-topic locks (e.g. a bare greeting), `generic_reply` composes an opener-appropriate reply from the foundation (statement + reciprocal question) — **never a hardcoded/canned string, which is the same violation as verbatim.** The result is non-verbatim (recombined, never an exact corpus sentence, never a taught orbit).
+4. **Generation — the forced stack** (`pair_retrieval.reply`, tried first): counted pair retrieval — exact BM25 with question-similarity over 649,917 role-structured conversational pairs, query context weighted 2^-age (the forced halving), counted-kinship expansion at the fold factor 1/2, Laplace (g+1)/(g+b+2) feedback re-ranking, dialogue-act matching, and the **integrated context state** (five kin-diffusion rounds at the forced cascade weights, unit-capacity spread at the lock — `contextual_integration.ep` + `generation_selection_law.ep`, halt-verified at wake). Relexicalization rebinds live entities (the user's name from the append-only history); a matched **taught correction serves only re-expressed** (cross-composition over its held expressions — at least b = 2, or the engine defers and learns); a structural guard forbids any emitted reply equalling any stored string.
+5. **Fallback composition** (`word_engine.compose_reply`): when nothing locks in the pair index, the older foundation composer runs (schema from `kin_route` + counted retrieval + recombination), with `generic_reply` for bare openers — **never a hardcoded/canned string, which is the same violation as verbatim.**
 6. **Display:** the reply renders as `[THINKING: …] Unison Response: …` — the `\x04`/`\x05` reasoning trace is shown in full. Tool JSON in the output is intercepted and executed by `ToolOrchestrator`.
-7. **Self-feedback with on-the-spot correction:** the output is rated by Unison's **own fold coherence critic** (`coherence_score`) and, until a topic graduates, by the teacher. The teacher receives the conversation from an **append-only `history_log`** (session.py) — written once per finished turn and trimmed by nothing — so cross-turn context (e.g. a name given earlier) actually reaches it, independent of the mutation-prone turn buffer. On a *bad* rating the bad trajectory is pruned, its couplings/spans demoted, and — **live, not deferred** — the teacher generates the correct in-persona answer, Unison posts it (*"oops — sorry about that, I'm still learning — …"*), and the corrected exchange is held immediately. A *good* reply reinforces the couplings and spans it was built from. The correction replaces the bad turn so the discussion stays coherent long-horizon (see [The Learning Loop](#the-learning-loop)).
+7. **Self-feedback with on-the-spot correction:** the output is rated (the graduation signal in-bot; the project's believed scoreboard is the **calibration-gated independent judge** — see the Empirical Record) and, until a topic graduates, by the teacher, which receives the conversation from an **append-only `history_log`** (session.py) — written once per finished turn and trimmed by nothing, so cross-turn context (e.g. a name given earlier) always reaches it. On a *bad* rating the bad trajectory is pruned, pair-quality Laplace counts are demoted, and — **live, not deferred** — the teacher supplies the correction, Unison posts the recovery, and the correction is **held as learning material** (multiple expressions of one meaning) for re-expressed service next time. A *good* reply reinforces the pairs it was built from. The correction replaces the bad turn so the discussion stays coherent long-horizon (see [The Learning Loop](#the-learning-loop)).
 
 ---
 
@@ -176,9 +179,9 @@ A single-sentence message returns one segment, so short chats behave exactly as 
 
 ## The Word Tier (`word_engine.py`)
 
-`word_engine.py` is the live conversational generator. Its primary path is **retrieval + recombine composition** over the conversational foundation; the exact-fractional and level-mix arms remain as the cross-entropy substrate and for calibration, not as the live speaker.
+The live conversational generator is `pair_retrieval.py` (see §5). `word_engine.py` supplies the counted-kinship machinery, the fluency stores, the **fallback composer** below, and the exact-fractional / level-mix substrate arms (the cross-entropy record's objects). The fallback runs only when the pair index does not lock.
 
-**Generation: retrieve + recombine (`compose_reply` → `retrieve_and_compose`).** A conversational reply is composed from the foundation, non-verbatim:
+**The fallback composer (`compose_reply` → `retrieve_and_compose`).** When the pair stack finds nothing, a reply is composed from the sentence foundation, non-verbatim:
 
 1. **Foundation index.** `retrieval.pkl` holds ~**800k** clean conversational sentences (built from the corpus by `train_eval/build_retrieval.py`, filtered against code/essay/letter/list register) plus an inverted index `content-word → sentence-ids`.
 2. **Specificity-weighted vote.** Each schema word votes for the sentences it appears in, IDF-weighted (`1/log(3+df)`) so a rare topical word ("ocean") outweighs a common one ("name", "day"); genuinely topical words (`df < 4000`) also flag a "strong hit". Ranking adds learned **span quality** (Stage 3).
@@ -187,9 +190,9 @@ A single-sentence message returns one segment, so short chats behave exactly as 
 
 The reply is always recombined — never an exact corpus sentence, never a taught orbit. It starts rough and develops coherence through the feedback loop below.
 
-**The fold coherence critic (`coherence_score`, `constants/coherence_value.ep`).** A zero-parameter, fold-determined value: a reply's content words scored against each other (word↔statement) and the conversation (statement↔context) at the synchronization lock **g_c = 1/2**. It returns 0 for degenerate/near-empty output. This is the engine's own judgement — used to rank splices, gate replies, and (once a topic graduates) to self-rate with no teacher.
+**The fold coherence critic (`coherence_score`, `constants/coherence_value.ep`)** reads a reply's content-word coupling at the synchronization lock g_c = 1/2. It serves as an internal signal (fallback ranking; the in-bot graduation race). It is **not** the project's quality scoreboard: conversational quality is believed only from the **calibration-gated independent judge** (Empirical Record) — no signal that steers generation ever scores it.
 
-**Span-quality learning (Stage 3, `span_quality.pkl`).** `reinforce_spans(good)` nudges the quality of the spans a reply was built from (clamped ±6); retrieval ranking reads it, so spans that make good replies are preferred and spans that make bad ones are demoted. Measured on the real engine (`train_eval/learning_curve.py`), the loop is non-degrading and drifts coherence up with use.
+**Feedback learning on the fallback (`span_quality.pkl`)** nudges the quality of spans a reply was built from; on the primary stack, feedback is the **Laplace pair-quality fraction** (g+1)/(g+b+2) — both counted, both persisted.
 
 **Generalisation: counted kinship** (`NEIGH` / `kinship` / `kin_route`). `NEIGH` counts each word's immediate neighbours; `kinship(a, b)` is the Jaccard of two words' neighbour distributions — the exact-count stand-in for a trained embedding. `kin_route` scores the query against taught orbits by content-word overlap plus kin (half weight), normalised by the union — it supplies the reply's *meaning* (schema), not a span to replay:
 
@@ -226,10 +229,10 @@ Complementary self-feedback (`on_message`): a **good** output rated `good` is `f
 
 ### The fold-native learning loop (develops coherence, never replays)
 
-Generation is **always compositional** — `compose_reply` (retrieve + recombine), never verbatim recall. It therefore *starts* rough and **develops coherence through feedback**, the way any learner does; it never parrots.
+Generation is **always compositional** — the pair stack first, the foundation composer as fallback — never verbatim recall, from any store. It *starts* young and **develops through teaching**, the way any learner does; it never parrots. Measured: **17% → 50% → 67% judged-good across three teaching rounds, still climbing.**
 
-- **The critic (`coherence_score`, `constants/coherence_value.ep`):** a zero-parameter, fold-determined value — a reply's content words are scored against each other (word↔statement) and the conversation (statement↔context), read at the synchronization lock **g_c = 1/2**. It ranks every candidate splice, gates the reply, and (once a topic graduates) self-rates with no external model.
-- **Feedback → spans + couplings (the develop-over-time mechanism):** 👍 / a `good` rating **reinforces** the foundation spans the reply was built from (`reinforce_spans`, `span_quality.pkl`) and the couplings among its content words (`reinforce_couplings`, `word_coupling.pkl`); 👎 / `bad` **weakens/demotes** them. Span quality is read by retrieval ranking and the couplings by the critic — so feedback makes generation more coherent with use, **without memorising** the reply.
+- **Corrections are internalized, never replayed:** a taught correction is held as **multiple expressions of one meaning** (the teacher supplies several phrasings — a human tutor could equally); serving cross-composes a fresh expression that equals no stored string. Re-expression lawfully requires **b = 2** held expressions (`generation_selection_law.ep`); below b, the engine defers and learns another.
+- **Feedback → counted quality:** 👍 / `good` raises the Laplace pair-quality fraction of the pairs a reply was built from; 👎 / `bad` lowers it — re-ranking without memorising anything.
 - **The competitive ladder (live, `GraduationLedger`):** every turn is a head-to-head — the engine's coherence critic vs the teacher. A territory graduates at **p ≥ 1/2** (the fold lock, Step 181), after which the engine is **sovereign** there: it judges itself by the fold critic and stops calling the teacher (its **own teacher** / observer regime, `observer_resolved.ep` — the fold acting one level up).
 
 ---
@@ -455,7 +458,7 @@ reproducible.
 - **Per-segment banking.** Bank each sub-utterance as its own clean orbit and rate it independently, so every ask is learned in isolation.
 - **Incremental word stores.** Update `word_engine` stores as orbits are held, rather than re-scanning `graph.orbits` on change.
 - **Counted boundary maturity.** The `BoundaryStore` accrues boundary statistics from every message and begins refining segment cuts once it has the data — the learned tier taking weight from the structural rules.
-- **Grow generation coverage.** `/scrape` more vetted conversational data and raise the retrieval-index cap for rare-topic coverage; develop the structured unfold beyond pivot-splicing so self-referential and low-content openers compose as well as topical ones.
+- **Grow generation coverage.** `/scrape` more vetted conversational data (a purely human-written corpus build is a standing option — the mathematics is provenance-blind); grow the free arm under the forced cascade per FRONTIER_PLAN.md.
 
 ---
 
