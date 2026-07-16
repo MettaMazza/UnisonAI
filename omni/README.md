@@ -229,7 +229,7 @@ Complementary self-feedback (`on_message`): a **good** output rated `good` is `f
 
 ### The fold-native learning loop (develops coherence, never replays)
 
-Generation is **always compositional** — the pair stack first, the foundation composer as fallback — never verbatim recall, from any store. It *starts* young and **develops through teaching**, the way any learner does; it never parrots. Measured: **17% → 50% → 67% judged-good across three teaching rounds, still climbing.**
+Generation is **always compositional** — the pair stack first, the foundation composer as fallback — never verbatim recall, from any store. It *starts* young and **develops through teaching**, the way any learner does; it never parrots. Measured: **17% → 75% judged-good after one round of teaching, stable across four further rounds.**
 
 - **Corrections are internalized, never replayed:** a taught correction is held as **multiple expressions of one meaning** (the teacher supplies several phrasings — a human tutor could equally); serving cross-composes a fresh expression that equals no stored string. Re-expression lawfully requires **b = 2** held expressions (`generation_selection_law.ep`); below b, the engine defers and learns another.
 - **Feedback → counted quality:** 👍 / `good` raises the Laplace pair-quality fraction of the pairs a reply was built from; 👎 / `bad` lowers it — re-ranking without memorising anything.
@@ -412,9 +412,10 @@ both scales, the engine reading the corpus once against 48,000 gradient-batched 
 ### The learning law, measured
 The live loop on the real path (calibrated judge as the user's feedback; the real teacher
 correcting failures; corrections held as multiple expressions of one meaning and served only
-re-expressed — nothing verbatim anywhere): **17% → 50% → 67% judged-good across three
-rounds, still climbing at the last measurement.** Taught once, composed natively thereafter —
-the Learning Law, verified in believed units.
+re-expressed — nothing verbatim anywhere): **17% → 75% judged-good after one round of
+teaching, stable across four further rounds** (three phrasings per correction; curve
+[2, 9, 9, 9, 9]/12 on file). Taught once, composed natively thereafter — the Learning Law,
+verified in believed units.
 
 ### The deep-context laws, forced and closed
 The two quantities a transformer buys with tuned depth and trained mixing weights are forced:

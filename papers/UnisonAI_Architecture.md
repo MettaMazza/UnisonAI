@@ -2,7 +2,7 @@
 
 ## *Attention, it turns out, was not all you need*
 
-**Maria Smith (Ernos Labs)** — the architecture paper, v6.0, 2026-07-16
+**Maria Smith (Ernos Labs)** — the architecture paper, v6.1, 2026-07-16
 Split from the combined record *UnisonAI: A Forced, Derived Omni-Model Architecture* (v4.x
 lineage, DOI 10.5281/zenodo.21217279), which remains committed as the dated record. The
 spectral science this engine stands beside — the decode of trained neural weights — is the
@@ -12,7 +12,7 @@ companion paper **[The Law Inside Trained Weights: The Fold Decode Campaign](Fol
 > Fold Theory of Everything**: one axiom, zero free parameters, machine-verified by 307 proof
 > suites and 1,844 forced checks.
 > **Theory (Zenodo):** https://doi.org/10.5281/zenodo.21182469 · **Theory (GitHub):** https://github.com/MettaMazza/Smithian-Fold-Theory-Of-Everything
-> **This engine (GitHub):** https://github.com/MettaMazza/UnisonAI · **Companion decode paper:** [Fold_Decode_Interpretability.md](Fold_Decode_Interpretability.md) (DOI 10.5281/zenodo.21396743) · **This paper's DOI (v6.0):** 10.5281/zenodo.21400574 · concept 10.5281/zenodo.21217278
+> **This engine (GitHub):** https://github.com/MettaMazza/UnisonAI · **Companion decode paper:** [Fold_Decode_Interpretability.md](Fold_Decode_Interpretability.md) (DOI 10.5281/zenodo.21396743) · **This paper's DOI (v6.1):** 10.5281/zenodo.21400697 · concept 10.5281/zenodo.21217278
 
 ---
 
@@ -78,8 +78,8 @@ ever, from any store, including taught corrections (the total rule):
 - **The Learning Law at the surface**: a teacher correction is held as MULTIPLE expressions
   of one meaning and served only as a fresh cross-expression composition — internalize and
   re-express, never replay. Re-expression lawfully requires at least b = 2 held expressions
-  (generation_selection_law.ep); below b, the engine defers and learns. Measured: 17% → 50%
-  → 67% judged-good across three teaching rounds, still climbing at the last measurement.
+  (generation_selection_law.ep); below b, the engine defers and learns. Measured: **17% → 75% judged-good after one
+  round of teaching, stable across four further rounds** (three phrasings per correction).
 - **Deep context, forced** (contextual_integration.ep): integration depth = b + c = 5 (the
   covering depth, minimality verified), step weights = successive halvings of the fold
   factor, closure to the One exact — the transformer's tuned depth and trained mixing
@@ -162,6 +162,21 @@ Every fraction check returned a strict `STRUCTURE` verdict, mathematically provi
 
 ### 9.1 The conversational record and the instrument discipline
 
+**The scaffold is a throughput choice, not a dependency — this architecture is not "a black
+box with extra steps."** Every role the LLM teacher fills is a human role automated for
+speed: a human tutor typing corrections feeds the identical learning pipeline (the taught
+channel is source-agnostic — it neither knows nor cares whether a correction came from a
+model or a person); the operator's own thumbs are the judge path the model judge merely
+proxies for throughput; curriculum prompts can come from a person or from real conversation.
+No law of the architecture — the counted writes, the lock, graduation, re-expression —
+references any property of the teacher, and §8.8 measures learning with **zero models
+anywhere in the loop** (human closure, re-recognition at share 1.00). A heuristic pipeline
+over data could fill the same seat. An LLM was used because a human cannot teach around the
+clock and this engine is one proof inside a much larger solo project — the most efficient
+scaffold available, carrying a **measured exit** (graduation at the counted lock) by design.
+The same holds for the data: the counted mathematics is provenance-blind, and a purely
+human-written corpus build changes nothing in the laws.
+
 Measurement is part of the architecture. **No instrument's number is believed before the
 instrument passes a calibration gate** — clean separation of known-good from known-bad cases
 — no signal that steers generation ever serves as its scoreboard, end-to-end verification
@@ -171,7 +186,8 @@ a committed, timestamped harness run; the percentages are timestamps on build ho
 the gains between releases are the finding.
 
 Under that discipline, the conversational record: **the Learning Law measured working in
-believed units — 17% → 50% → 67% judged-good across three teaching rounds, still climbing**
+believed units — 17% → 75% judged-good after one round of teaching, stable across four
+further rounds**
 — with every correction internalized as multiple expressions of one meaning and served only
 re-expressed; the counted substrate's task-gate victories standing at both scales (char
 1.2891 vs 1.8878; word 3.1907 vs 3.4292); and the deep-context laws forced, form-closed,
@@ -209,4 +225,4 @@ All artifacts are in the public repositories. **Spectral instrument**: `fold_ai/
 
 McCulloch & Pitts (1943), Bull. Math. Biophys. 5:115–133 · Rosenblatt (1958), Psych. Rev. 65(6) · Rumelhart, Hinton & Williams (1986), Nature 323:533–536 · Vaswani et al. (2017), NeurIPS · Kaplan et al. (2020), arXiv:2001.08361 · Hoffmann et al. (2022), arXiv:2203.15556 · Sutton (2019), *The Bitter Lesson* · Amodei (2024), *Machines of Loving Grace* · Altman (2025), *Reflections* · Public statements of Hassabis, Legg, and Sutskever (NeurIPS 2024) as cited · DeepSeek-AI (2026), *Conditional Memory via Scalable Lookup*, arXiv:2601.07372 and github.com/deepseek-ai/Engram · Li (2026), arXiv:2606.19172 (local editability of addressed memory) · Zhao et al. (2025), *Absolute Zero*, arXiv:2505.03335 · *Self-Evolving Curriculum* (2025), arXiv:2505.14970 · Zelikman et al. (2022), *STaR*, arXiv:2203.14465 · Katz (1987) and Laplace (1814), as the historical anticipations the fold derives rather than assumes · Han et al. (2015), arXiv:1506.02626 and Frankle & Carbin (2019), arXiv:1803.03635 (weight-space ancestry of the capability map) · Carlini et al. (2021), USENIX Security (training-data extraction, the echo probe's ancestry) · Gorji et al. (2023), UAI (Walsh-Hadamard function-space regularizers) · arXiv:2511.07347 (WH neural operators) · arXiv:2604.20682, *Variance Is Not Importance* (independent above-random concentration + compression refusal, the §7.9 convergence exhibit) · Smith (2026), *The Smithian Fold Theory of Everything*, DOI 10.5281/zenodo.21182469, and the SFTOM proof constellation.
 
-*Architecture paper v6.0 (2026-07-16), on the v4.x lineage's prose: adds the forced deep-context laws (contextual_integration.ep, generation_selection_law.ep — 27/27, form-closed by cross-routed reuse, halt-wired into the engine's lock layer), the measured Learning Law (17→67% climbing under the total never-verbatim rule), and the instrument discipline of §9.1. Every number is from committed, timestamped records.*
+*Architecture paper v6.1 (2026-07-16), on the v4.x lineage's prose: adds the forced deep-context laws (contextual_integration.ep, generation_selection_law.ep — 27/27, form-closed by cross-routed reuse, halt-wired into the engine's lock layer), the measured Learning Law (17→75% stable under the total never-verbatim rule), and the instrument discipline of §9.1. Every number is from committed, timestamped records.*
