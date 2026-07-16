@@ -1414,12 +1414,27 @@ class SFTDiscordClient(discord.Client):
                             "*(oops — sorry about that, I'm still learning)*\n\n" + recovered)
                         log_learning_event("live_correction_taught", final_content, teacher_ans,
                                            f"reason={reason}", teacher_ans, ukey=ukey)
-                        # Stage 4 (the FAQ law): the correction becomes a held PAIR so the
-                        # engine composes from it natively next time (taught precedence).
+                        # The correction becomes held LEARNING MATERIAL: multiple expressions
+                        # of one meaning (generation_selection_law.ep — re-expression requires
+                        # >= b = 2 held expressions; a second phrasing is requested so the
+                        # taught meaning can serve re-expressed, never verbatim).
                         _ans = (teacher_ans.split('\x05')[-1].strip()
                                 if '\x05' in teacher_ans else teacher_ans.strip())
                         if _ans:
-                            await asyncio.to_thread(pair_retrieval.add_taught, final_content, _ans, ukey)
+                            _v = ""
+                            try:
+                                _v2 = await asyncio.to_thread(
+                                    self.teacher.ask,
+                                    f"The user says: {final_content!r}. Respond as Unison — "
+                                    f"natural, warm, in your own voice, in 1-2 short sentences, "
+                                    f"worded DIFFERENTLY from: {_ans!r}")
+                                _v = (_v2.split('\x05')[-1].strip()
+                                      if '\x05' in _v2 else _v2.strip())
+                            except Exception:
+                                logger.error("second phrasing failed", exc_info=True)
+                            await asyncio.to_thread(
+                                pair_retrieval.add_taught, final_content, _ans, ukey,
+                                [v for v in (_v,) if v and v != _ans])
                         corrected_live = True
                     else:
                         # Teacher unavailable — fall back to deferred /auto + rollback.
