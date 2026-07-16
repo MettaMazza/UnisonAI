@@ -147,10 +147,9 @@ def build_stream():
 def binding(p):
     """The per-item loss signal: best kin-carried binding of the prompt into any held
     meaning (identical word = 1, counted kin = 1/2, per query word; the lock gates)."""
-    qcw = set(_content_words(tokenize(p.lower())))
     best = 0.0
     for tp in pair_retrieval._taught_pairs():
-        b = pair_retrieval.kin_binding(qcw, set(tp["cw"]))
+        b = pair_retrieval.taught_binding(p, tp["prompt"], tcw=set(tp["cw"]))
         if b > best:
             best = b
             if best >= 1.0:

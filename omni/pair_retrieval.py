@@ -28,6 +28,7 @@ PAIRS_PATH = os.path.join(HERE, "pairs.pkl")
 QUALITY_PATH = os.path.join(HERE, "pair_quality.pkl")
 TAUGHT_PATH = os.path.join(HERE, "taught_pairs.pkl")
 COUPLING_PATH = os.path.join(HERE, "word_coupling.pkl")
+KIN_PATH = os.path.join(HERE, "word_kin.pkl")
 
 K1 = 6 / 5          # BM25 canonical k1 (engineering constant of the established instrument)
 B = 3 / 4           # BM25 canonical b (coincides with the corpus's forced 3/4; noted, not claimed)
@@ -48,6 +49,11 @@ class PairRetrieval:
         self._quality = None
         self._taught = None
         self._kin_cache = {}
+        self._hop2_cache = {}
+        self._tok_cache = {}
+        self._kin_store = None
+        self._rar_cache = {}
+        self._uni = None
         self.last_pids = []
 
     # ---------- stores ----------
@@ -58,14 +64,57 @@ class PairRetrieval:
             logger.info(f"pair index loaded: {self._P['N']:,} pairs, avgdl {self._P['avgdl']:.1f}")
         return self._P
 
+    def _kin(self):
+        """The KIN store (word_kin.pkl, build_kin_store.py): SECOND-order counted
+        similarity — cosine of PPMI context profiles (the Levy-Goldberg embedding
+        analogue). Paradigmatic (sea ~ ocean), unlike the coupling graph which is
+        first-order/syntagmatic (sea -> coral) and serves query expansion only."""
+        if self._kin_store is None:
+            try:
+                with open(KIN_PATH, "rb") as f:
+                    self._kin_store = pickle.load(f)
+            except Exception:
+                self._kin_store = {}
+        return self._kin_store
+
     def _kin_top(self, w):
-        """Top-CTX_MAX coupling neighbours of a word, memoized (the store is static
-        within a process; the taught index is scanned per reply)."""
+        """A word's STRONG kin set, memoized: kin band members holding at least HALF the
+        word's strongest profile cosine (the halving as the strength floor — weak tail
+        links are noise, measured: they routed falsely)."""
         c = self._kin_cache.get(w)
         if c is None:
-            nb = self._coupling().get(w)
-            c = set(sorted(nb, key=lambda k: -nb[k])[:6]) if nb else frozenset()
+            nb = self._kin().get(w)
+            if nb:
+                m = max(nb.values())
+                c = frozenset(k for k, v in nb.items() if v >= m * HALF)
+            else:
+                c = frozenset()
             self._kin_cache[w] = c
+        return c
+
+    def _kin_hop2(self, w):
+        """The cascade's second step: kin-of-kin through STRONG links only, memoized."""
+        c = self._hop2_cache.get(w)
+        if c is None:
+            out = set()
+            for k in self._kin_top(w):
+                out |= self._kin_top(k)
+            out.discard(w)
+            c = frozenset(out)
+            self._hop2_cache[w] = c
+        return c
+
+    def _all_words(self, text):
+        """Full token set for binding (memoized per string): ALL words participate —
+        the rarity weight is the filter (a ubiquitous word self-mutes), replacing the
+        binary stoplist that erased true kin links (measured: 'like' vanished from
+        'do you like music?', muting enjoy~like)."""
+        c = self._tok_cache.get(text)
+        if c is None:
+            c = frozenset(tokenize(text.lower()))
+            self._tok_cache[text] = c
+            if len(self._tok_cache) > 200_000:
+                self._tok_cache.clear()
         return c
 
     def _coupling(self):
@@ -95,23 +144,61 @@ class PairRetrieval:
                 self._taught = []
         return self._taught
 
-    def kin_binding(self, qcw, tcw):
-        """Kin-carried binding of a query into a held meaning (generation_selection_law:
-        binding at the lock, reused; kinship carries meaning across wording). Each query
-        content word seeks its tie to the held context: an IDENTICAL word binds whole (1),
-        a counted coupling neighbour (top CTX_MAX, either direction) binds at HALF — the
-        same half-weight kinship already established in query expansion. The binding is
-        the query's bound share: credit / |query words|."""
-        if not qcw or not tcw:
+    def _rarity(self, w):
+        """Counted information weight of a word: log2(T / count) from the engine's own
+        unigram store (established Shannon information content, counted not fitted).
+        A ubiquitous word carries little binding information; a rare word carries much.
+        Calibrated: the flat (unweighted) form let generic verbs route falsely
+        ("take" bound minimalism to a bath) — gated in train_eval/binding_calibration.py."""
+        r = self._rar_cache.get(w)
+        if r is None:
+            if self._uni is None:
+                try:
+                    import pickle
+                    wf = pickle.load(open(os.path.join(HERE, "word_fluency.pkl"), "rb"))
+                    self._uni = wf.get("uni", {})
+                    self._uni_total = max(sum(self._uni.values()), 1)
+                except Exception:
+                    self._uni, self._uni_total = {}, 1
+            import math
+            c = self._uni.get(w, 0)
+            r = math.log2(self._uni_total / max(c, 1))
+            self._rar_cache[w] = r
+        return r
+
+    def kin_binding(self, qws, tws):
+        """One DIRECTION of kin-carried, information-weighted binding: the share of the
+        query's counted information bound into the held words. An identical word binds
+        whole; a STRONG kin (second-order PPMI-cosine band — the counted embedding
+        analogue, build_kin_store.py) binds whole (the band is one meaning-unit); a
+        strong kin-of-kin binds at the halving (the cascade's second step). Weights are
+        counted rarity (Shannon information from the unigram store)."""
+        if not qws or not tws:
             return 0.0
-        top = self._kin_top
-        credit = 0.0
-        for w in qcw:
-            if w in tcw:
-                credit += 1.0
-            elif (top(w) & tcw) or any(w in top(t) for t in tcw):
-                credit += HALF
-        return credit / len(qcw)
+        num = den = 0.0
+        for w in qws:
+            r = self._rarity(w)
+            den += r
+            if w in tws:
+                num += r
+            elif (self._kin_top(w) & tws) or any(w in self._kin_top(t) for t in tws):
+                num += r
+            elif (self._kin_hop2(w) & tws) or any(w in self._kin_hop2(t) for t in tws):
+                num += r * HALF
+        return num / den if den else 0.0
+
+    def taught_binding(self, query_text, taught_prompt_text, tcw=None):
+        """THE routing/loss decision, in one place — serving, the training loss, and the
+        calibration gate (train_eval/binding_calibration.py, PASSED 10/10|10/10) all call
+        THIS, so the quantity cannot fork. Dialogue acts must MATCH (question binds
+        question, statement binds statement — the established act law, both ways), and
+        binding is MUTUAL: the minimum of the two directional bound-information shares
+        (a meaning serves a query only when each covers the other at the lock)."""
+        if query_text.strip().endswith("?") != taught_prompt_text.strip().endswith("?"):
+            return 0.0
+        qws = self._all_words(query_text)
+        tws = self._all_words(taught_prompt_text)
+        return min(self.kin_binding(qws, tws), self.kin_binding(tws, qws))
 
     # ---------- Stage 4 hooks ----------
     def add_taught(self, prompt, response, ukey=None, variants=None):
@@ -121,13 +208,12 @@ class PairRetrieval:
         replay of any single stored string (Maria's total rule)."""
         t = self._taught_pairs()
         vs = [v.strip() for v in ([response] + list(variants or [])) if v and v.strip()]
-        # RE-EXPRESSION LAW: the held expressions are of ONE meaning — a variant that has
-        # drifted in content (not just wording) is rejected at the lock. Binding measured
-        # by the same kin-carried quantity that routes serving.
-        pcw = set(_content_words(tokenize(response.lower())))
-        vs = [vs[0]] + [v for v in vs[1:]
-                        if self.kin_binding(set(_content_words(tokenize(v.lower()))), pcw) >= TAUGHT_LOCK
-                        or self.kin_binding(pcw, set(_content_words(tokenize(v.lower())))) >= TAUGHT_LOCK]
+        # No add-time drift filter: the teacher is asked for SAME-CONTENT rephrasings (the
+        # root cause of the measured autumn/spring drift was the old prompt, fixed there),
+        # and phrase-level synonyms legitimately share no kin ("vote of confidence" /
+        # "believing in me") — a binding filter here rejected 41% of true re-expressions.
+        # The contradiction class is guarded where it matters: at COMPOSITION time, the
+        # tail must stay bound to the head's meaning or the splice is deferred.
         # merge into an existing entry for the same prompt (variants accumulate)
         pl = prompt.strip().lower()
         for tp in t:
@@ -240,7 +326,7 @@ class PairRetrieval:
             tcw = set(tp["cw"])
             if not tcw:
                 continue
-            o = self.kin_binding(qcw, tcw)
+            o = self.taught_binding(text, tp["prompt"], tcw=tcw)
             if o >= TAUGHT_LOCK and o > best_o + (0.0 if tp["ukey"] == ukey else 0.15):
                 best_t, best_o = tp, o
         cands = self.retrieve(text, history, topn=10)
