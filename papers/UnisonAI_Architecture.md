@@ -12,7 +12,7 @@ companion paper **[The Law Inside Trained Weights: The Fold Decode Campaign](Fol
 > Fold Theory of Everything**: one axiom, zero free parameters, machine-verified by 307 proof
 > suites and 1,844 forced checks.
 > **Theory (Zenodo):** https://doi.org/10.5281/zenodo.21182469 · **Theory (GitHub):** https://github.com/MettaMazza/Smithian-Fold-Theory-Of-Everything
-> **This engine (GitHub):** https://github.com/MettaMazza/UnisonAI · **Companion decode paper:** [Fold_Decode_Interpretability.md](Fold_Decode_Interpretability.md) (DOI 10.5281/zenodo.21396743) · **This paper's concept DOI:** 10.5281/zenodo.21217278 (resolves to the latest version)
+> **This engine (GitHub):** https://github.com/MettaMazza/UnisonAI · **Companion decode paper:** [Fold_Decode_Interpretability.md](Fold_Decode_Interpretability.md) (DOI 10.5281/zenodo.21396743) · **This paper's DOI (v6.0):** 10.5281/zenodo.21400574 · concept 10.5281/zenodo.21217278
 
 ---
 
