@@ -166,39 +166,47 @@ class PairRetrieval:
             self._rar_cache[w] = r
         return r
 
-    def kin_binding(self, qws, tws):
-        """One DIRECTION of kin-carried, information-weighted binding: the share of the
-        query's counted information bound into the held words. An identical word binds
-        whole; a STRONG kin (second-order PPMI-cosine band — the counted embedding
-        analogue, build_kin_store.py) binds whole (the band is one meaning-unit); a
-        strong kin-of-kin binds at the halving (the cascade's second step). Weights are
-        counted rarity (Shannon information from the unigram store)."""
-        if not qws or not tws:
-            return 0.0
-        num = den = 0.0
-        for w in qws:
-            r = self._rarity(w)
-            den += r
-            if w in tws:
-                num += r
-            elif (self._kin_top(w) & tws) or any(w in self._kin_top(t) for t in tws):
-                num += r
-            elif (self._kin_hop2(w) & tws) or any(w in self._kin_hop2(t) for t in tws):
-                num += r * HALF
-        return num / den if den else 0.0
+    def _word_credit(self, w, qcw):
+        """A held word's tie into the query: identical binds whole; STRONG kin (the
+        second-order PPMI-cosine band, build_kin_store.py — the counted embedding
+        analogue) binds whole (the band is one meaning-unit); strong kin-of-kin binds
+        at the halving (the cascade's second step)."""
+        if w in qcw:
+            return 1.0
+        if (self._kin_top(w) & qcw) or any(w in self._kin_top(x) for x in qcw):
+            return 1.0
+        if (self._kin_hop2(w) & qcw) or any(w in self._kin_hop2(x) for x in qcw):
+            return HALF
+        return 0.0
 
     def taught_binding(self, query_text, taught_prompt_text, tcw=None):
         """THE routing/loss decision, in one place — serving, the training loss, and the
-        calibration gate (train_eval/binding_calibration.py, PASSED 10/10|10/10) all call
-        THIS, so the quantity cannot fork. Dialogue acts must MATCH (question binds
-        question, statement binds statement — the established act law, both ways), and
-        binding is MUTUAL: the minimum of the two directional bound-information shares
-        (a meaning serves a query only when each covers the other at the lock)."""
+        calibration gate (train_eval/binding_calibration.py) all call THIS, so the
+        quantity cannot fork. Measured into shape across three failed generations
+        (word-count Jaccard -> flat kin -> mutual all-words), each failure banked in the
+        gate:
+          - dialogue acts must MATCH (question binds question — the established act law)
+          - direction is COVERAGE: the taught MEANING's content must be carried by the
+            query (a meaning contained in the query serves on-topic; extra taught content
+            drags off-topic — the measured font-letter class)
+          - CONTENT words only (function-word soup carried 965/1024 false binds)
+          - information weights: counted rarity; a word's weight is its Shannon
+            information in the engine's own unigram store
+          - UNIT CAPACITY: the meaning's loudest (highest-information) word must itself
+            bind, or nothing does (the measured lot/times class)"""
         if query_text.strip().endswith("?") != taught_prompt_text.strip().endswith("?"):
             return 0.0
-        qws = self._all_words(query_text)
-        tws = self._all_words(taught_prompt_text)
-        return min(self.kin_binding(qws, tws), self.kin_binding(tws, qws))
+        qcw = set(_content_words(tokenize(query_text.lower())))
+        if tcw is None:
+            tcw = set(_content_words(tokenize(taught_prompt_text.lower())))
+        if not tcw or not qcw:
+            return 0.0
+        credits = {w: self._word_credit(w, qcw) for w in tcw}
+        if credits[max(tcw, key=self._rarity)] == 0.0:
+            return 0.0
+        den = sum(self._rarity(w) for w in tcw)
+        num = sum(self._rarity(w) * c for w, c in credits.items())
+        return num / den if den else 0.0
 
     # ---------- Stage 4 hooks ----------
     def add_taught(self, prompt, response, ukey=None, variants=None):

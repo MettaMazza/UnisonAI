@@ -44,6 +44,12 @@ SHOULD_NOT_BIND = [
     ("I'm nervous about public speaking", "Sorry doesn't cut it. You know better than to pick your nose in public."),
     ("do you know anything about beekeeping suits?", "I know, but still. She didn't have to take it out on me. I didn't do anything to her."),
     ("what's it like to live on a houseboat?", "Can you provide more information on how theater companies and producers are using livestreams?"),
+    # the function-word-soup class (measured 2026-07-16: 965/1024 stream prompts "bound"
+    # against 64 meanings — casual statements binding each other through it/can/a/at)
+    ("Yeah, it can be a lot at times.", "I like to bake all kinds of things, but my specialty is pecan pie."),
+    ("Well, you don't have to worry anymore.", "Yeah, it can be a lot at times."),
+    ("That's cool! I've always wanted to learn how to play an instrument.", "Thanks, I needed that. I think I'm going to go take a relaxing bath."),
+    ("I know, right? It's just one of those days.", "Cool, I've never met a roofer before."),
 ]
 
 
@@ -61,9 +67,10 @@ def main():
         hit = b < TAUGHT_LOCK
         ok_not += hit
         print(f"  [{'ok  ' if hit else 'FALSE'}] {b:.2f}  {q!r} ~ {t[:60]!r}")
-    passed = ok_bind >= 9 and ok_not >= 9
-    print(f"BINDING CALIBRATION: bind {ok_bind}/10 | reject {ok_not}/10 -> "
-          f"{'PASS' if passed else 'FAIL'}")
+    passed = ok_bind >= 0.9 * len(SHOULD_BIND) and ok_not >= 0.9 * len(SHOULD_NOT_BIND)
+    print(f"BINDING CALIBRATION: bind {ok_bind}/{len(SHOULD_BIND)} | "
+          f"reject {ok_not}/{len(SHOULD_NOT_BIND)} -> {'PASS' if passed else 'FAIL'} "
+          f"(the 90% rule, both sides)")
     return 0 if passed else 1
 
 

@@ -6,13 +6,13 @@ totals — the run is CONTINUOUS until the generalisation criterion is met):
   training dataset -> the pair corpus's real user prompts (649,917), deterministic order
   batch            -> BAND = 32 prompts (forced: 2^(b+c), functional_band.ep)
   epoch            -> BAND batches = 1,024 prompts (BAND^2 — structural, not a knob)
-  per-item loss    -> KIN-CARRIED BINDING to held meanings (pair_retrieval.kin_binding,
-                      the same counted quantity that routes serving). Binding below the
-                      lock 1/2 = high loss -> TEACH (three same-meaning phrasings, the
-                      re-expression law). At/above the lock -> already held, skip.
-                      This is why no judge runs per training item: in real training the
-                      per-item signal is the cheap loss; expensive evaluation runs on
-                      the validation set only.
+  per-item loss    -> THE OBJECTIVE ITSELF, measured on the item: the training judge's
+                      verdict on the engine's actual reply (in gradient training the
+                      per-item loss IS the objective; a similarity proxy is not — three
+                      proxy generations failed at volume, banked in the binding gate).
+                      BAD -> TEACH (three same-meaning phrasings, the re-expression
+                      law). Binding remains the calibration-gated serving router and
+                      the measured onset PREDICTOR, never the loss.
   validation       -> FROZEN probes (32 near + 32 far, band-sized), never taught, never
                       feedback. Pool-judged per epoch (both calibrated judges, concurrent,
                       both must agree GOOD), with full transcripts.
@@ -35,7 +35,7 @@ from concurrent.futures import ThreadPoolExecutor
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from omni.pair_retrieval import pair_retrieval, TAUGHT_PATH, QUALITY_PATH, TAUGHT_LOCK
 from omni.word_engine import tokenize, _content_words
-from train_eval.judge import judge_pool
+from train_eval.judge import judge, judge_pool
 
 OLLAMA = "http://localhost:11434/api/generate"
 TEACHER = "gemma-4-31b:latest"
@@ -272,7 +272,7 @@ def main():
         st = json.load(open(STATE))
         print(f"resuming: epoch {st['epoch']}, cursor {st['cursor']:,}", flush=True)
     print(f"=== EPOCH TRAINING (translated): batch={batch_n}, {batches_per_epoch} batches/epoch, "
-          f"loss=kin-binding<{TAUGHT_LOCK}, stop=near&far>={TAUGHT_LOCK} for {PERSIST} epochs, "
+          f"loss=training-judge verdict, stop=near&far>={TAUGHT_LOCK} for {PERSIST} epochs, "
           f"POOL validation ===", flush=True)
 
     streak = 0
@@ -285,7 +285,24 @@ def main():
             if not batch:
                 print("STREAM EXHAUSTED", flush=True)
                 break
-            todo = [p for p in batch if binding(p) < TAUGHT_LOCK]
+            # PER-ITEM LOSS = THE OBJECTIVE, measured on the item (the honest 1-1: in
+            # gradient training the loss IS the objective per item). The engine replies
+            # (ms, serialized), the training judge verdicts (parallel, ~5 min for the
+            # whole epoch on the 8-way server). Binding is NOT the loss — it is the
+            # serving router (calibration-gated) and the measured onset PREDICTOR.
+            # Failed proxy generations are banked in binding_calibration.py.
+            def item_loss(pr):
+                with _REPLY_LOCK:
+                    r = (pair_retrieval.reply(pr) or "").strip()
+                    pids = list(pair_retrieval.last_pids)
+                ok, _ = judge(pr, r)
+                return pr, ok, pids
+            with ThreadPoolExecutor(max_workers=8) as ex:
+                verdicts = list(ex.map(item_loss, batch))
+            with _REPLY_LOCK:
+                for _, ok, pids in verdicts:
+                    pair_retrieval.mark_feedback(ok, pids=pids)
+            todo = [pr for pr, ok, _ in verdicts if not ok]
             skipped_e += len(batch) - len(todo)
             with ThreadPoolExecutor(max_workers=8) as ex:
                 taught_e += sum(ex.map(lambda p: teach(p, st["epoch"]), todo))
