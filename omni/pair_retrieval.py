@@ -47,6 +47,7 @@ class PairRetrieval:
         self._coup = None
         self._quality = None
         self._taught = None
+        self._kin_cache = {}
         self.last_pids = []
 
     # ---------- stores ----------
@@ -56,6 +57,16 @@ class PairRetrieval:
                 self._P = pickle.load(f)
             logger.info(f"pair index loaded: {self._P['N']:,} pairs, avgdl {self._P['avgdl']:.1f}")
         return self._P
+
+    def _kin_top(self, w):
+        """Top-CTX_MAX coupling neighbours of a word, memoized (the store is static
+        within a process; the taught index is scanned per reply)."""
+        c = self._kin_cache.get(w)
+        if c is None:
+            nb = self._coupling().get(w)
+            c = set(sorted(nb, key=lambda k: -nb[k])[:6]) if nb else frozenset()
+            self._kin_cache[w] = c
+        return c
 
     def _coupling(self):
         if self._coup is None:
@@ -84,6 +95,24 @@ class PairRetrieval:
                 self._taught = []
         return self._taught
 
+    def kin_binding(self, qcw, tcw):
+        """Kin-carried binding of a query into a held meaning (generation_selection_law:
+        binding at the lock, reused; kinship carries meaning across wording). Each query
+        content word seeks its tie to the held context: an IDENTICAL word binds whole (1),
+        a counted coupling neighbour (top CTX_MAX, either direction) binds at HALF — the
+        same half-weight kinship already established in query expansion. The binding is
+        the query's bound share: credit / |query words|."""
+        if not qcw or not tcw:
+            return 0.0
+        top = self._kin_top
+        credit = 0.0
+        for w in qcw:
+            if w in tcw:
+                credit += 1.0
+            elif (top(w) & tcw) or any(w in top(t) for t in tcw):
+                credit += HALF
+        return credit / len(qcw)
+
     # ---------- Stage 4 hooks ----------
     def add_taught(self, prompt, response, ukey=None, variants=None):
         """A teacher correction becomes held LEARNING MATERIAL: one meaning, MULTIPLE
@@ -92,6 +121,13 @@ class PairRetrieval:
         replay of any single stored string (Maria's total rule)."""
         t = self._taught_pairs()
         vs = [v.strip() for v in ([response] + list(variants or [])) if v and v.strip()]
+        # RE-EXPRESSION LAW: the held expressions are of ONE meaning — a variant that has
+        # drifted in content (not just wording) is rejected at the lock. Binding measured
+        # by the same kin-carried quantity that routes serving.
+        pcw = set(_content_words(tokenize(response.lower())))
+        vs = [vs[0]] + [v for v in vs[1:]
+                        if self.kin_binding(set(_content_words(tokenize(v.lower()))), pcw) >= TAUGHT_LOCK
+                        or self.kin_binding(pcw, set(_content_words(tokenize(v.lower())))) >= TAUGHT_LOCK]
         # merge into an existing entry for the same prompt (variants accumulate)
         pl = prompt.strip().lower()
         for tp in t:
@@ -110,10 +146,12 @@ class PairRetrieval:
         except Exception:
             logger.error("taught-pair save failed", exc_info=True)
 
-    def mark_feedback(self, good):
-        """Laplace counts on the pairs the last reply was built from."""
+    def mark_feedback(self, good, pids=None):
+        """Laplace counts on the pairs the reply was built from. Under concurrent
+        evaluation the caller passes the pids captured with that reply — instance
+        state is not trustworthy across threads."""
         q = self._qual()
-        for pid in self.last_pids:
+        for pid in (self.last_pids if pids is None else pids):
             g, b = q.get(pid, (0, 0))
             q[pid] = (g + (1 if good else 0), b + (0 if good else 1))
         try:
@@ -202,7 +240,7 @@ class PairRetrieval:
             tcw = set(tp["cw"])
             if not tcw:
                 continue
-            o = len(qcw & tcw) / max(len(qcw | tcw), 1)
+            o = self.kin_binding(qcw, tcw)
             if o >= TAUGHT_LOCK and o > best_o + (0.0 if tp["ukey"] == ukey else 0.15):
                 best_t, best_o = tp, o
         cands = self.retrieve(text, history, topn=10)
@@ -320,6 +358,14 @@ class PairRetrieval:
                     head = sent[a][0]
                     tail = sent[b][-1] if len(sent[b]) > 1 or sent[b][-1] != head else None
                     if not tail or tail.strip().lower() == head.strip().lower():
+                        continue
+                    # the tail must remain BOUND to the same meaning: it shares content
+                    # with the head/prompt, or it is a question (the established distinct-
+                    # question composition). An unbound tail is the splice that produced
+                    # contradictions — deferred, not served.
+                    tcw2 = set(_content_words(tokenize(tail.lower())))
+                    hcw2 = set(_content_words(tokenize(head.lower()))) | set(best_t["cw"])
+                    if not (tail.rstrip().endswith("?") or (tcw2 & hcw2)):
                         continue
                     cand = (head.rstrip() + " " + tail.strip()).strip()
                     if cand.lower() not in stored_low:

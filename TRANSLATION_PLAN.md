@@ -75,6 +75,7 @@ The SFT engine's ground rules are not exotic; each is a known discipline:
 | **Curriculum learning** (Bengio) | staged practice distribution, teacher-authored | live teacher-generated curriculum (`curriculum_communication.py`), grows on completion | ✅ |
 | **Self-play** (TD-Gammon lineage) | generate → verify → retain only verified | `/auto` loop with **earned retention** (unverified output discarded) | 🔧 verification gate must be the calibrated judge, not the fold critic |
 | **RLHF preference step** | preference-based re-ranking (bandit feedback) | 👍/👎 + judge verdicts → counted pair-quality fractions (I.2) — no reward model, the counts are the preferences | 📐 Stage 4 |
+| **Epoch training loop** (dataset → batches → per-item loss → loss-gated update → held-out validation → early stopping) | the standard training loop; loss cheap per item, evaluation paid only on validation | `generalisation_epochs.py`: stream = corpus prompts (hygiene-filtered, deterministic hash order); batch = **band 2^(b+c) = 32**; epoch = band²; **loss = binding deficit vs the lock 1/2** (the same kin-carried quantity that routes serving); **update = deposition** (≥ b = 2 held expressions, one observation — the zero-parameter weight step); validation = frozen probes under the judge **pool**, binding-stratified; stop = both transfer curves ≥ the lock for b = 2 consecutive epochs | ✅ built, preflighted on the real path; continuous run live |
 
 ### I.5 Agency, sessions, identity, evaluation
 

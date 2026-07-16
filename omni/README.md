@@ -423,10 +423,34 @@ The two quantities a transformer buys with tuned depth and trained mixing weight
 weights = successive halvings of the fold factor**, closing to the One with the floor exactly.
 The association step's spread is **unit capacity at the lock 1/2** (the neighbour-cap knob is
 retired — the lock is the capacity); context binding and the taught-match threshold are the
-same closed lock; re-expression requires **b = 2** held expressions. Corpus steps
+same closed lock; re-expression requires **b = 2** held expressions. The taught match is
+**kin-carried**: an identical content word binds whole, a counted coupling neighbour binds
+at the half — a paraphrase reaches a held meaning through the same counted kinship that
+built the coupling store, so the routing quantity and the learning-loss quantity below are
+one and the same. Corpus steps
 `contextual_integration.ep` and `generation_selection_law.ep`: **27/27 checks**, form-closed
 by cross-routed reuse of already-closed forms, zero new constants. The engine's lock layer
 cross-checks all of them forward at wake and **halts on any mismatch (halt proven)**.
+
+### Epoch training, translated
+The training loop itself is the same 1-1 discipline as the inference stack — the standard
+epoch loop expressed in counted terms, continuous until the criterion rather than run to an
+arbitrary total (`train_eval/generalisation_epochs.py`):
+**dataset** = the corpus's real prompts (counted hygiene filters, deduped, probe-excluded,
+deterministic hash order — no RNG); **batch** = the band, 2^(b+c) = 32; **epoch** = band²
+prompts; **per-item loss** = the binding deficit — kin-carried binding to held meanings
+against the lock 1/2, the identical quantity that routes serving (cheap and counted, so no
+judge runs per training item, exactly as gradient training computes loss per item but pays
+for evaluation only on validation); **the update** = deposition — the corrected meaning held
+with ≥ b = 2 expressions in one observation, the zero-parameter analogue of the weight step;
+**validation** = frozen band-sized near/far probe sets per epoch under the judge pool (two
+independent calibrated models, both must agree GOOD), never taught, never fed back, with
+full transcripts and binding-stratified transfer (GOOD-given-bound vs GOOD-given-unbound —
+the onset hypothesis read directly); **early stopping** = both transfer curves at the lock
+for b = 2 consecutive epochs, at which point the run stops and reports — it declares
+nothing. Where gradient training's generalisation hides in weight space, this engine's must
+appear as kin-coverage crossing the lock — which is why onset is predictable here and only
+observable after the fact there. Detail and ledgers: `GENERALISATION.md`.
 
 ### The conversational architecture
 Serving: counted pair retrieval (BM25 × question-similarity over 649,917 role-structured
@@ -437,10 +461,12 @@ retrieval arm serving until the free arm's judged rate crosses it (the parallel-
 The system is young; its conversational quality grows by data and by teaching, both measured.
 
 ### Instruments
-`train_eval/judge.py` + `judge_calibration.py` (the gate), `gen_free_harness.py`,
-`gen_quality_honest.py`, `learning_curve_judged.py`, `measure_pairs.py`, `bench_35b.py`
-(opponent-integrity enforced), `e2e_live_path.py` (nothing stubbed). All committed; all
-reproducible.
+`train_eval/judge.py` + `judge_calibration.py` (the gate; the pool — two independent judge
+models, both gated, both must agree), `generalisation_epochs.py` (the translated epoch loop,
+`--preflight` wiring verification on the real path), `grokking_run.py` (the first fixed-round
+telescope), `gen_free_harness.py`, `gen_quality_honest.py`, `learning_curve_judged.py`,
+`measure_pairs.py`, `bench_35b.py` (opponent-integrity enforced), `e2e_live_path.py` (nothing
+stubbed). All committed; all reproducible.
 
 ---
 
