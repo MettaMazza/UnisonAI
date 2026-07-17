@@ -30,7 +30,7 @@ Run:      PYTHONPATH=. python3 train_eval/generalisation_epochs.py
 Preflight (2 batches of 4, tiny probes, then exit — for wiring verification):
           PYTHONPATH=. python3 train_eval/generalisation_epochs.py --preflight
 """
-import sys, os, json, re, hashlib, shutil, urllib.request, time, threading
+import sys, os, json, re, hashlib, shutil, subprocess, urllib.request, time, threading
 from concurrent.futures import ThreadPoolExecutor
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from omni.pair_retrieval import pair_retrieval, TAUGHT_PATH, QUALITY_PATH, TAUGHT_LOCK
@@ -266,8 +266,40 @@ def benchmark(epoch, cursor, taught_total, near_set, far_set):
     return row
 
 
+def certify():
+    """FROZEN-SYSTEM CERTIFICATION (Maria's rule, 2026-07-17): a measured run is valid
+    only under a fully-gated, frozen system. Every gate runs HERE, at launch; any
+    failure refuses the run. The engine commit is pinned into the ledger's first row —
+    any code change mid-run voids the run (fix -> re-gate -> re-freeze -> restart)."""
+    here = os.path.dirname(os.path.abspath(__file__))
+    root = os.path.abspath(os.path.join(here, ".."))
+    gates = {}
+    r = subprocess.run([sys.executable, os.path.join(root, "omni", "core.py")],
+                       capture_output=True, text=True, env={**os.environ, "PYTHONPATH": root})
+    gates["core_locks"] = (r.returncode == 0)
+    for name, script in (("judge_pool", "judge_calibration.py"),
+                         ("binding", "binding_calibration.py")):
+        r = subprocess.run([sys.executable, os.path.join(here, script)],
+                           capture_output=True, text=True, env={**os.environ, "PYTHONPATH": root})
+        gates[name] = (r.returncode == 0)
+        print(r.stdout.strip().split("\n")[-1], flush=True)
+    commit = subprocess.run(["git", "-C", os.path.expanduser("~/Desktop/UnisonAI"),
+                             "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+    ok = all(gates.values())
+    print(f"CERTIFICATION: {gates} | system commit {commit[:10]} -> "
+          f"{'CERTIFIED' if ok else 'REFUSED'}", flush=True)
+    if ok:
+        with open(LEDGER, "a") as f:
+            f.write(json.dumps({"certification": gates, "system_commit": commit,
+                                "ts": time.strftime("%Y-%m-%dT%H:%M:%S")}) + "\n")
+    return ok
+
+
 def main():
     os.makedirs(LOGS, exist_ok=True)
+    if not PREFLIGHT and not certify():
+        print("SYSTEM NOT CERTIFIED — run refused.", flush=True)
+        return
     for path in (TAUGHT_PATH, QUALITY_PATH):
         if os.path.exists(path) and not os.path.exists(path + ".pre_epochs_backup"):
             shutil.copy(path, path + ".pre_epochs_backup")
