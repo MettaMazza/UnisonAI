@@ -418,7 +418,12 @@ class PairRetrieval:
         # substance lacks one — engagement + the non-verbatim whole. SAME-PROMPT pool first:
         # two responses to the same prompt compose naturally (response aggregation).
         question, q_pid = None, None
-        if not substance.rstrip().endswith("?"):
+        if best_t is not None:
+            pass  # a taught meaning serves from ITS OWN held expressions only — never
+                  # composed with corpus units (measured: register leaks bolted onto
+                  # taught substance: "...I'm right here with you. do you remember,
+                  # years ago, when everybody at the")
+        elif not substance.rstrip().endswith("?"):
             # ranked candidates ONLY — same-prompt pools carry each response's personal
             # context (measured v5: 'Hi, Auntie Shira!' persona collisions; e2e regressed)
             for a, u, negs, pid in ranked:
@@ -483,6 +488,11 @@ class PairRetrieval:
                     tcw2 = set(_content_words(tokenize(tail.lower())))
                     hcw2 = set(_content_words(tokenize(head.lower()))) | set(best_t["cw"])
                     if not (tail.rstrip().endswith("?") or (tcw2 & hcw2)):
+                        continue
+                    # ...and must ADD content beyond the head (measured: bound-but-
+                    # duplicate tails read as "They'll love it. I'm sure they'll love it.")
+                    head_cw = set(_content_words(tokenize(head.lower())))
+                    if not tail.rstrip().endswith("?") and not (tcw2 - head_cw):
                         continue
                     cand = (head.rstrip() + " " + tail.strip()).strip()
                     if cand.lower() not in stored_low:

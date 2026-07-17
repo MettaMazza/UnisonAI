@@ -99,7 +99,14 @@ def teacher_answer(p, differently_from=None):
                 OLLAMA, data=body, headers={"Content-Type": "application/json"}), timeout=180) as r:
             out = json.loads(r.read().decode()).get("response", "")
         out = re.sub(r"(?is)<think(?:ing)?>.*?</think(?:ing)?>", "", out).strip()
-        return out.split("\n")[0][:300]
+        out = out.split("\n")[0][:300]
+        # cut at the last complete sentence — a mid-sentence fragment stored as a held
+        # expression serves fragments forever (measured: "It's a great way")
+        if out and out[-1] not in ".!?":
+            m = re.match(r"^(.*[.!?])[^.!?]*$", out, re.S)
+            if m:
+                out = m.group(1)
+        return out
     except Exception:
         return ""
 
