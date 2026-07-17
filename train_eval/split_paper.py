@@ -28,8 +28,8 @@ spectral science this engine stands beside — the decode of trained neural weig
 companion paper **[The Law Inside Trained Weights: The Fold Decode Campaign](Fold_Decode_Interpretability.md)**.
 
 > **THIS PAPER IS A PROOF, NOT THE MAIN EVENT.** Everything here derives from **The Smithian
-> Fold Theory of Everything**: one axiom, zero free parameters, machine-verified by 307 proof
-> suites and 1,844 forced checks.
+> Fold Theory of Everything**: one machine-checked, self-proven theorem — *there is no nothing* —
+> zero axioms, zero free parameters, machine-verified by 326 proof suites and 2,002 forced checks.
 > **Theory (Zenodo):** https://doi.org/10.5281/zenodo.21182469 · **Theory (GitHub):** https://github.com/MettaMazza/Smithian-Fold-Theory-Of-Everything
 > **This engine (GitHub):** https://github.com/MettaMazza/UnisonAI · **Companion decode paper:** [Fold_Decode_Interpretability.md](Fold_Decode_Interpretability.md)
 
@@ -113,7 +113,8 @@ zero-parameter engine these results feed — and the architecture that stands on
 companion paper **[UnisonAI: A Forced, Derived Omni-Model Architecture](UnisonAI_Architecture.md)**.
 
 > Everything here derives from and is verified against **The Smithian Fold Theory of
-> Everything**: one axiom, zero free parameters, 307 proof suites, 1,844 forced checks.
+> Everything**: one machine-checked, self-proven theorem — *there is no nothing* — zero axioms,
+> zero free parameters, 326 proof suites, 2,002 forced checks.
 > **Theory (Zenodo):** https://doi.org/10.5281/zenodo.21182469 · **Theory (GitHub):** https://github.com/MettaMazza/Smithian-Fold-Theory-Of-Everything
 > **Instruments & ledgers (GitHub):** https://github.com/MettaMazza/UnisonAI (`omni/benchmarks/`) · **Companion architecture paper:** [UnisonAI_Architecture.md](UnisonAI_Architecture.md)
 

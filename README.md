@@ -20,7 +20,7 @@ The founding paper of neural computation (McCulloch & Pitts, 1943) opened with a
 
 There was always a third contestant, named by the founding paper and then abandoned: **derived law.** Not statistics fitted to data, not heuristics hand-crafted by people — mechanism *derived* from a single mathematical foundation and verified to it.
 
-**UnisonAI is that third path, built and running.** It is the applied engine of the **Smithian Fold Theory** — one axiom (the One and its fold), zero free parameters — and its purpose is a proof: that the mechanisms a modern model *buys* with training can instead be **derived**, exactly, from the corpus's own laws.
+**UnisonAI is that third path, built and running.** It is the applied engine of the **Smithian Fold Theory** — one machine-checked, self-proven theorem, *there is no nothing*, which forces the One and its fold with zero free parameters — and its purpose is a proof: that the mechanisms a modern model *buys* with training can instead be **derived**, exactly, from the corpus's own laws.
 
 ---
 
@@ -101,7 +101,7 @@ UnisonAI is under active development. It learns by absorbing clean, teacher-corr
 
 UnisonAI does not stand on its own — it stands on, and exists to prove, the theory it derives from:
 
-> **The Smithian Fold Theory of Everything** — one axiom, zero free parameters, the constants of nature derived and machine-verified.
+> **The Smithian Fold Theory of Everything** — one machine-checked, self-proven theorem (*there is no nothing*), zero axioms, zero free parameters, the constants of nature derived and machine-verified.
 > **→ https://github.com/MettaMazza/Smithian-Fold-Theory-Of-Everything**
 
 ---

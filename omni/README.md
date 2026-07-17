@@ -190,7 +190,7 @@ The live conversational generator is `pair_retrieval.py` (see §5). `word_engine
 
 The reply is always recombined — never an exact corpus sentence, never a taught orbit. It starts rough and develops coherence through the feedback loop below.
 
-**The fold coherence critic (`coherence_score`, `constants/coherence_value.ep`)** reads a reply's content-word coupling at the synchronization lock g_c = 1/2. It serves as an internal signal (fallback ranking; the in-bot graduation race). It is **not** the project's quality scoreboard: conversational quality is believed only from the **calibration-gated independent judge** (Empirical Record) — no signal that steers generation ever scores it.
+**The fold coherence critic (`coherence_score`, `constants/coherence_value.ep`)** reads a reply's content-word coupling at the synchronization lock `g_c = 1/2`. Step 322 forces that lock from the marginal gap multiplier `2(1-g)`, folds the balance to the completed One, partitions the share as `2/3` bound and `1/3` free, and closes the finite cascade `1/2 + 1/4 + 1/8 + 1/16 + 1/16 = 1` (8/8 exact checks; claim `SFT-COHERENCE-322`). The critic serves as an internal signal (fallback ranking; the in-bot graduation race). The theorem fixes its structural value; it does **not** by itself calibrate the critic as a conversational-quality scoreboard. Conversational quality is believed only from the **calibration-gated independent judge** (Empirical Record) — no signal that steers generation ever scores it.
 
 **Feedback learning on the fallback (`span_quality.pkl`)** nudges the quality of spans a reply was built from; on the primary stack, feedback is the **Laplace pair-quality fraction** (g+1)/(g+b+2) — both counted, both persisted.
 

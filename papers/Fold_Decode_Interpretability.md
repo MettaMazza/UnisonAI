@@ -9,7 +9,8 @@ zero-parameter engine these results feed — and the architecture that stands on
 companion paper **[UnisonAI: A Forced, Derived Omni-Model Architecture](UnisonAI_Architecture.md)**.
 
 > Everything here derives from and is verified against **The Smithian Fold Theory of
-> Everything**: one axiom, zero free parameters, 307 proof suites, 1,844 forced checks.
+> Everything**: one machine-checked, self-proven theorem — *there is no nothing* — zero axioms,
+> zero free parameters, 326 proof suites, 2,002 forced checks.
 > **Theory (Zenodo):** https://doi.org/10.5281/zenodo.21182469 · **Theory (GitHub):** https://github.com/MettaMazza/Smithian-Fold-Theory-Of-Everything
 > **Instruments & ledgers (GitHub):** https://github.com/MettaMazza/UnisonAI (`omni/benchmarks/`) · **Companion architecture paper:** [UnisonAI_Architecture.md](UnisonAI_Architecture.md) (concept DOI 10.5281/zenodo.21217278) · **This paper's DOI:** 10.5281/zenodo.21396743
 
@@ -33,7 +34,7 @@ Eighty years of a different bargain followed. Rosenblatt's perceptron (1958) lea
 
 The frontier itself senses the missing ingredient. Altman (January 2025): "We are now confident we know how to build AGI as we have traditionally understood it." Amodei projects "a country of geniuses in a datacenter," possibly by 2026–27. Hassabis has long placed human-level intelligence one or two breakthroughs away; Legg has held a 50% estimate for 2028 for over a decade; Sutskever told NeurIPS 2024 that "pre-training as we know it will end" — the data has a bottom. Read together: the laboratories believe a small number of algorithmic developments separate the field from its destination, and they are searching for those developments *inside* the statistical paradigm.
 
-This paper proposes, with measurements, that the development is the founding idea recovered: **stop buying law; derive it.** The Smithian Fold Theory supplies the mathematics — one axiom (the One and its fold), zero free parameters, from which the corpus derives the constants of physics (307 proof suites, 1,844 forced checks, 0 failures) and, as machine-verified claims, the laws of memory, attention, binding, prediction, observation, and learning used here as engineering.
+This paper proposes, with measurements, that the development is the founding idea recovered: **stop buying law; derive it.** The Smithian Fold Theory supplies the mathematics — one machine-checked, self-proven theorem, *there is no nothing*, which forces the One and its fold with zero free parameters — from which the corpus derives the constants of physics (326 proof suites, 2,002 forced checks, 0 failures) and, as machine-verified claims, the laws of memory, attention, binding, prediction, observation, and learning used here as engineering.
 
 ## 2. The instrument
 

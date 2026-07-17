@@ -9,7 +9,7 @@ Run:  PYTHONPATH=. python3 train_eval/judge_calibration.py   (exit 0 = PASS)
 """
 import sys, os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from train_eval.judge import judge
+from train_eval.judge import judge, judge2
 
 GOOD = [
     ("Hello, how are you?", "I'm doing really well, thanks for asking! How's your day going so far?"),
@@ -43,22 +43,28 @@ BAD = [
 ]
 
 
-def main():
+def gate(jfn, name):
     g_pass = b_pass = 0
-    print("--- known-GOOD (expect GOOD) ---")
+    print(f"--- {name}: known-GOOD (expect GOOD) ---")
     for u, r in GOOD:
-        ok, _ = judge(u, r)
+        ok, _ = jfn(u, r)
         g_pass += ok
         print(f"  [{'GOOD' if ok else 'BAD '}] {r[:60]!r}")
-    print("--- known-BAD (expect BAD) ---")
+    print(f"--- {name}: known-BAD (expect BAD) ---")
     for u, r in BAD:
-        ok, _ = judge(u, r)
+        ok, _ = jfn(u, r)
         b_pass += (not ok)
         print(f"  [{'BAD ' if not ok else 'GOOD'}] {r[:60]!r}")
-    print(f"\nseparation: good {g_pass}/10 rated GOOD | bad {b_pass}/10 rated BAD")
     passed = g_pass >= 9 and b_pass >= 9
-    print("CALIBRATION:", "PASS — the judge's numbers may be believed" if passed else "FAIL — fix the judge before measuring anything")
-    return 0 if passed else 1
+    print(f"{name} separation: good {g_pass}/10 | bad {b_pass}/10 -> {'PASS' if passed else 'FAIL'}")
+    return passed
+
+
+def main():
+    p1 = gate(judge, "judge#1 gemma-4-31b")
+    p2 = gate(judge2, "judge#2 qwen3.6-27b")
+    print("POOL CALIBRATION:", "PASS — pool verdicts may be believed" if (p1 and p2) else "FAIL")
+    return 0 if (p1 and p2) else 1
 
 
 if __name__ == "__main__":

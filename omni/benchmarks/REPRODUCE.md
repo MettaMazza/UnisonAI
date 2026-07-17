@@ -14,7 +14,7 @@ sh RUN_EVERYTHING.sh
 ```
 
 Runs the ENTIRE verification surface of the Smithian Fold Theory: the
-full proof corpus from the axiom to every measured comparison (C
+full proof corpus from the self-proven theorem to every measured comparison (C
 compiler only), the tamper test (mutate one forced constant and PROVE
 the engine halts), the hardened fine-structure uniqueness scan, and the
 live CODATA/NIST comparison over the network. Expected: every section
