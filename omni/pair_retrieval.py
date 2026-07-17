@@ -330,6 +330,63 @@ class PairRetrieval:
         out.sort(reverse=True)
         return out[:topn]
 
+    def _integrate_meanings(self, qcw, gated):
+        """MULTI-MEANING COMPOSITION — the attention-mixing analogue in serving
+        (contextual_integration.ep applied to the taught store): when no single meaning
+        explains the query at the lock, the reply is composed ACROSS the top bound
+        meanings, weighted by the cascade (2^-k over the rank order, depth b+c = 5).
+        Units are whole held sentences scored by their on-query information share; the
+        head is the most on-query unit anywhere, the tail the most on-query ADDITIVE
+        unit from a DIFFERENT meaning. Never-verbatim: the composition must differ from
+        every stored expression, or one unit serves alone only if it is a fragment of a
+        longer stored variant (already non-verbatim as a whole)."""
+        top = sorted(gated, key=lambda x: -x[0])[:5]
+        stored = set()
+        units = []
+        for k, (o, tp) in enumerate(top):
+            wk = 2.0 ** -k
+            variants = [v for v in tp.get("variants", [tp.get("response", "")]) if v.strip()]
+            for v in variants:
+                stored.add(v.strip().lower())
+                for sent in re.split(r"(?<=[.!?])\s+", v.strip()):
+                    sent = sent.strip()
+                    scw = set(_content_words(tokenize(sent.lower())))
+                    if len(scw) < 2 or len(sent) < 8:
+                        continue   # a unit must carry content ("Exactly." carries none)
+                    den = sum(self._rarity(x) for x in scw)
+                    rel = (sum(self._rarity(x) * self._rank_credit(x, qcw) for x in scw)
+                           / den if den else 0.0)
+                    units.append((wk * rel, sent, id(tp), scw))
+        # UNIT CAPACITY on the head: the query's loudest content word must be credited
+        # by the head unit (the focus must carry); statements head, questions may tail.
+        loud = max(qcw, key=self._rarity) if qcw else None
+        def head_ok(scw):
+            # the focus must carry DIRECTLY: identical or strong hop-1 kin only —
+            # hop-2 chains admitted junk heads (measured: "comforting meal" headed by
+            # a Tuesday-scheduling unit through second-hop noise)
+            if loud is None:
+                return True
+            return (loud in scw or (self._kin_top(loud) & scw)
+                    or any(loud in self._kin_top(x) for x in scw))
+        units.sort(key=lambda u: -u[0])
+        heads = [u for u in units if not u[1].rstrip().endswith("?") and head_ok(u[3])] \
+            or [u for u in units if head_ok(u[3])]
+        if not heads:
+            return None   # the focus carries nowhere held — decline, never lottery
+        for hscore, head, hmid, hcw in heads[:5]:
+            if hscore <= 0:
+                break
+            if not head.rstrip().endswith("?"):
+                for tscore, tail, tmid, tcw2 in units:
+                    if tmid == hmid or tscore <= 0 or not (tcw2 - hcw):
+                        continue
+                    cand = head.rstrip() + " " + tail
+                    if cand.strip().lower() not in stored:
+                        return cand
+            if head.strip().lower() not in stored:
+                return head
+        return None
+
     # ---------- Stage 3: realization ----------
     def reply(self, text, history=None, ukey=None):
         """Compose a reply: taught precedence -> BM25 candidates -> coverage selection ->
@@ -344,6 +401,7 @@ class PairRetrieval:
         # taught precedence (the FAQ law) at the lock 1/2 — own ukey first, then global
         qcw = set(_content_words(tokenize(text.lower())))
         best_t, best_o = None, 0.0
+        gated = []
         q_den = sum(self._rarity(w) for w in qcw) or 1.0
         for tp in self._taught_pairs():
             tcw = set(tp["cw"])
@@ -360,6 +418,18 @@ class PairRetrieval:
             o = sum(self._rarity(w) * self._rank_credit(w, tcw) for w in qcw) / q_den
             if o > best_o + (0.0 if tp["ukey"] == ukey else 0.15):
                 best_t, best_o = tp, o
+            gated.append((o, tp))
+        # SINGLE-MEANING SERVE only when one meaning EXPLAINS the query at the lock
+        # (memorization: the exact meaning ranks ~1). Below it, a whole adjacent meaning
+        # served alone answers near the ask, not the ask (measured: four flat epochs at
+        # 6-16% near-transfer) — INTEGRATION composes across the bound meanings instead.
+        if best_o < TAUGHT_LOCK:
+            best_t = None
+            if gated:
+                integ = self._integrate_meanings(qcw, gated)
+                if integ:
+                    self.last_pids = []
+                    return integ
         cands = self.retrieve(text, history, topn=10)
 
         # EXACT-FAQ TIER (established): the normalized query string matches a stored prompt
