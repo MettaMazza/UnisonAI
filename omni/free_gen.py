@@ -27,10 +27,14 @@ MIN_WORDS = 6
 _END = {".", "!", "?"}
 
 
+_PUNC = {".", ",", "!", "?", "'", ";", ":", '"', ")", "(", "-"}
+
+
 class FreeGen:
     def __init__(self):
         self._S = None
         self._flu_cache = {}
+        self._ls_cache = {}
 
     def _fluent_fast(self, window):
         """Float-ranked fluency cascade for the GENERATION hot path (ranking order only —
@@ -74,6 +78,58 @@ class FreeGen:
                 self._S = pickle.load(f)
             logger.info(f"kin-context store loaded: {len(self._S['cond']):,} conditioned keys")
         return self._S
+
+    _CONTR_OK = {"t": None, "s": None, "d": None, "ll": None, "ve": None, "re": None, "m": None}
+
+    def _junk_token(self, w):
+        """Token-pipeline junk, blocked at EVERY emission site: bare quote tokens
+        (rendered "That' m") and typo-merged contractions ("would't", "i're")."""
+        return w in {"'", "\u2019"} or ("'" in w and not self._valid_contraction(w))
+
+    def _valid_contraction(self, w):
+        """A merged contraction is valid only in its English pattern — corpus typos
+        ("would't", "passengers'm") merged into servable junk (measured audit)."""
+        if w.count("'") != 1:
+            return False
+        h, t = w.split("'")
+        if not h.isalpha():
+            return False
+        if t == "t":
+            return h.endswith("n") or h in {"can", "won", "shan"}
+        if t == "m":
+            return h == "i"
+        if t == "re":
+            return h in {"you", "we", "they", "who", "there", "what", "how", "where", "when"}
+        if t in {"s", "d", "ll", "ve"}:
+            return True
+        return t == ""
+
+    def _live_state_ids(self, base_state_ids, gcw, vocab):
+        """THE AUTOREGRESSIVE STATE (completing the contextual_integration translation):
+        a transformer conditions on everything generated so far; here the words the
+        engine has EMITTED diffuse into the integrated state through the same forced
+        cascade — at the fold factor HALF, because own unconfirmed output is held at
+        reduced confidence (the retention law, reused). The query remains the
+        full-weight anchor; the live thread gains mass; competing corpus threads decay
+        relatively (the measured thread-jumping class)."""
+        cached = self._ls_cache.get(gcw)
+        if cached is None:
+            from omni.context_state import integrated_state
+            g = integrated_state(" ".join(gcw), None)
+            cached = {}
+            for w, m in g.items():
+                nid = vocab.get(w)
+                if nid is not None:
+                    cached[nid] = m
+            if len(self._ls_cache) > 4096:
+                self._ls_cache.clear()
+            self._ls_cache[gcw] = cached
+        if not cached:
+            return base_state_ids
+        merged = dict(base_state_ids)
+        for nid, m in cached.items():
+            merged[nid] = merged.get(nid, 0.0) + 0.5 * m
+        return merged
 
     def _tier_counts(self, S, prev_id, last_id, tid):
         """Conditioned counts across n-gram tiers: the bigram tier plus the TRIGRAM tier
@@ -146,6 +202,14 @@ class FreeGen:
                 tot_d = sum(dist.values()) or 1
                 for nid, v in fl.items():
                     dist[nid] += (v / tot_f) * tot_d   # equal-mass interpolation (lambda 1/2)
+            if not dist:
+                break
+            # structural + junk guards (this arm sampled UNFILTERED — audit find)
+            for nid in list(dist):
+                w = words_arr[nid]
+                if self._junk_token(w) or (not out and w in _PUNC) or (
+                        out and out[-1] in _PUNC and w in _PUNC):
+                    del dist[nid]
             if not dist:
                 break
             # sample from the top of the mixed distribution
@@ -290,6 +354,8 @@ class FreeGen:
             last_id = vocab.get(last_tok, -1)
             prev_tok = out[-2] if len(out) >= 2 else "\x02"
             prev_id = vocab.get(prev_tok, -1)
+            gcw = tuple(w for w in out if len(w) > 3 and w.isalpha())[-8:]
+            live_ids = self._live_state_ids(state_ids, gcw, vocab) if gcw else state_ids
             dist = Counter()
             if last_id >= 0:
                 for tid in topic_ids:
@@ -297,7 +363,7 @@ class FreeGen:
                     if not c:
                         continue
                     w_t = (2 if (tid in base_ids or tid in plan_ids) else 1) \
-                        * (1.0 + state_ids.get(tid, 0.0))
+                        * (1.0 + live_ids.get(tid, 0.0))
                     for nid, n in c.items():
                         dist[nid] += n * w_t
                 # taught-transition overlay (reexpress): the correction's own learned
@@ -330,7 +396,9 @@ class FreeGen:
                 ents = self._entity_ids = {vocab[w] for w in S.get("entities", []) if w in vocab}
             for nid in list(dist):
                 w = words_arr[nid]
-                if (not out and w in _PUNC) or (out and out[-1] in _PUNC and w in _PUNC):
+                if self._junk_token(w):
+                    del dist[nid]      # token-pipeline junk (shared predicate)
+                elif (not out and w in _PUNC) or (out and out[-1] in _PUNC and w in _PUNC):
                     del dist[nid]
                 elif len(w) > 3 and w.isalpha() and nid not in topic_ids:
                     del dist[nid]
@@ -426,6 +494,8 @@ class FreeGen:
             last_id = vocab.get(last_tok, -1)
             prev_tok = out[-2] if len(out) >= 2 else "\x02"
             prev_id = vocab.get(prev_tok, -1)
+            gcw = tuple(w for w in out if len(w) > 3 and w.isalpha())[-8:]
+            live_ids = self._live_state_ids(state_ids, gcw, vocab) if gcw else state_ids
             dist = Counter()
             if last_id >= 0:
                 for tid in topic_ids:
@@ -433,7 +503,7 @@ class FreeGen:
                     if not c:
                         continue
                     w_t = (2 if (tid in base_ids or tid in plan_ids) else 1) \
-                        * (1.0 + state_ids.get(tid, 0.0))
+                        * (1.0 + live_ids.get(tid, 0.0))
                     for nid, n in c.items():
                         dist[nid] += n * w_t
             window = ([w for w in base][:WINDOW_SEED] + out)[-6:]
@@ -454,11 +524,13 @@ class FreeGen:
             for pid_ in plan_ids - covered:
                 if pid_ in dist:
                     dist[pid_] *= 2
-            # structural guards: no punctuation opener, no doubled punctuation
+            # structural guards: no punctuation opener, no doubled punctuation, no junk
             drop = set()
             for nid in dist:
                 w = words_arr[nid]
-                if (not out and w in _PUNC) or (out and out[-1] in _PUNC and w in _PUNC):
+                if self._junk_token(w):
+                    drop.add(nid)
+                elif (not out and w in _PUNC) or (out and out[-1] in _PUNC and w in _PUNC):
                     drop.add(nid)
             for nid in drop:
                 del dist[nid]

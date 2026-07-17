@@ -103,10 +103,20 @@ def main():
         if ti % 100000 == 0 and ti:
             print(f"  ...{ti} texts, {npos} positions, {len(cond)} keys | {time.time()-t0:.0f}s", flush=True)
 
-    # hapax pruning (established): a key seen once carries noise, not signal
-    pruned = {k: dict(v) for k, v in cond.items() if sum(v.values()) > 1}
+    # hapax pruning (established), at BOTH levels: a key seen once carries noise — and
+    # so does a count-1 next-token ENTRY inside a surviving key (measured: corpus typos
+    # like "fonetwish" won thin distributions through count-1 entries; the n-gram count
+    # cutoff is the established remedy)
+    def prune_vals(d):
+        out = {}
+        for k, v in d.items():
+            vv = {n: c for n, c in v.items() if c > 1} or dict(v)
+            if sum(vv.values()) > 1:
+                out[k] = vv
+        return out
+    pruned = prune_vals(cond)
     print(f"  pruned {len(cond) - len(pruned):,} hapax bigram keys -> {len(pruned):,} kept", flush=True)
-    pruned3 = {k: dict(v) for k, v in cond3.items() if sum(v.values()) > 1}
+    pruned3 = prune_vals(cond3)
     print(f"  pruned {len(cond3) - len(pruned3):,} hapax trigram keys -> {len(pruned3):,} kept", flush=True)
     del cond3
     # entity tokens (counted): predominantly mid-sentence-capitalized words are names/places
