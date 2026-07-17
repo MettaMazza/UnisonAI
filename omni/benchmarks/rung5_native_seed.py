@@ -39,7 +39,7 @@ print(f"orbit store built in {build_s:.0f}s -- {n_orbits} held orbits", flush=Tr
 # continuation shares are the distribution; hierarchy fallback is the fold
 # to the next-longest held orbit. Exact rational shares, smoothed only by
 # the forced antipodal floor (one count of the whole alphabet -- every
-# symbol remains reachable, no zero, the No-Zero axiom).
+# symbol remains reachable, no zero, in the domain forced by the foundational theorem).
 def predict(context):
     for L in range(min(CTX_MAX, len(context)), -1, -1):
         key = tuple(context[-L:]) if L > 0 else ()

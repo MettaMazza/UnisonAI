@@ -1,81 +1,54 @@
-# REPRODUCE — the headline results, four commands
+# Reproduce the current UnisonAI release
 
-Every headline claim of the UnisonAI campaign is reproducible on a fresh
-clone with the commands below. Each command prints its own verdict; the
-expected output is stated beside it. Reference machine: Apple Silicon
-Mac Studio, 512 GB unified memory, macOS — runtimes are from that
-machine and scale with hardware.
+This guide distinguishes current executable receipts from historical campaign artifacts. Reference machine: Apple M3 Ultra with 512 GB unified memory.
 
-## 1. The theory prover — 307 suites, 1,844 forced checks, 0 failures
+## 1. Current standalone structural receipt — 21/21
 
-```
-cd "Smithian Fold Theory"
-sh RUN_EVERYTHING.sh
+From the UnisonAI repository root:
+
+```sh
+python3 omni/benchmarks/verify_omni.py
 ```
 
-Runs the ENTIRE verification surface of the Smithian Fold Theory: the
-full proof corpus from the self-proven theorem to every measured comparison (C
-compiler only), the tamper test (mutate one forced constant and PROVE
-the engine halts), the hardened fine-structure uniqueness scan, and the
-live CODATA/NIST comparison over the network. Expected: every section
-that runs reports PASS; the final manifest lists exactly what ran.
-Needs: a C compiler; python3 for sections 3–6; network for section 4.
+Expected final line:
 
-## 2. LLM presence — 13/13 tensors, 39/39 registered checks
-
-```
-cd "Smithian Fold Theory/fold_ai"
-python3 llm_presence.py
+```text
+VERIFY OMNI: 21/21 checks pass
 ```
 
-The pre-registered presence protocol (5 seeded shuffle-nulls +
-moment-matched Gaussian + theorem-forced bit-reversal self-test per
-tensor, seed 20260706) applied to public GPT-2: token embedding + all
-12 MLP expansion matrices. **If `gpt2_model.safetensors` is absent the
-script fetches it itself** (~548 MB, official Hugging Face repository)
-— one command on a fresh clone. Expected: `13/13 tensors, 39/39
-registered checks`, margins 3.4–79.3×. Needs: `numpy`, `safetensors`;
-network for the one-time fetch. Runtime: ~2 minutes + the fetch.
+The suite covers forced locks, halt-on-mismatch, integer-Walsh sight and hearing, held memory, rational shares, diagnostics, removal-proof voice, and persistence across process death. Optional local voice assets are machine IO dependencies, not SFT quantities.
 
-## 3. Rung 5c, the loud-subspace transfer test — verdict SUPPORTED
+## 2. Main SFT corpus — 326 suites / 2,002 checks
 
-```
-cd "Smithian Fold Theory/fold_ai"
-python3 rung5c_loud_subspace.py
+From the main Smithian Fold Theory repository:
+
+```sh
+./verify/prove_current_source_isolated.sh
 ```
 
-Pre-registered (protocol fixed in the file header before data): the
-trained twin's advantage must live in its dyadically-loud Walsh
-subspace and nowhere else. Two theorem-forced self-tests must pass
-in-run or the run is void. Expected: `VERDICT (pre-registered rule):
-SUPPORTED`, loud beating random at every budget k ∈ {16, 32, 64} and
-the attention control weaker. Needs: `torch`, `numpy`. NOTE: the arena
-reads the theory corpus at its committed absolute paths
-(`~/Desktop/Smithian Fold Theory`, `~/Desktop/SFTOM`); clone both repos
-to those locations or the corpus (and the exact numbers) will differ —
-the committed result file `rung5c_results.txt` is the reference.
-Runtime: ~10–20 minutes (twin training dominates).
+Expected receipt:
 
-## 4. The engine end-to-end — 36/36
-
-```
-cd "Smithian Fold Theory/fold_ai"
-python3 verify_unison.py
+```text
+CURRENT_SOURCE_COMPLETE suites=326 checks=2002 failures=0
+CERTIFICATE_COMPARE identical=326 drifted=0 absent=0 total=326
 ```
 
-The full engine verification: forced-lock enforcement (a fitted value
-HALTS the engine), learning-law closure, rebirth persistence across
-process death, the fold eye/ear/voice with integer Parseval
-self-certification, the removal-proof ladders, the agentic toolkit, and
-the benchmark instruments. Expected: `36/36`. Needs: `numpy`; several
-checks exercise the live observer ladder and speech — `ollama` with
-`gemma4:26b` pulled, and the kokoro voice at its configured path, for
-the full 36; absent organs report their checks honestly rather than
-silently passing.
+This isolated gate does not modify the committed certificate tree.
 
----
+## 3. GPT-2 spectral presence — historical registered campaign
 
-Results files committed beside the scripts: `llm_presence_results.txt`,
-`rung5c_results.txt`, `rung5b_results.txt`, `rung5b_rematch_results.txt`,
-`rung5d_results.txt`, `verify_unison_results.txt`, `benchmarks.tsv`,
-`benchmarks_sota.tsv`, `SOTA_TABLE.md`.
+```sh
+python3 omni/benchmarks/llm_presence.py
+```
+
+Expected committed campaign result: 13/13 tensors and 39/39 registered real-versus-null checks. The instrument may fetch public GPT-2 weights if absent; model weights are runtime dependencies and must not be committed to this repository.
+
+## 4. Decode campaign
+
+Each instrument, dependency, registration rule, null, and raw receipt is documented in `INTERPRETABILITY.md`. Results are committed as `*_results.txt`, with registrations in `registrations.jsonl` and structured rows in `results.jsonl`.
+
+Do not turn an absent optional model, local corpus path, or stopped long run into a silent pass. Preserve the exact output and scope the result to the instrument that ran.
+
+## Historical receipt correction
+
+`omni/benchmarks/verify_unison_results.txt` records **43/47**, not 47/47. It is a historical suite and is not substituted for the current 21/21 verifier. The two receipts test different surfaces.
