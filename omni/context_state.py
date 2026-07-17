@@ -20,6 +20,32 @@ LOCK = float(SPREAD_LOCK)   # the spread capacity — generation_selection_law.e
                        # engineering cap is RETIRED — the lock is the capacity.
 
 
+_SPREAD_CACHE = {}
+
+
+def _spread_of(w, coup):
+    """Memoized unit-capacity spread of one word (the coupling graph is static within
+    a process; re-sorting neighbours per call was measured at 0.6s/state)."""
+    c = _SPREAD_CACHE.get(w)
+    if c is None:
+        nb = coup.get(w)
+        if not nb:
+            c = ()
+        else:
+            ranked = sorted(nb.items(), key=lambda kv: -kv[1])
+            z_all = float(sum(v for _, v in ranked)) or 1.0
+            spread, acc = [], 0.0
+            for n, v in ranked:
+                spread.append((n, v))
+                acc += v / z_all
+                if acc >= LOCK:
+                    break
+            z = float(sum(v for _, v in spread)) or 1.0
+            c = tuple((n, v / z) for n, v in spread)
+        _SPREAD_CACHE[w] = c
+    return c
+
+
 def integrated_state(text, history=None):
     """S = Σ_{k=1..5} 2^-k D_k. D_1 = the live context distribution (recency 2^-age);
     D_{k+1} = one diffusion round of D_k through the coupling graph (each word's mass
@@ -43,26 +69,24 @@ def integrated_state(text, history=None):
     for k in range(DEPTH):
         for w, m in d.items():
             S[w] += weight * m
+        if k == DEPTH - 1:
+            # THE FLOOR (forced: the cascade closes to the One with the floor exactly —
+            # the deepest level carries its halving twice). Implementation previously
+            # stopped at 31/32: a measured law deviation, caught by the mass check.
+            for w, m in d.items():
+                S[w] += weight * m
+            break
         # one diffusion round: order-(k+1) relations
         nxt = Counter()
         for w, m in d.items():
-            nb = coup.get(w)
-            if not nb:
+            spread = _spread_of(w, coup)
+            if not spread:
                 nxt[w] += m            # no neighbours: mass stays (self-loop)
                 continue
-            # UNIT-CAPACITY SPREAD (forced): the minimal strongest prefix whose
-            # cumulative share reaches the lock 1/2; the tail is suppressed
-            ranked = sorted(nb.items(), key=lambda kv: -kv[1])
-            z_all = float(sum(v for _, v in ranked)) or 1.0
-            spread, acc = [], 0.0
-            for n, v in ranked:
-                spread.append((n, v))
-                acc += v / z_all
-                if acc >= LOCK:
-                    break
-            z = float(sum(v for _, v in spread)) or 1.0
-            for n, v in spread:
-                nxt[n] += m * (v / z)
+            # UNIT-CAPACITY SPREAD (forced), memoized: the minimal strongest prefix
+            # whose cumulative share reaches the lock 1/2; the tail is suppressed
+            for n, v in spread:        # v is already the normalized share (memoized)
+                nxt[n] += m * v
         d = nxt
         weight *= 0.5                  # one fold deeper per round
     return S

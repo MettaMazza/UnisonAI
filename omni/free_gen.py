@@ -35,6 +35,7 @@ class FreeGen:
         self._S = None
         self._flu_cache = {}
         self._ls_cache = {}
+        self._hits_cache = {}
 
     def _fluent_fast(self, window):
         """Float-ranked fluency cascade for the GENERATION hot path (ranking order only —
@@ -131,19 +132,88 @@ class FreeGen:
             merged[nid] = merged.get(nid, 0.0) + 0.5 * m
         return merged
 
-    def _tier_counts(self, S, prev_id, last_id, tid):
+    def _closures(self, S):
+        """F4 FEEDBACK: teacher-CLOSED own generations (omni/free_closures.pkl) as a
+        conditioning overlay — verified own-output is retained and reinforced (the
+        retention law: only closed output re-enters; raw output never self-reinforces).
+        Closed texts count at 2^2 (closed + own — two doublings; engineering factor,
+        marked). Tables rebuilt when the closure store changes."""
+        import os as _os, time as _time
+        now = _time.monotonic()
+        if now - getattr(self, "_clo_checked", 0.0) < 30.0:
+            return getattr(self, "_clo_tables", None)
+        self._clo_checked = now
+        path = getattr(self, "_clo_path", None)
+        if path is None:
+            path = self._clo_path = _os.path.join(
+                _os.path.dirname(_os.path.abspath(__file__)), "free_closures.pkl")
+        try:
+            mt = _os.path.getmtime(path)
+        except OSError:
+            self._clo_mtime, self._clo_tables = None, None
+            return None
+        if getattr(self, "_clo_mtime", None) == mt:
+            return self._clo_tables
+        import pickle as _pickle
+        from collections import Counter as _C
+        try:
+            held = _pickle.load(open(path, "rb"))
+        except Exception:
+            return None
+        vocab = S["vocab"]
+        c2c, c3c = {}, {}
+        for row in held:
+            toks = [t.lower() for t in tokenize(row.get("closed", ""))]
+            ids = [vocab.get(t, -1) for t in toks]
+            tops = {vocab[w] for w in _content_words(toks) if w in vocab}
+            for i in range(1, len(ids)):
+                if ids[i] < 0 or ids[i - 1] < 0:
+                    continue
+                pv = ids[i - 2] if i >= 2 and ids[i - 2] >= 0 else None
+                for tid in tops:
+                    c2c.setdefault((ids[i - 1], tid), _C())[ids[i]] += 4
+                    if pv is not None:
+                        c3c.setdefault((pv, ids[i - 1], tid), _C())[ids[i]] += 4
+        self._clo_mtime, self._clo_tables = mt, (c2c, c3c)
+        return self._clo_tables
+
+    def _topic_hits(self, S, prev_id, last_id, topic_ids, clo):
+        """All topics with counts for this (prev, last) pair, memoized per pair — the
+        measured hot path was millions of EMPTY per-topic lookups (57s/reply)."""
+        key = (prev_id, last_id)
+        hits = self._hits_cache.get(key)
+        if hits is None:
+            hits = []
+            for tid in topic_ids:
+                c = self._tier_counts(S, prev_id, last_id, tid, clo)
+                if c:
+                    hits.append((tid, c))
+            self._hits_cache[key] = hits
+        return hits
+
+    def _tier_counts(self, S, prev_id, last_id, tid, clo=None):
         """Conditioned counts across n-gram tiers: the bigram tier plus the TRIGRAM tier
         at the binary factor 2 — two exact ordered tokens in the key outrank one, the
         same deeper-context-doubles tiering the fluency cascade and topic weighting use
-        (F-lever 1: order lives in the key, established n-gram deepening)."""
+        (F-lever 1: order lives in the key, established n-gram deepening). The F4
+        closure overlay (verified own-output) joins both tiers at its own factor."""
         c2 = S["cond"].get((last_id, tid))
         c3 = S.get("cond3", {}).get((prev_id, last_id, tid)) if prev_id >= 0 else None
-        if not c3:
-            return c2
         m = dict(c2) if c2 else {}
-        for nid, n in c3.items():
-            m[nid] = m.get(nid, 0) + 2 * n
-        return m
+        if c3:
+            for nid, n in c3.items():
+                m[nid] = m.get(nid, 0) + 2 * n
+        if clo:
+            c2c, c3c = clo
+            e2 = c2c.get((last_id, tid))
+            if e2:
+                for nid, n in e2.items():
+                    m[nid] = m.get(nid, 0) + n
+            e3 = c3c.get((prev_id, last_id, tid)) if prev_id >= 0 else None
+            if e3:
+                for nid, n in e3.items():
+                    m[nid] = m.get(nid, 0) + 2 * n
+        return m or None
 
     def _topic_set(self, text, history=None):
         base = set(_content_words(tokenize(text.lower())))
@@ -167,6 +237,7 @@ class FreeGen:
         base, topic = self._topic_set(text, history)
         base_ids = {vocab[w] for w in base if w in vocab}
         topic_ids = {vocab[w] for w in topic if w in vocab}
+        self._hits_cache = {}
 
         out = []                      # generated tokens (lowercase)
         # seed: open with a topical corpus opener — sample the first word from the
@@ -178,14 +249,10 @@ class FreeGen:
             prev_tok = out[-2] if len(out) >= 2 else "\x02"
             prev_id = vocab.get(prev_tok, -1)
             dist = Counter()
+            clo = self._closures(S)
             if last_id >= 0:
-                # TOPIC-CONDITIONED lookup: candidates that followed this SAME last token in
-                # the corpus (grammar by construction), keyed by topic (relevance). Query
-                # topic words weigh the binary factor over expanded kin (the fold factor).
-                for tid in topic_ids:
-                    c = self._tier_counts(S, prev_id, last_id, tid)
-                    if not c:
-                        continue
+                # TOPIC-CONDITIONED lookup, via the memoized per-(prev,last) hit list
+                for tid, c in self._topic_hits(S, prev_id, last_id, topic_ids, clo):
                     w_t = 2 if tid in base_ids else 1
                     for nid, n in c.items():
                         dist[nid] += n * w_t
@@ -336,16 +403,25 @@ class FreeGen:
         vocab, words_arr, cond = S["vocab"], S["words"], S["cond"]
         base, topic = self._topic_set(text, history)
         base_ids = {vocab[w] for w in base if w in vocab}
+        self._hits_cache = {}
         # THE INTEGRATED CONTEXT STATE (contextual_integration.ep, ernos-verified):
         # five kin-diffusion rounds at 2^-k — order-k context relations with forced
         # weights. Admission and weighting come from S's mass, not a binary topic set.
         from omni.context_state import integrated_state
         istate = integrated_state(text, history)
+        # UNIT-CAPACITY ADMISSION (forced, reused): the state's minimal strongest prefix
+        # whose cumulative mass reaches the lock 1/2 IS the admitted context; the tail is
+        # suppressed. (Admitting the full diffused state was also the measured hot-path
+        # cost: hundreds of tail words scanned per step at ~zero mass each.)
         state_ids = {}
-        for w, m in istate.items():
+        acc = 0.0
+        for w, m in sorted(istate.items(), key=lambda kv: -kv[1]):
             nid = vocab.get(w)
             if nid is not None:
                 state_ids[nid] = m
+                acc += m
+                if acc >= 0.5:
+                    break
         topic_ids = (set(state_ids) | {vocab[w] for w in topic if w in vocab} | plan_ids)
         _PUNC = {".", ",", "!", "?", "'", ";", ":", '"', ")", "(", "-"}
 
@@ -357,11 +433,9 @@ class FreeGen:
             gcw = tuple(w for w in out if len(w) > 3 and w.isalpha())[-8:]
             live_ids = self._live_state_ids(state_ids, gcw, vocab) if gcw else state_ids
             dist = Counter()
+            clo = self._closures(S)
             if last_id >= 0:
-                for tid in topic_ids:
-                    c = self._tier_counts(S, prev_id, last_id, tid)
-                    if not c:
-                        continue
+                for tid, c in self._topic_hits(S, prev_id, last_id, topic_ids, clo):
                     w_t = (2 if (tid in base_ids or tid in plan_ids) else 1) \
                         * (1.0 + live_ids.get(tid, 0.0))
                     for nid, n in c.items():
@@ -497,11 +571,9 @@ class FreeGen:
             gcw = tuple(w for w in out if len(w) > 3 and w.isalpha())[-8:]
             live_ids = self._live_state_ids(state_ids, gcw, vocab) if gcw else state_ids
             dist = Counter()
+            clo = self._closures(S)
             if last_id >= 0:
-                for tid in topic_ids:
-                    c = self._tier_counts(S, prev_id, last_id, tid)
-                    if not c:
-                        continue
+                for tid, c in self._topic_hits(S, prev_id, last_id, topic_ids, clo):
                     w_t = (2 if (tid in base_ids or tid in plan_ids) else 1) \
                         * (1.0 + live_ids.get(tid, 0.0))
                     for nid, n in c.items():
