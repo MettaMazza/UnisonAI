@@ -140,8 +140,23 @@ def build_stream():
             continue
         seen.add(norm)
         stream.append(qs)
-    stream.sort(key=lambda q: hashlib.md5(q.strip().lower().encode()).hexdigest())
-    return stream
+    # ACT-BALANCED CURRICULUM (deployment-distribution alignment, not test-matching:
+    # the engine deploys as an addressed assistant — questions and self-disclosures
+    # roughly evenly; the raw pair corpus is 2:1 mid-dialogue statements). Question-form
+    # and statement-form interleave 1:1, each queue hash-ordered (deterministic, no RNG).
+    # Prompts already held as taught meanings are excluded — resuming with a rebuilt
+    # stream re-teaches nothing.
+    taught_low = {tp["prompt"].strip().lower() for tp in pair_retrieval._taught_pairs()}
+    stream = [q for q in stream if q.strip().lower() not in taught_low]
+    key = lambda q: hashlib.md5(q.strip().lower().encode()).hexdigest()
+    qs_q = sorted((q for q in stream if q.strip().endswith("?")), key=key)
+    qs_s = sorted((q for q in stream if not q.strip().endswith("?")), key=key)
+    out = []
+    for a, b in zip(qs_q, qs_s):
+        out += [a, b]
+    longer = qs_q if len(qs_q) > len(qs_s) else qs_s
+    out += longer[min(len(qs_q), len(qs_s)):]
+    return out
 
 
 def binding(p):
@@ -267,10 +282,16 @@ def main():
         near_set, far_set = NEAR[:4], FAR[:4]
         print("=== PREFLIGHT: 2 batches of 4, 4+4 probes, then exit ===", flush=True)
 
-    st = {"cursor": 0, "epoch": 0}
+    st = {"cursor": 0, "epoch": 0, "stream_v": 2}
     if os.path.exists(STATE) and not PREFLIGHT:
-        st = json.load(open(STATE))
-        print(f"resuming: epoch {st['epoch']}, cursor {st['cursor']:,}", flush=True)
+        old = json.load(open(STATE))
+        if old.get("stream_v") == 2:
+            st = old
+            print(f"resuming: epoch {st['epoch']}, cursor {st['cursor']:,}", flush=True)
+        else:
+            st["epoch"] = old.get("epoch", 0)
+            print(f"stream rebuilt (v2, act-balanced, taught-excluded): cursor reset, "
+                  f"epoch continues from {st['epoch']}", flush=True)
     print(f"=== EPOCH TRAINING (translated): batch={batch_n}, {batches_per_epoch} batches/epoch, "
           f"loss=training-judge verdict, stop=near&far>={TAUGHT_LOCK} for {PERSIST} epochs, "
           f"POOL validation ===", flush=True)
