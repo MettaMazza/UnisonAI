@@ -75,6 +75,20 @@ class FreeGen:
             logger.info(f"kin-context store loaded: {len(self._S['cond']):,} conditioned keys")
         return self._S
 
+    def _tier_counts(self, S, prev_id, last_id, tid):
+        """Conditioned counts across n-gram tiers: the bigram tier plus the TRIGRAM tier
+        at the binary factor 2 — two exact ordered tokens in the key outrank one, the
+        same deeper-context-doubles tiering the fluency cascade and topic weighting use
+        (F-lever 1: order lives in the key, established n-gram deepening)."""
+        c2 = S["cond"].get((last_id, tid))
+        c3 = S.get("cond3", {}).get((prev_id, last_id, tid)) if prev_id >= 0 else None
+        if not c3:
+            return c2
+        m = dict(c2) if c2 else {}
+        for nid, n in c3.items():
+            m[nid] = m.get(nid, 0) + 2 * n
+        return m
+
     def _topic_set(self, text, history=None):
         base = set(_content_words(tokenize(text.lower())))
         for _, t in list(history or [])[-2:]:
@@ -105,13 +119,15 @@ class FreeGen:
             # sentence-start conditioning: the BOS marker keys topical corpus OPENERS
             last_tok = out[-1] if out else "\x02"
             last_id = vocab.get(last_tok, -1)
+            prev_tok = out[-2] if len(out) >= 2 else "\x02"
+            prev_id = vocab.get(prev_tok, -1)
             dist = Counter()
             if last_id >= 0:
                 # TOPIC-CONDITIONED lookup: candidates that followed this SAME last token in
                 # the corpus (grammar by construction), keyed by topic (relevance). Query
                 # topic words weigh the binary factor over expanded kin (the fold factor).
                 for tid in topic_ids:
-                    c = cond.get((last_id, tid))
+                    c = self._tier_counts(S, prev_id, last_id, tid)
                     if not c:
                         continue
                     w_t = 2 if tid in base_ids else 1
@@ -272,10 +288,12 @@ class FreeGen:
         def step_dist(out):
             last_tok = out[-1] if out else "\x02"
             last_id = vocab.get(last_tok, -1)
+            prev_tok = out[-2] if len(out) >= 2 else "\x02"
+            prev_id = vocab.get(prev_tok, -1)
             dist = Counter()
             if last_id >= 0:
                 for tid in topic_ids:
-                    c = cond.get((last_id, tid))
+                    c = self._tier_counts(S, prev_id, last_id, tid)
                     if not c:
                         continue
                     w_t = (2 if (tid in base_ids or tid in plan_ids) else 1) \
@@ -406,10 +424,12 @@ class FreeGen:
         for step in range(max_words):
             last_tok = out[-1] if out else "\x02"
             last_id = vocab.get(last_tok, -1)
+            prev_tok = out[-2] if len(out) >= 2 else "\x02"
+            prev_id = vocab.get(prev_tok, -1)
             dist = Counter()
             if last_id >= 0:
                 for tid in topic_ids:
-                    c = cond.get((last_id, tid))
+                    c = self._tier_counts(S, prev_id, last_id, tid)
                     if not c:
                         continue
                     w_t = (2 if (tid in base_ids or tid in plan_ids) else 1) \

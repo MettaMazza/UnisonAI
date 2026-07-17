@@ -61,6 +61,10 @@ def main():
     # key was measured producing function-word soup (F0 run: 0/12, "Go on on a to on") —
     # order must live in the key, exactly as kNN-LM's context states encode it.
     cond = defaultdict(Counter)        # (last_id, topic_id) -> {next_id: count}
+    cond3 = defaultdict(Counter)       # (prev_id, last_id, topic_id) -> {next_id: count}
+    # TRIGRAM CONDITIONING (F-lever 1): two tokens of exact order in the key — the
+    # established n-gram deepening; at generation the deeper tier carries the binary
+    # factor 2 over the bigram tier (the same tiering the store already uses).
     BOS = wid("\x02")                  # sentence-start marker (the <s> of every n-gram LM)
     npos = 0
     cap_num = Counter()      # counted entity signal: how often a token appears Capitalized
@@ -86,27 +90,35 @@ def main():
                 c[first_id] += 1
         for i in range(1, len(toks)):
             last_id, next_id = wid(low[i - 1]), wid(low[i])
+            prev_id = wid(low[i - 2]) if i >= 2 else BOS
             for cw in set(_content_words(low[max(0, i - WINDOW):i])):
-                c = cond[(last_id, wid(cw))]
+                cw_id = wid(cw)
+                c = cond[(last_id, cw_id)]
                 if len(c) < 400:
                     c[next_id] += 1
+                c3 = cond3[(prev_id, last_id, cw_id)]
+                if len(c3) < 400:
+                    c3[next_id] += 1
             npos += 1
         if ti % 100000 == 0 and ti:
             print(f"  ...{ti} texts, {npos} positions, {len(cond)} keys | {time.time()-t0:.0f}s", flush=True)
 
-    # hapax pruning (established): a (last,topic) key seen once carries noise, not signal
+    # hapax pruning (established): a key seen once carries noise, not signal
     pruned = {k: dict(v) for k, v in cond.items() if sum(v.values()) > 1}
-    print(f"  pruned {len(cond) - len(pruned):,} hapax keys -> {len(pruned):,} kept", flush=True)
+    print(f"  pruned {len(cond) - len(pruned):,} hapax bigram keys -> {len(pruned):,} kept", flush=True)
+    pruned3 = {k: dict(v) for k, v in cond3.items() if sum(v.values()) > 1}
+    print(f"  pruned {len(cond3) - len(pruned3):,} hapax trigram keys -> {len(pruned3):,} kept", flush=True)
+    del cond3
     # entity tokens (counted): predominantly mid-sentence-capitalized words are names/places
     # tied to their source contexts — excluded at generation unless in the live topic
     entities = {w for w, d in cap_den.items()
                 if d >= 4 and cap_num.get(w, 0) * 2 >= d}          # cap-fraction >= 1/2
     print(f"  counted entity tokens: {len(entities):,}", flush=True)
     with open(OUT, "wb") as f:
-        pickle.dump({"vocab": vocab, "words": words, "cond": pruned,
+        pickle.dump({"vocab": vocab, "words": words, "cond": pruned, "cond3": pruned3,
                      "entities": sorted(entities)}, f,
                     protocol=pickle.HIGHEST_PROTOCOL)
-    print(f"saved kin-context store v2: {npos:,} positions, vocab {len(words):,}, "
+    print(f"saved kin-context store v3 (trigram): {npos:,} positions, vocab {len(words):,}, "
           f"{len(cond):,} (last,topic) keys -> {OUT} ({os.path.getsize(OUT)/1e6:.0f}MB) in {time.time()-t0:.0f}s", flush=True)
 
 
