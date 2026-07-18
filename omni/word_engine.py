@@ -165,6 +165,7 @@ class WordEngine:
         self.neigh_index = defaultdict(set)   # context word -> words holding it as neighbour
         self._fluency_path = fluency_path
         self._fluency_identity = None
+        self._fluency_registration = None
 
     def configure_fluency_store(self, path):
         """Select one explicit generation-surface store and drop cached state.
@@ -176,12 +177,72 @@ class WordEngine:
         self._fluency_path = path
         self._fluency = None
         self._fluency_identity = None
+        self._fluency_registration = None
         self._openers = None
+
+    def configure_registered_fluency(self, registration_path):
+        """Activate one explicitly registered response-only runtime arm.
+
+        The registration binds the already sealed artifact receipt and artifact
+        bytes. Nothing is selected when this method is not called.
+        """
+        import hashlib, json
+        from pathlib import Path
+
+        root = Path(__file__).resolve().parents[1]
+
+        def resolve(value):
+            path = Path(value).expanduser()
+            return path.resolve() if path.is_absolute() else (root / path).resolve()
+
+        arm_path = resolve(registration_path)
+        arm_raw = arm_path.read_bytes()
+        arm = json.loads(arm_raw)
+        if arm.get("schema") != "unison-response-fluency-runtime-arm/v1" or \
+                arm.get("status") != "registered":
+            raise RuntimeError("unsupported response-fluency runtime arm")
+        receipt_binding = arm.get("receipt", {})
+        receipt_path = resolve(receipt_binding.get("path", ""))
+        receipt_raw = receipt_path.read_bytes()
+        if hashlib.sha256(receipt_raw).hexdigest() != receipt_binding.get("sha256"):
+            raise RuntimeError("response-fluency receipt hash mismatch")
+        receipt = json.loads(receipt_raw)
+        if receipt.get("schema") != "unison-response-fluency-receipt/v1" or \
+                receipt.get("status") != "sealed":
+            raise RuntimeError("response-fluency receipt is not sealed")
+        artifact_binding = arm.get("artifact", {})
+        if artifact_binding != receipt.get("artifact"):
+            raise RuntimeError("runtime arm artifact differs from sealed receipt")
+        artifact_path = resolve(artifact_binding.get("path", ""))
+        if artifact_path.stat().st_size != artifact_binding.get("bytes") or \
+                hashlib.sha256(artifact_path.read_bytes()).hexdigest() != \
+                artifact_binding.get("sha256"):
+            raise RuntimeError("registered response-fluency artifact hash mismatch")
+        self.configure_fluency_store(artifact_path)
+        identity = self.fluency_identity()
+        expected = {
+            "sha256": artifact_binding["sha256"],
+            "schema": "unison-response-fluency/v1",
+            "role": receipt.get("role"),
+            "boundary_policy": receipt.get("boundary_policy"),
+        }
+        if any(identity.get(key) != value for key, value in expected.items()):
+            self.configure_fluency_store(None)
+            raise RuntimeError("loaded response-fluency identity differs from registration")
+        self._fluency_registration = {
+            "path": str(arm_path),
+            "sha256": hashlib.sha256(arm_raw).hexdigest(),
+            "schema": arm["schema"],
+        }
+        return self.fluency_identity()
 
     def fluency_identity(self):
         """Return the hash-bound identity of the generation surface in use."""
         self._load_fluency()
-        return dict(self._fluency_identity or {})
+        identity = dict(self._fluency_identity or {})
+        if identity and self._fluency_registration:
+            identity["runtime_arm"] = dict(self._fluency_registration)
+        return identity
 
     # ── build from the same held orbits the char engine learns from ──
     def ensure_built(self, graph, ukey):

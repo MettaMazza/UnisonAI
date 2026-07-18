@@ -19,7 +19,8 @@ def require(condition: bool, message: str) -> None:
         raise RuntimeError(message)
 
 
-def verify(campaign_path: Path, result_dir: Path, verify_runtime: bool) -> dict:
+def verify(campaign_path: Path, result_dir: Path, verify_runtime: bool,
+           require_current_source: bool = True) -> dict:
     campaign_path = campaign_path.resolve()
     result_dir = result_dir.resolve()
     campaign = json.loads(campaign_path.read_text())
@@ -93,10 +94,11 @@ def verify(campaign_path: Path, result_dir: Path, verify_runtime: bool) -> dict:
                 summary.get("rate") == totals[arm] / len(prompts),
                 f"summary mismatch for arm: {arm}")
 
-    for relative, expected in registration.get("source_sha256", {}).items():
-        source = ROOT / relative
-        require(source.is_file() and sha256_file(source) == expected,
-                f"registered source drift: {relative}")
+    if require_current_source:
+        for relative, expected in registration.get("source_sha256", {}).items():
+            source = ROOT / relative
+            require(source.is_file() and sha256_file(source) == expected,
+                    f"registered source drift: {relative}")
     if verify_runtime:
         for relative, binding in registration.get("runtime_artifacts", {}).items():
             if binding.get("status") != "present":
@@ -113,6 +115,7 @@ def verify(campaign_path: Path, result_dir: Path, verify_runtime: bool) -> dict:
         "prompt_count": len(prompts),
         "pool_good": result["pool_good"],
         "runtime_artifacts_checked": verify_runtime,
+        "current_source_checked": require_current_source,
         "seal_sha256": sha256_file(seal_path),
     }
 
@@ -122,8 +125,11 @@ def main() -> None:
     parser.add_argument("campaign", type=Path)
     parser.add_argument("result_dir", type=Path)
     parser.add_argument("--verify-runtime", action="store_true")
+    parser.add_argument("--allow-source-drift", action="store_true")
     args = parser.parse_args()
-    print(json.dumps(verify(args.campaign, args.result_dir, args.verify_runtime),
+    print(json.dumps(verify(
+        args.campaign, args.result_dir, args.verify_runtime,
+        require_current_source=not args.allow_source_drift),
                      sort_keys=True))
 
 

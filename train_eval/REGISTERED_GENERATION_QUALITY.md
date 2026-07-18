@@ -50,10 +50,19 @@ log is not publication evidence.
 The sealed outputs exposed a common surface-realisation defect: the legacy
 fluency builder treated the mixed conversational corpus as one continuous token
 stream, allowing contexts to cross unrelated response and document boundaries.
-`build_response_fluency.py` now constructs a separate, inactive development
+`build_response_fluency.py` constructs a separate development
 artifact from assistant responses in the sealed pair store only, resetting all
 context at every response boundary. `response_fluency_v1_receipt.json` binds
 649,917 responses, 10,491,053 tokens, 93,098 words, and exact order-1 through
 order-4 context counts. The legacy artifact and sealed campaign are unchanged.
-Activation requires a separately registered comparison; this build alone is
-not a conversational-quality result.
+`response_fluency_runtime_arm_v1.json` now makes that sealed artifact explicitly
+selectable by the native runtime while leaving the default unchanged. Maria
+Smith alone decides real comparison timing and the conclusion supported by its
+data.
+
+The historical sealed campaign remains source-strict by default: current
+development changes correctly produce a source-drift halt. The verifier's
+explicit `--allow-source-drift` archival mode checks the immutable campaign,
+registration, calibration, result, unanimity arithmetic, and seal without
+pretending the historical source is the current checkout; it never rewrites the
+receipt.

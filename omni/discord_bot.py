@@ -1490,6 +1490,15 @@ def init_subsystems():
     global omni_memory, session_manager, image_encoder, audio_encoder, unison_identity
     global user_fingerprints, observer, model_pool, flux_gen, kokoro, whisper, tools_orchestrator
     
+    # Runtime-arm selection is explicit. With no environment setting the live
+    # legacy surface is unchanged.
+    fluency_arm = os.environ.get("UNISON_FLUENCY_ARM")
+    if fluency_arm and not word_engine.fluency_identity().get("runtime_arm"):
+        identity = word_engine.configure_registered_fluency(fluency_arm)
+        logger.info(
+            "Registered response-fluency arm active: %s (%s)",
+            identity["runtime_arm"]["path"], identity["sha256"])
+
     # Initialize only if not already initialized
     if omni_memory is not None: return
     

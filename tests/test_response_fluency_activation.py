@@ -2,6 +2,7 @@ import hashlib
 from pathlib import Path
 import pickle
 import random
+import json
 import tempfile
 import unittest
 
@@ -66,6 +67,53 @@ class ResponseFluencyActivationTests(unittest.TestCase):
             self.assertEqual(engine.fluency_identity()["sha256"],
                              hashlib.sha256(second.read_bytes()).hexdigest())
             self.assertEqual(first_hash, hashlib.sha256(first.read_bytes()).hexdigest())
+
+    def test_registered_runtime_arm_binds_receipt_and_artifact(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            artifact = root / "response.pkl"
+            receipt = root / "receipt.json"
+            arm = root / "arm.json"
+            self._store(artifact)
+            artifact_binding = {
+                "path": str(artifact),
+                "bytes": artifact.stat().st_size,
+                "sha256": hashlib.sha256(artifact.read_bytes()).hexdigest(),
+            }
+            receipt.write_text(json.dumps({
+                "schema": "unison-response-fluency-receipt/v1",
+                "status": "sealed",
+                "artifact": artifact_binding,
+                "role": "assistant-response",
+                "boundary_policy": "reset-before-and-after-every-response",
+            }))
+            arm.write_text(json.dumps({
+                "schema": "unison-response-fluency-runtime-arm/v1",
+                "status": "registered",
+                "receipt": {
+                    "path": str(receipt),
+                    "sha256": hashlib.sha256(receipt.read_bytes()).hexdigest(),
+                },
+                "artifact": artifact_binding,
+            }))
+            identity = WordEngine().configure_registered_fluency(arm)
+            self.assertEqual(identity["sha256"], artifact_binding["sha256"])
+            self.assertEqual(identity["runtime_arm"]["path"], str(arm.resolve()))
+
+    def test_registered_runtime_arm_halts_on_receipt_drift(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            arm = root / "arm.json"
+            receipt = root / "receipt.json"
+            receipt.write_text("{}")
+            arm.write_text(json.dumps({
+                "schema": "unison-response-fluency-runtime-arm/v1",
+                "status": "registered",
+                "receipt": {"path": str(receipt), "sha256": "0" * 64},
+                "artifact": {},
+            }))
+            with self.assertRaisesRegex(RuntimeError, "receipt hash"):
+                WordEngine().configure_registered_fluency(arm)
 
 
 if __name__ == "__main__":

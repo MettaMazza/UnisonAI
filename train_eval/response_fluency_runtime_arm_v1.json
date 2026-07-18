@@ -1,0 +1,16 @@
+{
+  "artifact": {
+    "bytes": 318595101,
+    "path": "omni/response_fluency_v1.pkl",
+    "sha256": "01bf496745d109a04d1983c78ed298c180b970aaf64ed30da32600a956b1d8b2"
+  },
+  "governance_authority": false,
+  "interpretation": "explicit native development surface; Maria Smith assigns benchmark timing and conclusions",
+  "receipt": {
+    "path": "train_eval/response_fluency_v1_receipt.json",
+    "sha256": "2ee2f1025292ee2a657d9223514d341d64f3860eb94a20adeb80ed5324dc3fc4"
+  },
+  "schema": "unison-response-fluency-runtime-arm/v1",
+  "selection": "explicit-only",
+  "status": "registered"
+}

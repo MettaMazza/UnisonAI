@@ -54,3 +54,14 @@ activation and leaves an empty surface. `fluency_identity()` reports the exact
 path and SHA-256 together with the declared provenance. Selection does not make
 the artifact the default and carries no agent-authored benchmark conclusion or
 parity definition.
+
+The live Discord runtime now accepts `UNISON_FLUENCY_ARM` as an explicit arm
+selection. `train_eval/response_fluency_runtime_arm_v1.json` binds the sealed
+receipt and 318,595,101-byte artifact; the loader rechecks both SHA-256 values,
+the response-only schema, role, and boundary policy before generation can use
+it. With no explicit arm, the live default is unchanged. Runtime selection is
+an implementation route, not agent authority over benchmark timing or results.
+The committed arm was exercised directly: it loaded 93,098 words at exact
+orders 1–4 and returned artifact SHA-256
+`01bf496745d109a04d1983c78ed298c180b970aaf64ed30da32600a956b1d8b2` with
+the registered response role and boundary policy.
