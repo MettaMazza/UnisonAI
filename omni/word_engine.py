@@ -152,7 +152,7 @@ def _needs_space(surface, tok):
 class WordEngine:
     """Multi-level word-orbit stores + fold-mix next-word prediction."""
 
-    def __init__(self):
+    def __init__(self, fluency_path=None):
         self.stores = [defaultdict(lambda: defaultdict(int)) for _ in range(WORD_CTX_MAX + 1)]
         self.vocab = 1
         self._sig = None
@@ -163,6 +163,25 @@ class WordEngine:
         self.orbit_content = []               # per orbit: its prompt's content-word set
         self.word_index = defaultdict(set)    # content word -> orbit indices
         self.neigh_index = defaultdict(set)   # context word -> words holding it as neighbour
+        self._fluency_path = fluency_path
+        self._fluency_identity = None
+
+    def configure_fluency_store(self, path):
+        """Select one explicit generation-surface store and drop cached state.
+
+        The global live engine keeps the historical default when ``path`` is
+        omitted. Development arms can select the sealed response-only artifact
+        without renaming files or silently changing the live path.
+        """
+        self._fluency_path = path
+        self._fluency = None
+        self._fluency_identity = None
+        self._openers = None
+
+    def fluency_identity(self):
+        """Return the hash-bound identity of the generation surface in use."""
+        self._load_fluency()
+        return dict(self._fluency_identity or {})
 
     # ── build from the same held orbits the char engine learns from ──
     def ensure_built(self, graph, ukey):
@@ -350,19 +369,47 @@ class WordEngine:
         return None, 0, 0
 
     def _load_fluency(self):
-        """Load the general-language fluency store (train_eval/build_fluency.py) once."""
+        """Load one explicitly identified general-language generation surface."""
         if getattr(self, "_fluency", None) is not None:
             return self._fluency
-        import pickle, os
-        path = os.path.join(os.path.dirname(__file__), "word_fluency.pkl")
+        import hashlib, os, pickle
+        configured = self._fluency_path or "word_fluency.pkl"
+        path = configured if os.path.isabs(str(configured)) else os.path.join(
+            os.path.dirname(__file__), str(configured))
         self._fluency = {"maxl": 0, "uni": {}, "stores": [None]}
         if os.path.exists(path):
             try:
                 with open(path, "rb") as f:
                     self._fluency = pickle.load(f)
+                schema = self._fluency.get("schema")
+                if self._fluency_path is not None and \
+                        schema != "unison-response-fluency/v1":
+                    raise RuntimeError("explicit fluency store has unsupported schema")
+                if schema == "unison-response-fluency/v1":
+                    if self._fluency.get("role") != "assistant-response" or \
+                            self._fluency.get("boundary_policy") != \
+                            "reset-before-and-after-every-response":
+                        raise RuntimeError("response-only fluency provenance mismatch")
+                if self._fluency.get("maxl", 0) < 1 or \
+                        not self._fluency.get("uni") or \
+                        len(self._fluency.get("stores", [])) <= self._fluency.get("maxl", 0):
+                    raise RuntimeError("fluency store is empty or incomplete")
+                with open(path, "rb") as identity_file:
+                    digest = hashlib.sha256(identity_file.read()).hexdigest()
+                self._fluency_identity = {
+                    "path": os.path.abspath(path),
+                    "sha256": digest,
+                    "schema": schema or "legacy-word-fluency",
+                    "role": self._fluency.get("role"),
+                    "boundary_policy": self._fluency.get("boundary_policy"),
+                    "vocabulary": len(self._fluency.get("uni", {})),
+                    "max_order": self._fluency.get("maxl", 0),
+                }
                 logger.info(f"fluency store loaded: vocab {len(self._fluency.get('uni', {})):,}, "
                             f"depths 1..{self._fluency.get('maxl', 0)}")
             except Exception:
+                self._fluency = {"maxl": 0, "uni": {}, "stores": [None]}
+                self._fluency_identity = None
                 logger.error("fluency load failed", exc_info=True)
         return self._fluency
 
@@ -886,6 +933,8 @@ class WordEngine:
         """Drop the cached fluency + coupling stores so the next use reloads the freshly
         rebuilt foundation from disk (after /scrape extends and rebuilds them)."""
         self._fluency = None
+        self._fluency_identity = None
+        self._openers = None
         self._coupling_graph = None
         logger.info("language stores dropped; will reload rebuilt foundation on next use")
 

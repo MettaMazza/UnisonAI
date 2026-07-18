@@ -39,6 +39,18 @@ declare a conversational-quality result or replace the independent judge. The
 sealed 2026-07-18 campaign is a Codex-authored auxiliary benchmark and records
 baseline 0/12, F1 0/12, and F3 0/12 under two-judge unanimity after perfect
 same-run calibration. It is not Maria's prediction, finding, loss, parity
-definition, or authority over a real run. A new
-response-only fluency artifact is development evidence only until a separately
-registered comparison is completed.
+definition, or authority over a real run. The response-only fluency artifact is
+a selectable development surface. Maria Smith alone decides when its evidence
+supports a publishable conclusion or when it enters a real benchmark run.
+
+## Explicit response-only surface
+
+`WordEngine(fluency_path=...)` and `configure_fluency_store(...)` now provide an
+explicit native route to a sealed response-only fluency artifact without
+renaming or replacing the live legacy store. An explicitly selected artifact
+must declare schema `unison-response-fluency/v1`, role `assistant-response`, and
+boundary policy `reset-before-and-after-every-response`; any mismatch halts its
+activation and leaves an empty surface. `fluency_identity()` reports the exact
+path and SHA-256 together with the declared provenance. Selection does not make
+the artifact the default and carries no agent-authored benchmark conclusion or
+parity definition.
