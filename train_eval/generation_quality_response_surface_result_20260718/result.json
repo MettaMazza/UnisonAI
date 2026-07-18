@@ -1,0 +1,320 @@
+{
+  "calibration_sha256": "9a548dd2b72d8f7515fd477732269ea6ca97e1f2c974064d81c1b8f3f3da166b",
+  "pool_good": {
+    "baseline": {
+      "good": 0,
+      "rate": 0.0,
+      "total": 12
+    },
+    "response_surface": {
+      "good": 0,
+      "rate": 0.0,
+      "total": 12
+    }
+  },
+  "registration_sha256": "4d63fd3bb7967ef07a6003ee5bcad90b885f6c32b3e1fd84289253e3aad80c2b",
+  "rows": [
+    {
+      "prompt": "Hello, how are you?",
+      "replies": {
+        "baseline": "you. in the iphone' s a13 bionic age control range special is the act of sending or reciting a proposition by undertaking an integrated development program and the support of her family and her own. can you",
+        "response_surface": "it. i get to work on a new key - where sustainability meets style\"? you must be a lot of fun! you create a dynamic and engaging live a few years ago. what about you"
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "response_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "how's it going?",
+      "replies": {
+        "baseline": "add the chicken to the marinade, stirring to combine. 4. use a'); const result = playround (\" scissors\" & affiliation in + 2 & 768 in +... + 3",
+        "response_surface": "see. i am a 30 - day the snow - covered peak, a sight that we all the sun was no, i don't get it. it's a classic for a reason. you can trust us"
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "response_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "My name is Maria, what is your name?",
+      "replies": {
+        "baseline": "company name] and all of his responsibilities, lux and i couldn' t shake off the feeling that it was not looking for a more upscale restaurant or more of the defendants, only 123 were used for",
+        "response_surface": "doing and see if anything, i'm not going to be tough, stephany, it sounds like you are! how are you?\" in the united states. i'm not a big fan of the\" a"
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "response_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "what do you think about the ocean",
+      "replies": {
+        "baseline": "art is the use of language in the law. yml ` ` ` the ` generatequote () ` function 3. in a mixing the flour, you can add a legend to the visualization: you\u2019",
+        "response_surface": "they're so, no problem. you think so. so, cook, and i like making pastries. you can do. just be sure to go far in whatever you decide to get rid of everything."
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "response_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "tell me about space",
+      "replies": {
+        "baseline": "its running. 2. hashtag can be a big hit among food enthusiasts. can you tell me if my creative scrapbook occasionally, she saw a knight in a pocket or purse.\" we' re so",
+        "response_surface": "no, the text, you can add a function to get out of it. i'm not mad max: fury road\", he was a lot of fun. i get to do. * @ wiu"
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "response_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "I'm feeling a bit sad today",
+      "replies": {
+        "baseline": "just not convinced. it involves harnessing the kinetic energy of seeking out new experiences and opportunities due to her unmanageable. 5. instituto de, ruth.\" the new word: / / www. edx -",
+        "response_surface": "its impact on the value of individual. i'm not cisgender. so, and i can provide you do for a living? and do in tailwind is based on the books do you like to do? do"
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "response_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "what should I cook for dinner",
+      "replies": {
+        "baseline": "life and kendrick to lead a 49 - 44. can you provide me with the contact information for the communication and performance in this population. his act of renunciation sparked a new and unique understanding of the sun",
+        "response_surface": "new. i'm a hot, it'll be fun. i bet it. i'm just enjoying my day. i should try to do better in the csv. cantonese food is new and anticipation at the annual duck"
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "response_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "do you like music",
+      "replies": {
+        "baseline": "good to excellent. the uncontrolled growth and can be adapted for all fixed, but you don' t use or need. you might be pleasantly surprised at how delicious and 72 degrees\u201d can be more appropriate",
+        "response_surface": "why? i thought it was the music can be an effective way to impress your guests... i see. we offer two types of compactors within our range - static compactors and portable to take with"
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "response_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "what are your hobbies",
+      "replies": {
+        "baseline": "think one of the many features available in adobe' s own despised and ` net:: httpsuccess puts response. as the cool ocean air and water pollution, and respecting the gym are the reef is teeming",
+        "response_surface": "offers food and how it has an afterlife and the musical style is a unique blend of traditional and modern aspects. i got a few ideas. i've been doing it for so long! i love growing my"
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "response_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "recommend a good book",
+      "replies": {
+        "baseline": "email templates and the ability to shop 24 / or aggressive. he would use to find you. in my day, we recommend any other materials to use the provided information, age, and profession, bhel",
+        "response_surface": "ever get the chance. you know, i recommend a lot of fun to read. i'm a museum, but it can. we can act as a lot of fun! i like to do on your"
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "response_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "I just finished a painting",
+      "replies": {
+        "baseline": "product, but with mark' < p >';}}? > ` ` ` ` ` / * * * d fat jaegi\u201d (pp. 129 - 144. the operations at the eco",
+        "response_surface": "let me to show you how it was great. i love being surrounded by animals. i love animals so much for your kind words! i'm glad we met in lagging countries, with the primary focus being"
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "response_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "what makes a good friend",
+      "replies": {
+        "baseline": "we do now (\"% d\", & b.\" add to the sum of the two of you is when we conjure, we can use the' record for providing those case. it'",
+        "response_surface": "their team and their collaborators include chemical detection of the arab league. it's not easy to get up and get a job. i get to meet a lot of the same old. it was nice to get"
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "response_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    }
+  ],
+  "schema": "unison-generation-quality-result/v2",
+  "status": "completed"
+}

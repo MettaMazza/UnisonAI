@@ -1,0 +1,84 @@
+{
+  "campaign_sha256": "a8434732ca6735734664f891ef33e833d65f1511fa2524ee221263c361978e61",
+  "generation_arm": {
+    "artifact_bytes": 318595101,
+    "artifact_sha256": "01bf496745d109a04d1983c78ed298c180b970aaf64ed30da32600a956b1d8b2",
+    "path": "train_eval/response_fluency_runtime_arm_v1.json",
+    "receipt_sha256": "2ee2f1025292ee2a657d9223514d341d64f3860eb94a20adeb80ed5324dc3fc4",
+    "sha256": "840a6e1b567e58e1fb2c6fea3a6af0f8336c7329d520d54134674795d17390ff"
+  },
+  "judge_digests": {
+    "gemma-4-31b:latest": "ba706ea2c0ba1a0ad19c8dcb9aa89b15568c179c538283c6ea6570a17a2d0827",
+    "qwen3.6-27b:latest": "7ea81a10e901621933926f1a85388ebcc252893fd3a589ff049b3217141b5ae0"
+  },
+  "prompts_sha256": "fb7a522e467505c8850378cc566324404b7095d49d826112f74095a9f42823d0",
+  "runtime_artifacts": {
+    "omni/free_closures.pkl": {
+      "status": "absent"
+    },
+    "omni/kin_context.pkl": {
+      "bytes": 285668509,
+      "sha256": "363d75e256a8a1019c7f6e4fc93f2995da310615e470c14de9beabd7bf9766a4",
+      "status": "present"
+    },
+    "omni/pair_quality.pkl": {
+      "status": "absent"
+    },
+    "omni/pairs.pkl": {
+      "bytes": 226572757,
+      "sha256": "6a5dcc9e9d2227e3445a7d6630ce52807e9c58d7259bbb488f53d9f05c022b17",
+      "status": "present"
+    },
+    "omni/response_fluency_v1.pkl": {
+      "bytes": 318595101,
+      "sha256": "01bf496745d109a04d1983c78ed298c180b970aaf64ed30da32600a956b1d8b2",
+      "status": "present"
+    },
+    "omni/taught_pairs.pkl": {
+      "status": "absent"
+    },
+    "omni/word_coupling.pkl": {
+      "bytes": 6680477,
+      "sha256": "717fb9bc05dc00e2165470e7685461bd95cd8b8ca0c4cf6c237305b8e424d8ac",
+      "status": "present"
+    },
+    "omni/word_fluency.pkl": {
+      "bytes": 621336058,
+      "sha256": "0d4f89f63ad7c5e594cef04d2534ec247e9f185a111d872e8a7b9944342d6bf5",
+      "status": "present"
+    },
+    "omni/word_kin.pkl": {
+      "bytes": 5281155,
+      "sha256": "4451cc507be6d8843b50982cdbbeb8f9fc82bea9140a86d118211d2505d2e0de",
+      "status": "present"
+    },
+    "train_eval/response_fluency_runtime_arm_v1.json": {
+      "bytes": 591,
+      "sha256": "840a6e1b567e58e1fb2c6fea3a6af0f8336c7329d520d54134674795d17390ff",
+      "status": "present"
+    },
+    "train_eval/response_fluency_v1_receipt.json": {
+      "bytes": 1230,
+      "sha256": "2ee2f1025292ee2a657d9223514d341d64f3860eb94a20adeb80ed5324dc3fc4",
+      "status": "present"
+    },
+    "train_eval/runtime_store_build_receipt.json": {
+      "bytes": 3450,
+      "sha256": "4cd2d0f5a1d440744cbd0f3043291bb5c397002ed1ffefe4fce9a358fce90a6f",
+      "status": "present"
+    }
+  },
+  "schema": "unison-generation-quality-registration/v2",
+  "seed": 7,
+  "source_sha256": {
+    "omni/free_gen.py": "0413dd6ba3425a76ff77e99ba34451489fb2a15beec3ddfd95b99c1d06ddd50f",
+    "omni/generation_boundaries.py": "cdb544900c845be21706ac19d7fe410b22be409dc81a2a7993b36969fdefa18f",
+    "omni/pair_retrieval.py": "62fd4fae76796a5ca42d17ef620fd0942287c0112e1c66da7c259688919f501d",
+    "omni/word_engine.py": "ec4215d8194c0ab0409c82138e9c25cfdffdebac1a4622d5ad521147507703c9",
+    "train_eval/judge.py": "c5a7d8a11e9301692f7304e433a06d305c1437a2af0a3835abf4d46fa34f7306",
+    "train_eval/judge_calibration.py": "ae2a9a0a1cf643944d6e78761d8b54b2a272821b4aa40f254b1ff343955e12b6",
+    "train_eval/registered_generation_quality.py": "86c62f753d855365e2c4a7c13c79d2f54166fd11917a6f9e2a1c332c56d365bc",
+    "train_eval/seal_runtime_store_build.py": "b105f41ecedf245513a6480903e03acf25920c0279fa41b63cc735bb8e701204"
+  },
+  "status": "registered"
+}

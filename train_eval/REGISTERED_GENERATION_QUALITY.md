@@ -78,3 +78,19 @@ the campaign, current source, runtime stores, response-arm record, sealed
 artifact receipt, artifact bytes, and local judge digests before generation.
 This is a Codex-authored auxiliary comparison; its rows and judge measurements
 remain separate from Maria Smith's conclusions and benchmark authority.
+
+The registered 2026-07-18 execution completed and independently verified with
+calibration passed, current source checked, and every runtime artifact rehashed.
+The pooled unanimous-good measurement was 0/12 for the legacy baseline and 0/12
+for the response-only surface. The response surface changes the generated rows
+but did not cross either judge's registered good boundary in this twelve-prompt
+auxiliary comparison. This measured development result belongs to Codex's
+registered hypothesis; it is not Maria's failed prediction, a benchmark loss,
+or authority to redefine parity or stop the active benchmark-victory programme.
+
+Bindings:
+
+- registration SHA-256: `4d63fd3bb7967ef07a6003ee5bcad90b885f6c32b3e1fd84289253e3aad80c2b`;
+- calibration SHA-256: `9a548dd2b72d8f7515fd477732269ea6ca97e1f2c974064d81c1b8f3f3da166b`;
+- result SHA-256: `2a33c988c6a40b5b03de9441844f9d48de0b0e2571a0fede8270441e67944e14`;
+- seal SHA-256: `a5400521f83e846c864de15bf9d8f0103fa093d3dff7d36ea8ebb6918f897222`.
