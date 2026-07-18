@@ -94,3 +94,32 @@ Bindings:
 - calibration SHA-256: `9a548dd2b72d8f7515fd477732269ea6ca97e1f2c974064d81c1b8f3f3da166b`;
 - result SHA-256: `2a33c988c6a40b5b03de9441844f9d48de0b0e2571a0fede8270441e67944e14`;
 - seal SHA-256: `a5400521f83e846c864de15bf9d8f0103fa093d3dff7d36ea8ebb6918f897222`.
+
+## Live pair-surface development campaign
+
+`generation_quality_pair_surface_development_v1_20260718.json` is a separate
+Codex-authored auxiliary campaign over twelve new paraphrased conversation
+prompts.  It was registered before generation against the current live
+`pair_retrieval.reply` source, the 649,917-pair store, all declared runtime
+artifacts, and the same two local judge digests.  The completed result passed
+10/10 known-good and 10/10 known-bad calibration for both judges and independently
+verified every current source and runtime binding.
+
+The pooled unanimous-good measurement was 0/12.  Six rows halted without a reply;
+the six non-empty rows did not cross the registered unanimous-good gate.  This
+isolates a current development defect: the safe literal subject lock does not yet
+transfer reliably across paraphrased surface forms, while replacing it wholesale
+with the broader counted-kin band admitted false routes.  That broad-kin follow-up
+was rejected and fully reverted; `omni/pair_retrieval.py` returned byte-exact to
+the source hash sealed by this campaign.  The evidence records a Codex auxiliary
+hypothesis and implementation boundary.  It is not Maria's prediction, finding,
+benchmark loss, parity definition, or authority to stop the benchmark-victory
+programme.
+
+Bindings:
+
+- campaign SHA-256: `aca960617d50ec6bd4ba360f7718502f835a26a2fd9f9e47912a3070810c9125`;
+- registration SHA-256: `a91cdd849598e1ff653d2d44cd744833dda48de64a6abbf1b3b7a1617c87dd6c`;
+- calibration SHA-256: `9a548dd2b72d8f7515fd477732269ea6ca97e1f2c974064d81c1b8f3f3da166b`;
+- result SHA-256: `7cf61dcdf159f91b02b63b935ae0e70657ec9a5228b6f13232e62ba584cc80c0`;
+- seal SHA-256: `cd11021336c7de9142a99401ae4e5dbaa8a82a3db27585638f1060debed298da`.

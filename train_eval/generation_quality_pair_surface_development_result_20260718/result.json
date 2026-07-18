@@ -1,0 +1,207 @@
+{
+  "calibration_sha256": "9a548dd2b72d8f7515fd477732269ea6ca97e1f2c974064d81c1b8f3f3da166b",
+  "pool_good": {
+    "pair_surface": {
+      "good": 0,
+      "rate": 0.0,
+      "total": 12
+    }
+  },
+  "registration_sha256": "a91cdd849598e1ff653d2d44cd744833dda48de64a6abbf1b3b7a1617c87dd6c",
+  "rows": [
+    {
+      "prompt": "Hi there, how has your day been?",
+      "replies": {
+        "pair_surface": ""
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "empty",
+          "judge_2_good": false,
+          "judge_2_tail": "empty",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "I'm Maria. What should I call you?",
+      "replies": {
+        "pair_surface": ""
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "empty",
+          "judge_2_good": false,
+          "judge_2_tail": "empty",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "Could you explain why the sea has tides?",
+      "replies": {
+        "pair_surface": ""
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "empty",
+          "judge_2_good": false,
+          "judge_2_tail": "empty",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "Give me a simple overview of outer space.",
+      "replies": {
+        "pair_surface": ""
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "empty",
+          "judge_2_good": false,
+          "judge_2_tail": "empty",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "I've had a rough day and feel low.",
+      "replies": {
+        "pair_surface": ""
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "empty",
+          "judge_2_good": false,
+          "judge_2_tail": "empty",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "Any ideas for a vegetarian supper?",
+      "replies": {
+        "pair_surface": ""
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "empty",
+          "judge_2_good": false,
+          "judge_2_tail": "empty",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "What kind of songs do you enjoy?",
+      "replies": {
+        "pair_surface": "I like to sing folk songs."
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": false,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": true,
+          "judge_2_tail": "GOOD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "How do you spend your free time?",
+      "replies": {
+        "pair_surface": "I love spending time with my son and I love the beach."
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": false,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": true,
+          "judge_2_tail": "GOOD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "Can you suggest a novel worth reading?",
+      "replies": {
+        "pair_surface": "I'm reading a book about the history of Monsanto. That sounds interesting! What's the name of the book?"
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "I completed a watercolor today.",
+      "replies": {
+        "pair_surface": "I do not have access to specific product information. Watercolor paper is great for drawing. I like it too."
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "Which qualities matter most in friendship?",
+      "replies": {
+        "pair_surface": ""
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "empty",
+          "judge_2_good": false,
+          "judge_2_tail": "empty",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "What did I tell you my name was?",
+      "replies": {
+        "pair_surface": "Hi! I'm Unison. What do you like to do for fun?"
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    }
+  ],
+  "schema": "unison-generation-quality-result/v2",
+  "status": "completed"
+}

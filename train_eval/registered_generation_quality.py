@@ -200,6 +200,7 @@ def run(campaign_path: Path, registration_path: Path, output_dir: Path) -> dict:
             raise RuntimeError("judge calibration failed; generation scores are invalid")
 
         from omni.free_gen import free_gen
+        from omni.pair_retrieval import pair_retrieval
         from omni.word_engine import WordEngine, word_engine, tokenize, _content_words
 
         word_engine._load_coupling()
@@ -231,6 +232,8 @@ def run(campaign_path: Path, registration_path: Path, output_dir: Path) -> dict:
                 elif arm == "response_surface":
                     reply = (response_engine.structured_unfold(schema, rng)
                              or response_engine.unfold_response(schema, rng) or "")
+                elif arm == "pair_surface":
+                    reply = pair_retrieval.reply(prompt, history=[]) or ""
                 else:
                     raise RuntimeError(f"unsupported registered generation arm: {arm}")
                 replies[arm] = reply.strip()

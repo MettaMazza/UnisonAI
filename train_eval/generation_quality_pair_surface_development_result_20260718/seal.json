@@ -1,0 +1,7 @@
+{
+  "calibration_sha256": "9a548dd2b72d8f7515fd477732269ea6ca97e1f2c974064d81c1b8f3f3da166b",
+  "registration_sha256": "a91cdd849598e1ff653d2d44cd744833dda48de64a6abbf1b3b7a1617c87dd6c",
+  "result_sha256": "7cf61dcdf159f91b02b63b935ae0e70657ec9a5228b6f13232e62ba584cc80c0",
+  "schema": "unison-generation-quality-seal/v2",
+  "status": "completed"
+}

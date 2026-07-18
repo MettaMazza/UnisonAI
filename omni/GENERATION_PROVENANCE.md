@@ -26,13 +26,26 @@ these boundaries as local numeric literals.
 - Generation is constrained by the admitted half-One context and by counted plan
   coverage.
 - Fresh taught composition requires two independently held variants.
+- Live pair serving separates the observable conversational operation from its
+  addressed subject before retrieval.  A selected continuation is ordered by
+  subject carry, dialogue-act identity, source-bound operation, and unbound
+  source content; these are relations over the held prompt/response pair, not a
+  fitted semantic score.
+- Runtime identity occupies its own response seat.  A corpus speaker name in an
+  assistant self-identification is rebound to `Unison`, while a user's declared
+  name remains in the user seat.
+- When a held continuation contains multiple independently closed sentences,
+  one complete subject-bearing unit may be selected before cross-response
+  composition.  This preserves a grammatical response boundary without serving
+  the stored response as a whole.
 
 ## Engineering quantities
 
 These remain disclosed implementation status until separately forced or
 constitutionally re-derived: `TOPK_POS`, maximum/minimum word limits, beam width,
 beam expansion, `n_best`, candidate caps, closure multiplier, tie noise,
-paraphrase bounds, and the legacy conversational fallback threshold `0.30`.
+paraphrase bounds, the finite dialogue-operator lexicon, and the legacy
+conversational fallback threshold `0.30`.
 
 This provenance patch makes the generation boundary executable. It does not
 declare a conversational-quality result or replace the independent judge. The

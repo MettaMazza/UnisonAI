@@ -42,6 +42,46 @@ _NOT_NAMES = {"i", "ok", "okay", "ai", "tv", "usa", "uk", "god", "monday", "tues
               "march", "april", "may", "june", "july", "august", "september", "october",
               "november", "december", "english", "american", "internet", "google", "wow"}
 
+# These words carry the requested conversational operation, not its subject.
+# Keeping them in the subject address made "tell me about space" bind to any
+# source turn containing "tell" and "what do you think about the ocean" bind
+# to unrelated turns containing "think".
+_DIALOGUE_OPERATORS = {
+    "bit", "describe", "explain", "feeling", "finished", "good", "make", "makes",
+    "recommend", "suggest", "tell", "think",
+    "today",
+}
+_AGENT_NAME = "Unison"       # runtime identity, not a corpus-derived persona seat
+
+
+def _focus_words(text):
+    """Split the addressed subject from the conversational operation.
+
+    The split is deterministic and never erases the only available content:
+    if removing the operation leaves nothing, the original content is retained.
+    """
+    content = _content_words(tokenize(text.lower()))
+    focus = [word for word in content if word not in _DIALOGUE_OPERATORS]
+    return focus or content
+
+
+def _dialogue_act(text):
+    """Classify the observable response operation without a learned classifier."""
+    low = re.sub(r"\s+", " ", text.strip().lower())
+    words = set(tokenize(low))
+    if words & {"recommend", "suggest"}:
+        return "recommend"
+    if words & {"create", "compose", "draft"} or low.startswith("write "):
+        return "create"
+    if words & {"describe", "explain"} or low.startswith((
+            "tell me", "share your knowledge", "provide an overview", "detail ")):
+        return "explain"
+    if low.endswith("?") or low.startswith((
+            "what ", "why ", "how ", "who ", "where ", "when ", "which ",
+            "do ", "does ", "did ", "can ", "could ", "would ", "is ", "are ")):
+        return "question"
+    return "statement"
+
 
 class PairRetrieval:
     def __init__(self):
@@ -316,12 +356,12 @@ class PairRetrieval:
         # contain a topic word (measured: accumulation-only ranking served non-sequiturs).
         # ROLE-CERTAINTY PRIOR: a role-less pair's direction is correct with probability
         # exactly 1/2 (alternating dialogue, no roles) — the counted prior, applied as-is.
-        qset = set(_content_words(tokenize(text.lower())))
+        qset = set(_focus_words(text))
         P2 = self._pairs()
         certain = P2.get("src_certain")
         out = []
         for pid, s in scores.most_common(topn * 6):
-            pset = set(_content_words(tokenize(P2["prompts"][pid].lower())))
+            pset = set(_focus_words(P2["prompts"][pid]))
             jac = len(qset & pset) / max(len(qset | pset), 1) if qset else 0.0
             if jac <= 0:
                 continue
@@ -396,6 +436,7 @@ class PairRetrieval:
         self.last_pids = []
         P = self._pairs()
         live = set(_content_words(tokenize(text.lower())))
+        focus = set(_focus_words(text))
         for _, t in list(history or [])[-2:]:
             live |= set(_content_words(tokenize(str(t).lower())))
 
@@ -460,26 +501,60 @@ class PairRetrieval:
 
         # DIALOGUE-ACT MATCHING (established): a question-query is answered best by a
         # response whose SOURCE PROMPT was also a question. Prefer act-matched candidates.
-        is_q = text.strip().endswith("?")
-        qset = set(_content_words(tokenize(text.lower())))
+        live_act = _dialogue_act(text)
+        qset = focus
+        operation = set(_content_words(tokenize(text.lower()))) - focus
 
         def act_match(pid):
-            return (not is_q) or P["prompts"][pid].strip().endswith("?")
+            return _dialogue_act(P["prompts"][pid]) == live_act
 
-        def jac(pid):
-            pset = set(_content_words(tokenize(P["prompts"][pid].lower())))
-            return len(qset & pset) / max(len(qset | pset), 1) if qset else 0.0
+        def operation_overlap(pid):
+            prompt_words = set(_content_words(tokenize(P["prompts"][pid].lower())))
+            return len(operation & prompt_words)
 
-        ranked = sorted(((0 if act_match(pid) else 1, unbound(pid), -s, pid) for s, pid in cands))
+        def focus_coverage(pid):
+            pset = set(_focus_words(P["prompts"][pid]))
+            return len(qset & pset) / len(qset) if qset else 0.0
+
+        loud_focus = max(focus, key=self._rarity) if focus else None
+
+        def source_carries_focus(pid):
+            pset = set(_focus_words(P["prompts"][pid]))
+            return loud_focus is None or loud_focus in pset
+
+        def response_carries_focus(pid):
+            """True when the continuation itself carries the live subject.
+
+            A prompt-only match may answer hidden source context.  When a
+            candidate continuation does carry the subject, preserve that whole
+            prompt-response relation ahead of prompt-only matches.  This is an
+            ordering relation; it does not reject the remaining candidates.
+            """
+            if not focus:
+                return True
+            response_words = set(_content_words(tokenize(P["responses"][pid].lower())))
+            return bool(response_words & focus)
+
+        carried_count = sum(1 for _, pid in cands if response_carries_focus(pid))
+        carried = carried_count > 0
+        prefer_carried_response = live_act in {"explain", "question", "recommend"}
+        require_carried_tail = prefer_carried_response and carried_count >= 2
+        source_anchored = any(source_carries_focus(pid) for _, pid in cands)
+        ranked = sorted(((0 if (not prefer_carried_response or not carried
+                                or response_carries_focus(pid)) else 1,
+                          0 if (live_act == "statement" or act_match(pid)) else 1,
+                          -operation_overlap(pid), unbound(pid), -s, pid) for s, pid in cands))
         substance, sub_pid = None, None
         if best_t is not None:
             substance = best_t["response"]
         elif ranked:
-            for a0, u0, _, pid0 in ranked:
+            for carry0, act0, negop0, u0, _, pid0 in ranked:
                 # coverage + relevance lock + MINIMUM PROMPT SIMILARITY: a weak match is
                 # WORSE than deferring to the teacher/generic path (measured: weak-J serves
                 # were confident wrong answers). Exact-tier pids pass by construction.
-                if pid0 in exact_pids or (u0 <= 2 and locks_live(pid0) and jac(pid0) >= 0.25):
+                if pid0 in exact_pids or (u0 <= 2 and locks_live(pid0)
+                                           and (not source_anchored or source_carries_focus(pid0))
+                                           and focus_coverage(pid0) >= TAUGHT_LOCK):
                     substance, sub_pid = P["responses"][pid0], pid0
                     break
         if not substance:
@@ -497,9 +572,16 @@ class PairRetrieval:
         elif not substance.rstrip().endswith("?"):
             # ranked candidates ONLY — same-prompt pools carry each response's personal
             # context (measured v5: 'Hi, Auntie Shira!' persona collisions; e2e regressed)
-            for a, u, negs, pid in ranked:
+            for carry, act, negop, u, negs, pid in ranked:
                 r = P["responses"][pid]
-                if (u <= 1 and locks_live(pid) and r.rstrip().endswith("?")
+                response_words = set(_content_words(tokenize(r.lower())))
+                substance_words = set(_content_words(tokenize(substance.lower())))
+                if (prefer_carried_response and carried
+                        and not (response_words & (focus | substance_words))):
+                    continue
+                if ((not require_carried_tail or carry == 0)
+                        and u <= 1 and locks_live(pid) and source_carries_focus(pid)
+                        and r.rstrip().endswith("?")
                         and r != substance and len(r.split()) >= 4):
                     question, q_pid = r, pid
                     break
@@ -514,13 +596,19 @@ class PairRetrieval:
         def relex(s):
             """Rebind AT MOST ONE proper noun (measured: multi-swap mangled surfaces —
             'I was a Maria in ancient Maria')."""
-            if not user_name:
-                return s, 0
             toks, out, n = s.split(" "), [], 0
             for i, tk in enumerate(toks):
                 core = re.sub(r"^\W+|\W+$", "", tk)
                 sent_initial = i == 0 or (out and out[-1] and out[-1].rstrip()[-1:] in ".!?")
-                if (n == 0 and core and re.match(r"^[A-Z][a-z]+$", core) and not sent_initial
+                prefix = " ".join(toks[max(0, i - 3):i]).lower()
+                assistant_self_seat = bool(re.search(
+                    r"(?:\bi(?:'m| am)|\bmy name is)\s*$", prefix))
+                if (assistant_self_seat and core and re.match(r"^[A-Z][a-z]+$", core)
+                        and core != _AGENT_NAME):
+                    out.append(tk.replace(core, _AGENT_NAME)); n += 1
+                elif (user_name and n == 0 and core and re.match(r"^[A-Z][a-z]+$", core)
+                        and not sent_initial
+                        and not assistant_self_seat
                         and core.lower() not in _NOT_NAMES and core.lower() not in live
                         and core != user_name):
                     out.append(tk.replace(core, user_name)); n += 1
@@ -579,7 +667,7 @@ class PairRetrieval:
             # appends read as doubled questions and were judged BAD)
             qc = set(_content_words(tokenize(q2.lower())))
             sc = set(_content_words(tokenize(substance2.lower())))
-            if qc - sc:
+            if (qc - sc) or (q_pid is not None and source_carries_focus(q_pid)):
                 reply = substance2.rstrip() + " " + q2
 
         # NEVER-VERBATIM guard: the emitted reply must differ from every stored string used
@@ -588,18 +676,37 @@ class PairRetrieval:
         if best_t is not None:
             stored.add(best_t["response"])
         if reply in stored:
+            # A multi-sentence response already contains independently closed
+            # response units.  Select its leading complete unit before seeking
+            # a second corpus response.  The served surface is then not the
+            # stored response as a whole, while grammar, role, and local meaning
+            # remain bound inside one observed continuation.
+            units = [unit.strip() for unit in re.split(r"(?<=[.!?])\s+", reply.strip())
+                     if unit.strip()]
+            unit_rows = [(set(_content_words(tokenize(unit.lower()))), unit)
+                         for unit in units]
+            focused_units = [row for row in unit_rows if row[0] & focus]
+            selected_unit = (max(focused_units or unit_rows, key=lambda row: len(row[0]))[1]
+                             if unit_rows else "")
+            if len(units) >= 2 and selected_unit:
+                self.last_pids = [p for p in (sub_pid, q_pid) if p is not None]
+                return selected_unit
             # compose with a second unit that ADDS content; when the substance is itself a
             # question, lead with a STATEMENT (measured: question+question doubles were BAD)
             sc2 = set(_content_words(tokenize(substance2.lower())))
             sub_is_q = substance2.rstrip().endswith("?")
-            for a, u, negs, pid in ranked:
+            for carry, act, negop, u, negs, pid in ranked:
                 r = P["responses"][pid]
-                ok_rel = u <= 1 and locks_live(pid)
+                ok_rel = ((not require_carried_tail or carry == 0)
+                          and u <= 2 and locks_live(pid) and source_carries_focus(pid))
                 if r == substance or not ok_rel:
                     continue
                 if sub_is_q and r.rstrip().endswith("?"):
                     continue                       # need a statement to pair with a question
                 r2, _ = relex(r)
+                r2_words = set(_content_words(tokenize(r2.lower())))
+                if prefer_carried_response and carried and not (r2_words & (focus | sc2)):
+                    continue                       # the added unit must bind to the subject
                 if not (set(_content_words(tokenize(r2.lower()))) - sc2):
                     continue                       # must add content, not rephrase
                 reply = (r2.rstrip() + " " + substance2) if sub_is_q else (substance2.rstrip() + " " + r2)
