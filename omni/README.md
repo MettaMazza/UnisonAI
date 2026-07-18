@@ -399,12 +399,13 @@ These are the first control codes after `\x01` (SOH), mapped to SFT's binary gen
 
 Every number below is from a committed, timestamped harness run. The measurement discipline
 is part of the architecture: **no instrument's number is believed before the instrument
-passes a calibration gate** (clean separation of known-good from known-bad cases), no signal
+has a recorded calibration** (clean separation of known-good from known-bad cases), no signal
 that steers generation ever serves as its scoreboard, and end-to-end tests stub nothing —
 the real path, the real teacher, the real stores. The percentages are timestamps on build
-hours; **the gains between releases are the finding.**
+hours; **the gains between releases are measured development results.** Maria alone declares
+the publishable conclusion and when a build deserves a real benchmark run.
 
-### The task gate — the counted substrate vs its gradient-trained twin
+### The task comparison — the counted substrate vs its gradient-trained twin
 On identical held-out text, identical arena: **character scale 1.2891 vs 1.8878; word scale
 3.1907 vs 3.4292** — the zero-parameter counted engine over the trained transformer twin at
 both scales, the engine reading the corpus once against 48,000 gradient-batched passes.
@@ -456,13 +457,13 @@ observable after the fact there. Detail and ledgers: `GENERALISATION.md`.
 Serving: counted pair retrieval (BM25 × question-similarity over 649,917 role-structured
 pairs) with relexicalization and a structural never-verbatim guard. Learning: the taught
 loop above. Free generation (the frontier arm): the kin-context datastore (25M+ positions)
-under the forced integration cascade — grown under the same calibrated gates, with the
+under the forced integration cascade — grown under the same calibrated instruments, with the
 retrieval arm serving until the free arm's judged rate crosses it (the parallel-arm rule).
 The system is young; its conversational quality grows by data and by teaching, both measured.
 
 ### Instruments
-`train_eval/judge.py` + `judge_calibration.py` (the gate; the pool — two independent judge
-models, both gated, both must agree), `generalisation_epochs.py` (the translated epoch loop,
+`train_eval/judge.py` + `judge_calibration.py` (the calibration receipt; the pool — two independent judge
+models whose agreement is recorded), `generalisation_epochs.py` (the translated epoch loop,
 `--preflight` wiring verification on the real path), `grokking_run.py` (the first fixed-round
 telescope), `gen_free_harness.py`, `gen_quality_honest.py`, `learning_curve_judged.py`,
 `measure_pairs.py`, `bench_35b.py` (opponent-integrity enforced), `e2e_live_path.py` (nothing

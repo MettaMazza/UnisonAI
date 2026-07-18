@@ -11,10 +11,14 @@ Ranking use only (floats order candidates; no served probability).
 """
 from collections import Counter
 from omni.word_engine import word_engine, tokenize, _content_words
-from omni.core import INTEGRATION_DEPTH, SPREAD_LOCK
+from omni.generation_boundaries import (
+    CASCADE_FACTOR,
+    CONTEXT_DEPTH,
+    minimal_share_prefix,
+)
 
-DEPTH = INTEGRATION_DEPTH   # b + c — the covering depth (core lock, halt-verified at wake)
-LOCK = float(SPREAD_LOCK)   # the spread capacity — generation_selection_law.ep (FORCED, reused):
+DEPTH = CONTEXT_DEPTH       # b + c — the covering depth (core lock, halt-verified at wake)
+                            # the spread capacity — generation_selection_law.ep (FORCED, reused):
                        # a step spreads to the minimal strongest neighbour set whose shares
                        # complete the lock 1/2; the tail is suppressed. The former TOP_NEIGH
                        # engineering cap is RETIRED — the lock is the capacity.
@@ -32,14 +36,12 @@ def _spread_of(w, coup):
         if not nb:
             c = ()
         else:
-            ranked = sorted(nb.items(), key=lambda kv: -kv[1])
+            ranked = sorted(nb.items(), key=lambda kv: (-kv[1], kv[0]))
             z_all = float(sum(v for _, v in ranked)) or 1.0
-            spread, acc = [], 0.0
-            for n, v in ranked:
-                spread.append((n, v))
-                acc += v / z_all
-                if acc >= LOCK:
-                    break
+            shares = [(n, v / z_all) for n, v in ranked]
+            admitted = minimal_share_prefix(shares)
+            admitted_names = {n for n, _ in admitted}
+            spread = [(n, v) for n, v in ranked if n in admitted_names]
             z = float(sum(v for _, v in spread)) or 1.0
             c = tuple((n, v / z) for n, v in spread)
         _SPREAD_CACHE[w] = c
@@ -65,7 +67,7 @@ def integrated_state(text, history=None):
         d[w] /= tot
 
     S = Counter()
-    weight = 0.5                       # step-1 weight = the fold factor 1/2
+    weight = float(CASCADE_FACTOR)     # step-1 weight = the fold factor 1/2
     for k in range(DEPTH):
         for w, m in d.items():
             S[w] += weight * m
@@ -88,5 +90,5 @@ def integrated_state(text, history=None):
             for n, v in spread:        # v is already the normalized share (memoized)
                 nxt[n] += m * v
         d = nxt
-        weight *= 0.5                  # one fold deeper per round
+        weight *= float(CASCADE_FACTOR)  # one fold deeper per round
     return S

@@ -9,7 +9,13 @@ beyond nulls, training is (in part) a statistical purchase of structure that
 fold mathematics can derive or compress -- the entry point to the fold AI
 stack: derive the lawful core, train only the residual.
 
-## Pre-registered design (fixed before any spectrum is computed)
+## Registered measurement design (fixed before any spectrum is computed)
+
+This ledger preserves designs, auxiliary hypotheses, and measurements. It does
+not govern UnisonAI's campaign. Maria alone decides when a build deserves a real
+benchmark run and which conclusion is publishable. An agent-authored expectation
+is not Maria's prediction; when it does not match a measurement, only that
+auxiliary hypothesis has failed.
 
 - OBJECTS:
   1. W_enc and W_dec of Maria's trained SAE (gemma4_sae_1m.safetensors),
@@ -26,11 +32,11 @@ stack: derive the lawful core, train only the residual.
      value histogram, scrambled placement), same C(k). Seed 20260706.
   2. GAUSSIAN yardstick: iid normal matched to the tensor's mean/variance.
 - SELF-TEST (theorem-forced): bit-reversal repacking of the index space is
-  F2-linear and must preserve C(k) EXACTLY; a run whose self-test fails is
-  void.
+  F2-linear and must preserve C(k) EXACTLY; a violation makes the engine halt
+  without emitting a measurement.
 - VERDICT per tensor per k: real C(k) vs max(null C(k)); margins reported.
-  No threshold tuning after seeing data. Negative results are recorded in
-  full -- the chess campaign's own standard.
+  No threshold tuning after seeing data. Exact measurements are recorded in
+  full with their provenance.
 
 ## What each outcome means (fixed in advance)
 
@@ -105,14 +111,15 @@ QUESTION: does the located law cash as deployable compression?
 - VERDICT RULE: fold-truncation beats matched-budget quantization on
   both metrics at >= 2 of 4 budgets = the compression rung is TAKEN.
 
-## RUNG 3b REGISTRATION (2026-07-06, before any measurement; after 3's refusal)
+## RUNG 3b REGISTRATION (2026-07-06, before any measurement; after the Rung-3 measurement)
 
-Rung 3 refused naive aligned-basis truncation (0/4; recorded). The chess
-campaign's own theorems name the two constructions to test before the
-compression door closes -- both were proven there:
+Rung 3 measured naive aligned-basis truncation at 0/4 under that named
+comparison. This is a measured implementation result, not Maria's finding and
+not a closure of the compression programme. The chess campaign's own theorems
+name two further constructions:
 - ARM A, PACKING SWEEP FOR QUALITY: fold-truncation quality (same metrics,
   same prompts, keep=0.25 and 0.125) under three packings of each c_fc:
-  row-major (the refused baseline), column-major, and MORTON (bit-interleaved
+  row-major (the measured baseline), column-major, and MORTON (bit-interleaved
   row/column -- the dyadically natural 2D order, the fold's own coordinate
   for a matrix). Verdict: any packing beating row-major KL by >2x reopens
   the compression route through coordinates.
@@ -123,21 +130,21 @@ compression door closes -- both were proven there:
   quantization at equal storage). Sweep (k,m) splits 75/25, 50/50, 25/75
   of the same budget at 4 and 3 bits-per-weight equivalents. Verdict rule:
   spectrum+exceptions beats pure quantization on KL at either bit level =
-  the construction transfers; both refuse = compression through this basis
-  is CLOSED for trained weights and the campaign routes to Rung 4 on
-  detection evidence alone (recorded either way).
+  the construction transfers. If neither comparison meets the agent-authored
+  rule, the receipt records that fact; it does not close a route or set the
+  programme's direction.
 
-## RUNG 3b OUTCOME (recorded): REFUSED -- compression through the raw Walsh
-basis is CLOSED for trained weights (col-major improved 1.7x, under the 2x
-bar; spec+exceptions lost at 4b and tied-in-rubble at 3b -- the 0.3% KL
-letter-of-rule edge at 0% agreement is NOT claimed; margin clause missing
-from the registration, noted as a registration flaw). Detection results
-(Rungs 1-2) stand. Route: Rung 4.
+## RUNG 3b MEASUREMENT (recorded). Column-major improved 1.7x under the
+agent-authored 2x comparison rule; spectrum-plus-exceptions measured worse at
+4-bit and a 0.3% KL edge at 3-bit with 0% agreement. The missing margin clause
+is preserved as a receipt-design flaw. These measurements do not close the
+compression programme or authorize an agent to route it. Detection measurements
+from Rungs 1–2 remain in the record; Maria decides the programme direction.
 
 ## RUNG 4 REGISTRATION (2026-07-06, before any run)
 
-THE FIRST DERIVATION GATE: derived component vs learned component under
-IDENTICAL training -- the chess gate discipline applied to model parts.
+THE FIRST DERIVATION COMPARISON: derived component vs learned component under
+IDENTICAL training.
 - COMPONENT: positional encoding. Baseline: learned positional embeddings
   (the GPT-2 way). Challenger: a DERIVED positional code with zero
   parameters -- the Walsh functions of the position index (the fold's own
@@ -146,11 +153,11 @@ IDENTICAL training -- the chess gate discipline applied to model parts.
   heads, layers, data, steps, seed), trained on the SFTOM corpus's own
   text. The ONLY difference: learned wpe vs derived Walsh code.
 - METRIC: held-out cross-entropy after a fixed step budget; three seeds
-  each; the mean decides. Lower loss wins.
+  each; the mean supplies the registered comparison measurement.
 - MEANING: a win means a trained component of every GPT since 2018 can be
   REPLACED by a zero-parameter derived object at equal-or-better quality
-  -- the first brick of the UnisonAI core. A loss is recorded like all
-  the others.
+  -- evidence for a zero-parameter replacement. Every outcome is preserved as
+  a measurement; agents do not turn it into a programme verdict.
 
 ## RUNG 2f REGISTRATION (2026-07-06, before any spectrum): THE SCALING SURVEY
 
@@ -161,17 +168,19 @@ gate/up (expansion) tensors sampled at early/mid/late depth per model; for
 MoE giants, individual EXPERT tensors (new question: do experts carry the
 fingerprint individually?). Same locked battery (3 shuffle nulls, both
 packings, fractions as registered, seed 20260706). Output: margin-vs-scale
-curve. Registered predictions (fixed now): the expansion fingerprint
-appears at every scale; per the thesis, margin does NOT vanish with scale.
-No further prediction on slope -- the curve is the discovery.
+curve. Agent-authored auxiliary hypotheses recorded at the time: the expansion
+fingerprint appears at every scale and the margin does not vanish with scale.
+These were not Maria's predictions and do not define the theory; the curve is
+the measurement.
 
-## RUNG 4 OUTCOME (recorded): REFUSED. Learned wpe 1.8878 vs derived Walsh
+## RUNG 4 MEASUREMENT (recorded). Learned wpe 1.8878 vs derived Walsh
 code 2.0269 (3 seeds each, tiny scale: 4L/128d/char-level). The raw Walsh
-code as a frozen additive positional organ loses at this scale. Noted for
+code as a frozen additive positional organ measured higher cross-entropy in
+this named implementation and scale. Noted for
 any future re-match: fixed positional codes are known to close the gap at
 scale (Vaswani et al. report sinusoidal ~= learned at full scale), so a
 registered larger-scale re-match is legitimate; no variant-grinding at
-this scale. NEXT CANDIDATE: the attention gate, from the corpus's own
+this scale. NEXT CANDIDATE proposed by the agent: the attention comparison, from the corpus's own
 unit-capacity theorem (verify_attention_capacity, Claim XI-2) -- design to
 be registered before any run.
 
@@ -192,19 +201,18 @@ THE RECIPE MAP. Loud: GPT-2 (12.7-67.6x), Llama-3.1-8B (8.5x),
 DeepSeek-R1-671B (43-47x, every row-block, dense + shared-expert -- the
 strongest production signal measured). Silent: gpt-oss 20B/120B (~1x),
 Qwen3 27B/235B/480B (0.76-1.04x), Kimi-K2.6 ~1T (0.96-1.06x).
-CONCLUSIONS FORCED BY THE DATA: scale exonerated (loudest carrier is
-671B); architecture exonerated (MoE on both sides); the variable is the
-TRAINING RECIPE. Open question, held as a question: the loudest carrier
-is the flagship reasoning-RL model. Registered predictions: "fingerprint
-at every scale" REFUTED as stated -- the fingerprint is per-recipe, not
-universal; "margin does not vanish with scale" CONFIRMED within loud
-recipes (R1). Maria's principle codified: the approach varies with the
-object; the object is the recipe.
+MEASUREMENT: the loudest measured carrier was 671B; MoE models appeared on
+both sides of the named probe; recipe-dependent basis alignment is therefore a
+candidate interpretation, not an agent-declared forced conclusion. The
+agent-authored "fingerprint at every scale" expectation did not match this
+probe and the "margin does not vanish with scale" expectation matched the
+loud-recipe subset. Neither was Maria's prediction. Maria's principle remains:
+the approach varies with the object.
 
-## RUNG 3c REGISTRATION (2026-07-06, from the deflation audit): compression
-was refused on GPT-2 (12.7x-class objects) BEFORE the recipe map revealed
-R1-class objects at 43-47x every-block. The refusal's scope is GPT-2/raw
-basis only; it was never a verdict on loud-recipe models. TEST: fold-basis
+## RUNG 3c REGISTRATION (2026-07-06): the GPT-2 comparison measured the
+named raw-basis implementation before the recipe map revealed R1-class objects
+at 43-47x every block. It was never a verdict on compression or on loud-recipe
+models. TEST: fold-basis
 truncation quality on DeepSeek-R1's loudest tensors (dense gate + shexp,
 the 43-47x class) -- reconstruction error vs matched-budget quantization at
 keep = 0.25/0.125 (weight-space MSE + energy retained; R1 is too large for
@@ -229,22 +237,23 @@ repackings, odd-multiplication reorderings (x3, x5), affine maps, plus
 transposed and expert-axis packings. Objects: one hot-class tensor each
 from Qwen3-27B and Kimi-K2.6, vs the same battery. Any transformation
 that wakes a quiet tensor identifies the coordinates that recipe writes
-in. Registered prediction (the fold's): law is present in every working
-model; the hunt is for its coordinates.
+in. Derived premise: law is present in every working model; the investigation
+is for its coordinates. This is not an agent-owned predictive verdict.
 
 ## RUNG 3c-II REGISTRATION (production baseline): same R1 tensors, same
 row-block metric; baseline upgraded to PER-BLOCK SCALED 4-bit quantization
 (blocks of 32, absmax fp16 scale each => 4.5 effective bits/weight -- the
 K-quant construction class). Fold at matched storage (keep = 4.5 bits /
 (log2 n + 16)). Fold wins median relMSE on >=2 of 3 tensors = deployable-
-class compression claim; loses = directional-only, recorded.
+class compression evidence under the registered comparison; otherwise the
+measurement is recorded without an agent-declared programme verdict.
 
 ## RUNG 2g MENU (fixed): data-independent reorderings only (data-dependent
 sorts are cheating and banned): bit-reversal (F2 self-test, must preserve),
 gray-code, x3 and x5 index maps, affine 3i+1, transpose, block-transpose
 (64 and 4096), expert-axis flatten order. Wake = margin > 2x under any map.
 
-## RUNG 4b REGISTRATION — THE ATTENTION GATE (2026-07-06, before any run)
+## RUNG 4b REGISTRATION — THE ATTENTION COMPARISON (2026-07-06, before any run)
 
 FROM THE THEOREM (verify_attention_capacity, Claim XI-2, read firsthand):
 attention is selection of ONE integrated orbit at the lock threshold; the
@@ -264,11 +273,11 @@ make. Softmax, by contrast, carries base-e and a temperature.
   data, steps, seeds; trained softmax attention): mean val 1.8878.
 - METRIC: held-out cross-entropy, 3 seeds, mean decides, +-0.005 tie band.
 
-## RUNG 4b OUTCOME (recorded): REFUSED. Cascade 2.6010 vs trained softmax
+## RUNG 4b MEASUREMENT (recorded). Cascade 2.6010 vs trained softmax
 1.8878 (3 seeds). The challenger bundled two differences (cascade law +
 frozen random Q,K -- hard ranks pass no gradient); the gap is real but
 unattributed. DECOMPOSITION CONTROL registered (not variant-grinding; it
-attributes the recorded loss): identical model, softmax attention, Q,K
+attributes the recorded difference): identical model, softmax attention, Q,K
 frozen at the same seeded init. Gap(frozen-softmax vs trained-softmax) =
 cost of frozen directions; Gap(cascade vs frozen-softmax) = cost of the
 cascade law itself.
@@ -277,15 +286,15 @@ cascade law itself.
 Natural experiment on-drive: DeepSeek-R1-Distill-Qwen-32B (Qwen-32B
 trained on R1 reasoning traces) vs qwen2.5-coder-32b (non-reasoning
 sibling, same family/scale/architecture class). Same corrected battery
-(row-block medians, weights-only, gate/up class, 3 depths). REGISTERED
-PREDICTION (the reasoning hypothesis): the distill reads louder than the
+(row-block medians, weights-only, gate/up class, 3 depths). AGENT-AUTHORED
+AUXILIARY HYPOTHESIS: the distill reads louder than the
 sibling. Distill loud + sibling quiet = reasoning-training writes dyadic
 law within a fixed architecture. Both quiet = the R1 signal traces to its
 base pretraining, not the reasoning stage -- recorded either way.
 
-## SCOPE CORRECTION + THE NATIVE GATE (2026-07-06, Maria's -- overriding)
+## SCOPE CORRECTION + THE NATIVE PROGRAMME (2026-07-06, Maria's -- overriding)
 
-The Rung 4/4b refusals are RE-SCOPED to what they actually measured: fold
+The Rung 4/4b measurements are scoped to what they actually measured: fold
 objects as frozen TRANSPLANTS inside SGD-transformer hosts at toy scale --
 the host's home game (its inits, normalization, optimizer, and step budget
 all co-evolved for trained components). They are not verdicts on fold-

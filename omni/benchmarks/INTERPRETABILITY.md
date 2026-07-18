@@ -11,11 +11,14 @@ discipline, inherited from the Smithian Fold Theory campaign this toolkit serves
 2. **Every measurement beats a null or it isn't structure.** The primary null is a
    shuffle of the *same tensor*: identical value histogram, scrambled placement.
    Anything above 1x is *placement*, not values.
-3. **Self-tests void bad runs.** Theorem-forced identities (bit-reversal invariance,
-   Parseval energy conservation, exact-identity calibrations) run inside every
-   instrument; a failure halts the run rather than producing a soft number.
-4. **Negative results are recorded in full**, with their exact scope. Several of the
-   strongest findings below came from a registered prediction being *refused*.
+3. **The engine halts on identity violations.** Theorem-forced identities
+   (bit-reversal invariance, Parseval energy conservation, exact-identity
+   calibrations) run inside every instrument; a violation halts rather than
+   emitting a measurement.
+4. **Every exact measurement is retained with provenance.** Agent-authored
+   expectations are auxiliary hypotheses, not Maria's predictions or project
+   findings. Their outcome changes only that auxiliary hypothesis unless Maria
+   declares a broader conclusion from the data.
 
 If you pull this repo, you can rerun everything, extend any instrument, or build
 your own — this document tells you how.
@@ -59,7 +62,7 @@ scale-corrected instrument: flat-window reads on huge tensors dilute row-structu
 concentration (a recorded confound, fixed by amendment).
 
 **The self-tests.** Bit-reversal reindexing is F2-linear, so it must preserve C(f)
-*exactly* — every battery call checks this and voids the run on failure. Every
+*exactly* — every battery call checks this and the engine halts on violation. Every
 comparator transform checks Parseval (energy in = energy out) per call. The slant
 transform additionally verifies at import that the exact linear ramp is 1-sparse.
 
@@ -91,10 +94,10 @@ rec = battery(vector)              # full locked battery on one 2^n vector:
 rec = probe_rowblocks(matrix2d)    # the corrected scale-aware instrument:
                                    #   median/min/max block margin over <=12 blocks
 
-run = Run({...registration...})    # the gate: requires name, objects, statistic,
+run = Run({...registration...})    # receipt schema: requires name, objects, statistic,
                                    #   verdict_rule, margin_clause; hashes the block,
-                                   #   appends it to registrations.jsonl, refuses to
-                                   #   run if incomplete
+                                   #   appends it to registrations.jsonl, and the
+                                   #   engine halts if the receipt is incomplete
 run.battery("label", vector)       # measure AND record a ledger row
 run.rowblocks("label", matrix2d)
 run.record(instrument=..., **row)  # record anything else (verdicts, amendments,
@@ -138,7 +141,7 @@ nulls. **Found:** 13/13, 39/39, margins 3.4–79.3x (`llm_presence_results.txt`)
 Expert tensors in GGUF files are 3D (expert axis outermost); earlier whole-tensor
 reads crashed or diluted per-expert structure. This extracts **each expert's 2D
 matrix from its own byte slice** (certified exact against whole-tensor dequant
-before any probe — a failed certification voids the run), scanning ALL shards of
+before any probe — a certification violation halts the engine), scanning ALL shards of
 split models. **Run:** `python3 moe_dequant.py`. **Reading:** per-expert rowblock
 medians. **Found:** the fingerprint is per-expert — individual Qwen3-235B experts
 at 3.46x/2.82x beside ~1x neighbours (`moe_dequant_results.txt`). **Extend:** point
@@ -150,7 +153,7 @@ reading is a verdict on the probe's coordinates, never on law-presence. The hunt
 walks a **data-independent** menu of index reorderings (Gray codes, bit-plane,
 block-Morton, x3/x5/affine maps, transposes — data-dependent sorts are banned as
 cheating) x matrix packings x all bases, on tensors of your choosing, with a
-known-loud control that must stay awake or the run voids. **Run:**
+known-loud control that must stay awake or the engine halts. **Run:**
 `python3 coordinate_hunt.py`. **Reading:** each line is one (packing, map, basis)
 coordinate; `<-- WAKE` marks margin > 2x. **Found:** round 2 widened the *object*
 axis to embeddings and woke every "quiet" model — Kimi-1T at 15.98x
@@ -252,7 +255,7 @@ The recipe every instrument here follows:
 
 1. **Write the registration first.** A dict with `name`, `objects`, `statistic`,
    `verdict_rule`, and `margin_clause` (mandatory — decide what margin means
-   *before* you see data). `Run(REG)` hashes it and refuses if incomplete.
+   *before* you see data). `Run(REG)` hashes it and the engine halts if incomplete.
 2. **Give it a calibration with a known answer.** A known-loud object that must
    reproduce its recorded margin, a known-quiet object, and a negative control
    (He-init / step-0 / shuffled corpus / k=0 identity) that must read at null.
@@ -267,7 +270,9 @@ The recipe every instrument here follows:
 6. **Record everything**, including skips, amendments, and named dependencies —
    `run.record(...)` costs one line. Commit the raw stdout as
    `<instrument>_results.txt` beside the script.
-7. **A refused prediction is a result.** Register it, record it, scope it exactly.
+7. **Preserve provenance.** Record agent-authored expectations as auxiliary
+   hypotheses. A mismatch belongs to that hypothesis; the measurement remains a
+   measurement, and Maria alone assigns a project conclusion.
 
 **Dependencies:** Python 3.9+, `numpy`, `scipy`, `safetensors`, `gguf`, `torch` +
 `transformers` (activation/ablation/twin instruments), a local

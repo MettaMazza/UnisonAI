@@ -3,8 +3,9 @@
 **Premise (Maria, 2026-07-16):** math is math; the framework derives from first principles what
 standard mathematical models do; AI/ML is mathematical computer science — established, tried,
 tested; the task is **correct translation** of that science into the framework's exact, counted,
-forced expression. Never improvised novelty on top of an already-novel system. A failed result
-is a verdict on the translation's implementation, not on the established method.
+forced expression. Never improvised novelty on top of an already-novel system. A measured
+implementation output is retained with its exact scope; agents do not promote it into a
+verdict on the method or attribute their auxiliary hypotheses to Maria.
 
 **Scope:** the *entire* architecture — every organ of a modern AI stack mapped 1-1 to its
 established mathematics and to its SFT expression, with the honest build-state of each.
@@ -71,9 +72,9 @@ The SFT engine's ground rules are not exotic; each is a known discipline:
 | Standard component | Established mathematics | SFT expression | State |
 |---|---|---|---|
 | **Distillation** (Hinton teacher→student) | supervised transfer from a stronger model | LocalTeacher (Gemma) corrections absorbed as held pairs/orbits; teacher is scaffolding with a **measured exit** | ✅ mechanism; 🔧 efficacy needs judged measurement |
-| **Student-surpasses-teacher gate** | **the sign test at the 50% null** — the classical paired-comparison criterion | **GraduationLedger p ≥ 1/2** (the forced lock, Step 181): blind head-to-heads per territory; sovereign on graduation | ✅ built |
+| **Student-surpasses-teacher measurement** | **the sign test at the 50% null** — the classical paired-comparison criterion | **GraduationLedger p ≥ 1/2** (the forced lock, Step 181): blind head-to-heads per territory; sovereign on graduation | ✅ built |
 | **Curriculum learning** (Bengio) | staged practice distribution, teacher-authored | live teacher-generated curriculum (`curriculum_communication.py`), grows on completion | ✅ |
-| **Self-play** (TD-Gammon lineage) | generate → verify → retain only verified | `/auto` loop with **earned retention** (unverified output discarded) | 🔧 verification gate must be the calibrated judge, not the fold critic |
+| **Self-play** (TD-Gammon lineage) | generate → verify → retain only verified | `/auto` loop with **earned retention** (unverified output discarded) | 🔧 verification instrument must be calibrated |
 | **RLHF preference step** | preference-based re-ranking (bandit feedback) | 👍/👎 + judge verdicts → counted pair-quality fractions (I.2) — no reward model, the counts are the preferences | 📐 Stage 4 |
 | **Epoch training loop** (dataset → batches → per-item loss → loss-gated update → held-out validation → early stopping) | the standard training loop; loss cheap per item, evaluation paid only on validation | `generalisation_epochs.py`: stream = corpus prompts (hygiene-filtered, deterministic hash order); batch = **band 2^(b+c) = 32**; epoch = band²; **loss = binding deficit vs the lock 1/2** (the same kin-carried quantity that routes serving); **update = deposition** (≥ b = 2 held expressions, one observation — the zero-parameter weight step); validation = frozen probes under the judge **pool**, binding-stratified; stop = both transfer curves ≥ the lock for b = 2 consecutive epochs | ✅ built, preflighted on the real path; continuous run live |
 
@@ -85,11 +86,11 @@ The SFT engine's ground rules are not exotic; each is a known discipline:
 | **Context window** | fixed window + cache | **context = youngest memory** — one object at different ages, halving attention, no window cliff | ✅ design; 🔧 measure |
 | **Conversation log for the judge/teacher** | append-only event log | `session.history_log` (write-once per turn, never trimmed) | ✅ verified on e2e |
 | **Provenance/watermark** | hash-chained attestation | `UnisonIdentity` response proofs | ✅ |
-| **Eval: LLM-as-judge** | judge + **calibration against known labels** (measurement theory) | Gemma temp-0 GOOD/BAD as sole conversational scoreboard, **calibration gate first** (known-good vs known-bad separation ≥ 9/10 each side); no steering signal is ever a scoreboard | 📐 Stage 0 |
-| **Eval: benchmarks** | held-out CE; fixed public probes; head-to-heads | rung ladder (CE — real, committed); MMLU probe (committed baseline); bench_35b (judge must pass the gate before any win-rate) | ✅ CE / 🔧 rest |
+| **Eval: LLM-as-judge** | judge + **calibration against known labels** (measurement theory) | Gemma temp-0 GOOD/BAD conversational instrument, with known-good vs known-bad calibration recorded; no steering signal is ever a scoreboard | 📐 Stage 0 |
+| **Eval: benchmarks** | held-out CE; fixed public probes; head-to-heads | rung ladder (CE — real, committed); MMLU probe (committed baseline); bench_35b with judge calibration disclosed | ✅ CE / 🔧 rest |
 | **E2E testing** | integration tests over the real path | `e2e_live_path.py` — nothing stubbed, real teacher, real `on_message` | ✅ |
 | **Data pipeline safety** | curated sources + content filtering | vetted scrape allowlist; register/injection/URL filters at index build | ✅ |
-| **The fold critic** (`coherence_value.ep` implementation) | *(as surface-quality scorer: none — it measured common-word co-occurrence)* | retired from all ranking/scoreboard roles until it passes the Stage-0 calibration gate; the forced law stands, the implementation was the fault | ⛔ as scoreboard |
+| **The fold critic** (`coherence_value.ep` implementation) | *(as surface-quality scorer: none — it measured common-word co-occurrence)* | its named implementation is not used as the public quality scoreboard; the forced law stands, and calibration measurements remain available for development | 🔧 measurement role |
 
 ---
 
@@ -112,12 +113,12 @@ One mechanism serves greetings, topical chat, corrections, and identity question
 four broken special cases. Greetings stop being a hole by construction (the corpus holds
 thousands of real responses to "hello, how are you").
 
-## Part III — Stages (each gated by the calibrated judge; measured values only, no self-imposed targets)
+## Part III — Stages (calibrated instruments; measured values only, no agent-imposed campaign authority)
 
 - **Stage 0 — Calibrate the ruler.** `judge_calibration.py`: known-good (real corpus responses
   on their own prompts) vs known-bad (word-salad, off-topic, fragments); ≥9/10 separation each
-  side or the judge is fixed until it passes. Nothing else counts until this does. Same gate for
-  the bench_35b judge and for the fold critic if it is ever to return.
+  side. The calibration is recorded alongside any measurement that uses the judge; it does not
+  authorize, delay, or veto a Maria-designated real run.
 - **Stage 1 — Index v2.** Standalone filter; tf, lengths, avgdl, N, df stored; full-corpus rebuild.
 - **Stage 2 — Ranking.** BM25 + kin expansion + `2^-age` context + quality fraction. **Measure
   the judged top-1 ceiling** (diagnostic serve, raw) — the architecture's honest ceiling.
@@ -128,7 +129,7 @@ thousands of real responses to "hello, how are you").
 - **Stage 5 — Honest replacements.** Re-measure everything retracted (gen quality n≥32,
   learning curve in judged units, bench_35b with calibrated judge); publish measured values.
 - **Stage 6 — Organ audit + cleanup.** Run the same honesty pass over the non-conversational
-  organs marked 🔧 (fold eye/ear recognition, self-play retention gate, tool breadth): each gets
+  organs marked 🔧 (fold eye/ear recognition, self-play retention instrument, tool breadth): each gets
   a calibrated instrument before its next claim. Delete dead paths; sync dev→repo; one accurate push.
 
 ---

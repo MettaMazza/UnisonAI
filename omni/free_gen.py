@@ -16,6 +16,11 @@ import os, pickle, re
 from collections import Counter
 from omni.word_engine import word_engine, tokenize, _content_words
 from omni.logging_config import get_logger
+from omni.generation_boundaries import (
+    CASCADE_FACTOR,
+    minimal_share_prefix,
+    reaches_binding_lock,
+)
 
 logger = get_logger("OmniFreeGen", "word_engine.log")
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -129,7 +134,7 @@ class FreeGen:
             return base_state_ids
         merged = dict(base_state_ids)
         for nid, m in cached.items():
-            merged[nid] = merged.get(nid, 0.0) + 0.5 * m
+            merged[nid] = merged.get(nid, 0.0) + float(CASCADE_FACTOR) * m
         return merged
 
     def _closures(self, S):
@@ -323,7 +328,7 @@ class FreeGen:
                 acts_q += 1
             for w in _content_words(tokenize(r.lower())):
                 plan[w] += 1.0 / (1 + rank)
-        want_q = acts_q * 2 >= max(len(cands), 1)          # majority act at the lock
+        want_q = reaches_binding_lock(acts_q, max(len(cands), 1))
         return [w for w, _ in plan.most_common(6)], want_q
 
     def generate_planned(self, text, history=None, rng=None, n_best=5):
@@ -414,14 +419,12 @@ class FreeGen:
         # suppressed. (Admitting the full diffused state was also the measured hot-path
         # cost: hundreds of tail words scanned per step at ~zero mass each.)
         state_ids = {}
-        acc = 0.0
-        for w, m in sorted(istate.items(), key=lambda kv: -kv[1]):
+        addressable = [(w, m) for w, m in sorted(istate.items(), key=lambda kv: (-kv[1], kv[0]))
+                       if w in vocab]
+        for w, m in minimal_share_prefix(addressable):
             nid = vocab.get(w)
             if nid is not None:
                 state_ids[nid] = m
-                acc += m
-                if acc >= 0.5:
-                    break
         topic_ids = (set(state_ids) | {vocab[w] for w in topic if w in vocab} | plan_ids)
         _PUNC = {".", ",", "!", "?", "'", ";", ":", '"', ")", "(", "-"}
 
@@ -503,7 +506,7 @@ class FreeGen:
                         ns += 2.0                  # the binary bonus per new plan word
                     nout = out + [w]
                     if w in _END and len(nout) >= MIN_WORDS and (
-                            not plan_ids or len(ncov) * 2 >= len(plan_ids)):
+                            not plan_ids or reaches_binding_lock(len(ncov), len(plan_ids))):
                         finished.append((nout, ns, ncov))
                     else:
                         nxt_beams.append((nout, ns, ncov))
@@ -549,94 +552,6 @@ class FreeGen:
             if any(w.lower() == b for w, _ in (scored or [])[:60]):
                 ok += 1
         return cov + ok / len(pairs)
-
-    def _realize(self, text, history, plan_ids, want_q, rng, max_words=MAX_WORDS):
-        """One constrained sample: plan words carry the binary factor; punctuation is
-        structurally guarded; stops at sentence end once HALF the plan is covered (the
-        lock) or at the cap. Narrow sampling (top-4) — the established low temperature."""
-        S = self._store()
-        vocab, words_arr, cond = S["vocab"], S["words"], S["cond"]
-        base, topic = self._topic_set(text, history)
-        base_ids = {vocab[w] for w in base if w in vocab}
-        topic_ids = {vocab[w] for w in topic if w in vocab} | plan_ids
-        covered = set()
-        _PUNC = {".", ",", "!", "?", "'", ";", ":", '"', ")", "(", "-"}
-
-        out = []
-        for step in range(max_words):
-            last_tok = out[-1] if out else "\x02"
-            last_id = vocab.get(last_tok, -1)
-            prev_tok = out[-2] if len(out) >= 2 else "\x02"
-            prev_id = vocab.get(prev_tok, -1)
-            gcw = tuple(w for w in out if len(w) > 3 and w.isalpha())[-8:]
-            live_ids = self._live_state_ids(state_ids, gcw, vocab) if gcw else state_ids
-            dist = Counter()
-            clo = self._closures(S)
-            if last_id >= 0:
-                for tid, c in self._topic_hits(S, prev_id, last_id, topic_ids, clo):
-                    w_t = (2 if (tid in base_ids or tid in plan_ids) else 1) \
-                        * (1.0 + live_ids.get(tid, 0.0))
-                    for nid, n in c.items():
-                        dist[nid] += n * w_t
-            window = ([w for w in base][:WINDOW_SEED] + out)[-6:]
-            scored, _ = self._fluent_fast(window) if window else ([], 0)
-            fl = Counter()
-            for w, s in scored or []:
-                nid = vocab.get(w.lower())
-                if nid is not None:
-                    fl[nid] += float(s)
-            if fl:
-                tot_f = sum(fl.values()) or 1
-                tot_d = sum(dist.values()) or 1
-                for nid, v in fl.items():
-                    dist[nid] += (v / tot_f) * tot_d
-            if not dist:
-                break
-            # PLAN CONSTRAINT: uncovered plan words get the binary factor again
-            for pid_ in plan_ids - covered:
-                if pid_ in dist:
-                    dist[pid_] *= 2
-            # structural guards: no punctuation opener, no doubled punctuation, no junk
-            drop = set()
-            for nid in dist:
-                w = words_arr[nid]
-                if self._junk_token(w):
-                    drop.add(nid)
-                elif (not out and w in _PUNC) or (out and out[-1] in _PUNC and w in _PUNC):
-                    drop.add(nid)
-            for nid in drop:
-                del dist[nid]
-            if not dist:
-                break
-            items = dist.most_common(4)                    # narrow sampling
-            total = sum(c for _, c in items)
-            r = rng.random() * total
-            acc, pick = 0.0, items[0][0]
-            for nid, c in items:
-                acc += c
-                if r < acc:
-                    pick = nid
-                    break
-            w = words_arr[pick]
-            out.append(w)
-            if pick in plan_ids:
-                covered.add(pick)
-            # coverage stopping at the lock: end the sentence once HALF the plan is in
-            if w in _END and len(out) >= MIN_WORDS and (
-                    not plan_ids or len(covered) * 2 >= len(plan_ids)):
-                break
-        if want_q and out and out[-1] == ".":
-            out[-1] = "?"
-        s = ""
-        for w in out:
-            if not s:
-                s = w.capitalize()
-            elif w in {".", ",", "!", "?", "'", ";", ":"} or w.startswith("'"):
-                s += w
-            else:
-                s += " " + w
-        return re.sub(r"\s+([.,!?;:])", r"\1", s).strip()
-
 
 WINDOW_SEED = 6
 free_gen = FreeGen()

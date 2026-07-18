@@ -23,28 +23,35 @@ python3 omni/benchmarks/verify_omni.py
 
 The older `verify_unison_results.txt` is a historical **43/47** receipt, not 47/47. It is retained as development history.
 
-## Provenance, not theoretical walls
+## Provenance and authority
 
 Every promoted component is tracked as:
 
 1. directly forced from SFT;
 2. forward-forced to close a required computational operation;
 3. constitutionally re-derived from established mathematics/computation; or
-4. current engineering work awaiting one of those closures.
+4. current engineering work being investigated through one of those routes.
 
-The fourth label describes present implementation status. It does not declare that SFT cannot derive the component. Examples currently disclosed as engineering include the live BM25 instrument's constants and a `0.30` fallback serving threshold; neither is silently identified with the theorem-forced Step 322 value `1/2`.
+The fourth label records the implemented form; it does not authorize an agent to declare a wall or endpoint. Examples currently disclosed as engineering include the live BM25 instrument's constants and a `0.30` fallback serving threshold; neither is silently identified with the theorem-forced Step 322 value `1/2`.
 
-## Measured development record
+## Campaign and auxiliary measurements
 
-The repository preserves successful, negative, and non-monotonic evidence:
+The repository preserves measured executions with their provenance:
 
 - held-out counted-predictor cross-entropy experiments and their committed receipts;
 - the Fold Decode spectral campaign with matched nulls and ablations;
-- MMLU rows of **9/128** and later **0/128** for `unison-own`;
-- current free-generation F3 result **1/12**;
+- MMLU rows of **9/128** and later **0/128** for `unison-own`, measured on the
+  agent-selected MMLU protocol;
+- a Codex-authored auxiliary free-generation benchmark: baseline **0/12**, F1
+  **0/12**, and F3 **0/12** under two-judge unanimity after same-run
+  calibration;
 - current structural verifier **21/21**.
 
-These operational measures show how far the computational proof has been implemented. They do not override engine-defined forcing validity and do not impose an upper bound on the open programme.
+These rows are measurements of named implementations and protocols. They are
+not Maria's declared findings or losses, do not redefine parity, and do not
+override engine-defined forcing validity. Benchmark victory remains an active
+Unison objective; Maria declares the project conclusion from the data and
+directs the next campaign.
 
 ## Architecture
 
@@ -58,7 +65,9 @@ The tracked `omni/` implementation includes:
 - voice, session, teacher-scaffold, observer, tool, and diagnostic organs;
 - registered interpretability and benchmark instruments.
 
-Supporting local models are scaffolding and judges. They are not Unison's native parameters. Their removal is governed by explicit development gates rather than hidden substitution.
+Supporting local models are scaffolding and judges. They are not Unison's
+native parameters. Their use and removal are recorded as implementation facts;
+the engine checks the derived replacement and Maria directs the campaign.
 
 ## Papers
 
@@ -74,6 +83,10 @@ Supporting local models are scaffolding and judges. They are not Unison's native
 
 ## Active direction
 
-The present work is to forward-force the free generative surface, close or replace remaining engineering steering quantities, expand independent judged evaluation, and retain every failure. An unfinished organ is open development, not a theoretical limit on a unified mathematical and physical theory.
+The present work is to forward-force the free generative surface, derive or
+constitutionally re-derive remaining engineering steering quantities, expand
+independent judged evaluation, and secure benchmark victories. Preserve every
+measurement with its owner and protocol; agents do not declare development
+runs to be Maria's findings, losses, or endpoint.
 
 Built by **Maria Smith, Ernos Labs**.

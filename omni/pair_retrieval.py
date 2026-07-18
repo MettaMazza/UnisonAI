@@ -20,6 +20,7 @@ import os, math, pickle, re
 from collections import Counter
 from omni.word_engine import tokenize, _content_words
 from omni.logging_config import get_logger
+from omni.generation_boundaries import has_reexpression_support
 
 logger = get_logger("OmniPairs", "word_engine.log")
 
@@ -540,7 +541,7 @@ class PairRetrieval:
             # DIFFERENT variants (grammatical by construction, faithful by construction)
             # and must differ from every stored variant (the total rule).
             variants = [v for v in best_t.get("variants", [best_t["response"]]) if v.strip()]
-            if len(variants) >= 2:
+            if has_reexpression_support(len(variants)):
                 import itertools
                 sent = [ [s for s in re.split(r"(?<=[.!?])\s+", v.strip()) if s] for v in variants ]
                 stored_low = {v.strip().lower() for v in variants}

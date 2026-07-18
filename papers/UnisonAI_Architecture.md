@@ -1,13 +1,13 @@
 # UnisonAI: A Computational Proof of Derived Law with Zero Trained Parameters
 
 **Maria Smith — Ernos Labs**
-**Version 6.2 — 17 July 2026**
+**Version 6.3 — 18 July 2026**
 
 ## Abstract
 
 UnisonAI is the artificial-intelligence computational proof of the Smithian Fold Theory of Everything (SFT). SFT begins with one machine-checked, self-proven theorem—*there is no nothing*—with zero axioms; the theorem forces the One and fold. Unison asks whether the operations normally purchased through trained parameters can instead be forced, forward-forced, or constitutionally re-derived as inspectable laws.
 
-The current architecture has zero trained parameters in its native memory, binding, retrieval, generation, context, perception, and verification mechanisms. The main SFT corpus executes 326 proof suites and 2,002 checks with zero failures. Its Unison laws include Step 322 coherence (8/8), Step 323 contextual integration (14/14), and Step 324 generation selection (13/13). The current standalone omni verifier passes 21/21 checks. These receipts establish a functioning derived-law architecture and continuing open development; they do not declare an upper wall on what the theory can force.
+The current architecture has zero trained parameters in its native memory, binding, retrieval, generation, context, perception, and verification mechanisms. The main SFT corpus executes 326 proof suites and 2,002 checks with zero failures. Its Unison laws include Step 322 coherence (8/8), Step 323 contextual integration (14/14), and Step 324 generation selection (13/13). The current standalone omni verifier passes 21/21 checks. These are executable receipts for the derived-law architecture. Benchmark victory and continued forward forcing are active objectives; agents do not declare walls or endpoints.
 
 This release separates theorem-forced quantities, constitutionally re-derived algorithms, and disclosed engineering quantities. That provenance distinction protects the argument: engineering constants are the current implementation status of a component, not a claim that the component is permanently outside SFT.
 
@@ -15,7 +15,7 @@ This release separates theorem-forced quantities, constitutionally re-derived al
 
 Contemporary AI usually acquires structure through parameter optimisation. Unison tests a different route: derive the required computational law, execute it transparently, and halt if its declared invariants fail. The relevant comparison is therefore not “statistics versus hand-written heuristics.” It is trained statistical acquisition versus machine-checked derived law.
 
-Unison is one of four SFT computational proofs, alongside Protein, Chess, and Go. Operational performance measures how far each proof has been developed. It does not replace the engine's standard for forcing validity, and an unfinished organ is not a theoretical impossibility.
+Unison is one of four SFT computational proofs, alongside Protein, Chess, and Go. Operational performance is an active development and benchmark-victory surface. It does not replace the engine's standard for forcing validity. A development batch remains a measurement of its named build until Maria declares the project finding and next direction.
 
 ## 2. Foundation and provenance
 
@@ -39,7 +39,7 @@ Queries bind through counted overlap, counted kinship, and unit-capacity selecti
 
 ### 3.3 Context and generation
 
-Step 323 forces the five-stage dyadic context cascade and closes it to the One. Step 324 forces the half-One spread/binding lock and the binary minimum of held expressions for fresh re-expression. The free composition arm remains under active development behind the parallel-arm rule; its present low result is retained rather than hidden.
+Step 323 forces the five-stage dyadic context cascade and closes it to the One. Step 324 forces the half-One spread/binding lock and the binary minimum of held expressions for fresh re-expression. Free composition is being forward-forced and benchmarked. Agent-selected development measurements are retained with their ownership; they are not declared as Maria's findings or losses.
 
 ### 3.4 Perception and common memory
 
@@ -71,9 +71,9 @@ The older `verify_unison_results.txt` is a historical **43/47** receipt. Earlier
 
 ### 4.3 Empirical chronology
 
-The committed MMLU ledger records Unison-own results of **9/128 on 9 July 2026** and **0/128 on 11 July 2026**. This is not a monotonic improvement claim. The rows are retained as development measurements.
+The committed MMLU ledger records Unison-own results of **9/128 on 9 July 2026** and **0/128 on 11 July 2026**. These are measurements of the agent-selected MMLU runs, not Maria's benchmark conclusion.
 
-The current free-generation F3 result is **1/12**. It remains an open development signal. It does not place a wall on the architecture or invalidate the forced context and generation laws already secured.
+Codex created a separate auxiliary 12-prompt free-generation benchmark. It measured **0/12 for baseline, 0/12 for F1, and 0/12 for F3** under two-judge unanimity after both judges passed the same-run controls at 10/10 known-good and 10/10 known-bad. This is a Codex-authored protocol result, not Maria's prediction, finding, or loss. It does not redefine architectural parity or the forced context and generation laws, and it does not set the benchmark campaign endpoint.
 
 Earlier papers reported large “FLOP advantage” ratios produced by a profiler that counts abstract operations heuristically. Those ratios are removed. Latency and abstract-operation counts may be reported separately with the instrument definition, but not converted into hardware FLOP equivalence.
 
@@ -85,7 +85,7 @@ The stronger objective—every steering quantity forced or constitutionally re-d
 
 ## 6. Relation to the Fold Decode campaign
 
-The companion paper, *The Law Inside Trained Weights*, studies trained models as measured objects. It reports registered spectral structure, matched nulls, ablation evidence, training chronology, and negative results. Those measurements motivate and test the derived-law thesis, but they are not silently imported as Unison's mechanism.
+The companion paper, *The Law Inside Trained Weights*, studies trained models as measured objects. It reports registered spectral structure, matched nulls, ablation evidence, and training chronology. Agent-authored expectations are identified separately from the measurements. Those measurements motivate and test the derived-law thesis, but they are not silently imported as Unison's mechanism.
 
 ## 7. Reproduction
 
@@ -102,7 +102,7 @@ The decode instruments and their raw receipts are documented in `omni/benchmarks
 
 ## 8. Current direction
 
-Unison's next work is to continue forward-forcing the free generative surface, eliminate or constitutionally close remaining engineering steering quantities, expand independent judged evaluation, and preserve every negative result. These are implementation objectives inside an open unified theory—not declared limits on intelligence, mathematics, physics, or computation.
+Unison's next work is to continue forward-forcing the free generative surface, derive or constitutionally re-derive remaining engineering steering quantities, expand independent judged evaluation, and secure benchmark victories. Preserve every measurement with its provenance. Agents do not declare development runs to be Maria's findings, losses, or endpoint.
 
 ## Repositories and lineage
 

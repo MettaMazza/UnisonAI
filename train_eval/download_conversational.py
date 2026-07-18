@@ -7,6 +7,7 @@ from datasets import load_dataset
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "conv_corpus.txt")
+STAGE = OUT + ".building"
 CAP = int(sys.argv[1]) if len(sys.argv) > 1 else 80_000_000
 
 # assistant-chat + casual dialogue, in register with Unison's warm first-person voice
@@ -35,24 +36,33 @@ def turns_of(ex):
 
 
 written = 0
-with open(OUT, "w", encoding="utf-8") as f:
-    for dsid, split in SOURCES:
-        if written >= CAP:
-            break
-        try:
-            print(f"streaming {dsid} [{split}] ...", flush=True)
-            ds = load_dataset(dsid, split=split, streaming=True)
-            for ex in ds:
-                for t in turns_of(ex):
-                    f.write(t.strip()); f.write("\n")
-                    written += len(t) + 1
-                f.write("\n")
-                if written % 10_000_000 < 200:
-                    print(f"  ...{written//1_000_000} MB", flush=True)
-                if written >= CAP:
-                    break
-            print(f"  {dsid}: total now {written//1_000_000} MB", flush=True)
-        except Exception as e:
-            print(f"  failed {dsid}: {repr(e)[:150]}", flush=True)
-
-print(f"DONE: {written:,} bytes conversational -> {OUT}", flush=True)
+try:
+    with open(STAGE, "w", encoding="utf-8") as f:
+        for dsid, split in SOURCES:
+            if written >= CAP:
+                break
+            try:
+                print(f"streaming {dsid} [{split}] ...", flush=True)
+                ds = load_dataset(dsid, split=split, streaming=True)
+                for ex in ds:
+                    for t in turns_of(ex):
+                        f.write(t.strip()); f.write("\n")
+                        written += len(t) + 1
+                    f.write("\n")
+                    if written % 10_000_000 < 200:
+                        print(f"  ...{written//1_000_000} MB", flush=True)
+                    if written >= CAP:
+                        break
+                print(f"  {dsid}: total now {written//1_000_000} MB", flush=True)
+            except Exception as e:
+                print(f"  failed {dsid}: {repr(e)[:150]}", flush=True)
+    if written <= 0:
+        raise RuntimeError("all conversational sources failed; refusing an empty corpus")
+    os.replace(STAGE, OUT)
+    print(f"DONE: {written:,} bytes conversational -> {OUT}", flush=True)
+except BaseException:
+    try:
+        os.remove(STAGE)
+    except FileNotFoundError:
+        pass
+    raise

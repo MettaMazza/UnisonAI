@@ -23,3 +23,6 @@ train_eval/*.pkl
 train_eval/scraped_manifest.json
 train_eval/*.jsonl
 omni/kin_context.pkl
+omni/pairs.pkl
+omni/word_kin.pkl
+omni/response_fluency_v1.pkl

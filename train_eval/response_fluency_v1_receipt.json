@@ -1,0 +1,33 @@
+{
+  "artifact": {
+    "bytes": 318595101,
+    "path": "omni/response_fluency_v1.pkl",
+    "sha256": "01bf496745d109a04d1983c78ed298c180b970aaf64ed30da32600a956b1d8b2"
+  },
+  "boundary_policy": "reset-before-and-after-every-response",
+  "claim_boundary": "exact response-only fluency counts with hard response boundaries; artifact is not yet an active generation-quality result",
+  "context_key_counts": [
+    93098,
+    1139634,
+    3069703,
+    4475654
+  ],
+  "max_order": 4,
+  "response_count": 649917,
+  "role": "assistant-response",
+  "schema": "unison-response-fluency-receipt/v1",
+  "sealed_at_utc": "2026-07-18T02:20:54.472506+00:00",
+  "source_pairs": {
+    "bytes": 226572757,
+    "path": "omni/pairs.pkl",
+    "sha256": "6a5dcc9e9d2227e3445a7d6630ce52807e9c58d7259bbb488f53d9f05c022b17"
+  },
+  "source_sha256": {
+    "train_eval/build_kin_context.py": "972eafa5e064eb379ac3a847f6b61541974074c322c2425d9cd50c4df6d71f14",
+    "train_eval/build_response_fluency.py": "876238c1b623f9a42b5c846487f4d6bbd3c4a31fda4a95dc4040fe2c6e767baa",
+    "train_eval/seal_response_fluency.py": "81fe70ef6c32fdd3b7131fad47f30387746b76279874dda05d89f654ad9f51e0"
+  },
+  "status": "sealed",
+  "token_count": 10491053,
+  "vocabulary": 93098
+}

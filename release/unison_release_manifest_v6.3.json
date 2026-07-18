@@ -1,0 +1,42 @@
+{
+  "schema": "unison-ai-release/v1",
+  "version": "6.3",
+  "date": "2026-07-18",
+  "foundation": "one machine-checked, self-proven theorem: there is no nothing; zero axioms",
+  "files": {
+    "AGENT.md": "8cd7b64b653fdb46b15961a020a740e5c54086e4cfdee18343b12ab933161259",
+    "README.md": "1ce85d73e31d490e8d6e41a6bf2bcf84f29820934831afd7a7efac68a3d93de7",
+    "TRANSLATION_PLAN.md": "5f1a2f366604fcfdea2488d79bf6537bae559bab33952d911731aab6c8ea984d",
+    "omni/GENERATION_PROVENANCE.md": "542d71f6915e2fdda107df7ca779bc65da0b237734e4f3a82daf41c7dff8cce0",
+    "omni/README.md": "4ff2c542c766292cd5789951e60c80e8f116c1f87c5d2f55af1236797bf5eac8",
+    "omni/benchmarks/PROTOCOL.md": "61fb5cdf001e46f19e3b86675abc4bb7970d395f07011b518b71bb296f29c5eb",
+    "omni/benchmarks/INTERPRETABILITY.md": "52f3823c104282b029c88126a2efbb7db6e926bdb8e0bb67b4a818ca0b31ea76",
+    "papers/UnisonAI_Architecture.md": "b8eadcc1434111d0553683d36ec453d6462676dc9752f3d15f8d70c58addd93c",
+    "papers/Fold_Decode_Interpretability.md": "e1df36ec3b3433dfc9072b1042fccc2b53fda7060b65250553fad98062037756",
+    "train_eval/REGISTERED_GENERATION_QUALITY.md": "772f7e0b4c42efd795307f776dc96298c60b85a608b6299e27b58d0976604191",
+    "omni/benchmarks/verify_omni.py": "92e9ee26806cff2358a441ddc543fddce31957be00578df2c063532ad398ba19",
+    "omni/benchmarks/verify_unison_results.txt": "39d2323bbb458f3fd4da8a00c7098009b06791736d8df88d696579381d085202"
+  },
+  "main_corpus": {
+    "suites": 326,
+    "checks": 2002,
+    "failures": 0,
+    "source_certificate_identities": "326/326"
+  },
+  "unison_laws": {
+    "step_322_coherence": "8/8",
+    "step_323_contextual_integration": "14/14",
+    "step_324_generation_selection": "13/13"
+  },
+  "standalone": {
+    "current_verify_omni": "21/21",
+    "historical_verify_unison": "43/47",
+    "mmlu_unison_2026_07_09": {"measurement": "9/128", "result_type": "agent-selected development benchmark"},
+    "mmlu_unison_2026_07_11": {"measurement": "0/128", "result_type": "agent-selected development benchmark"},
+    "free_generation_f3": {"measurement": "1/12", "result_type": "measured implementation result"},
+    "codex_generation_quality": {"measurement": "baseline 0/12; F1 0/12; F3 0/12", "result_type": "Codex-authored auxiliary benchmark", "agent_identity": "Codex gpt-5.6-sol, high reasoning", "governance_authority": false}
+  },
+  "benchmark_authority": "Benchmark victory is an explicit objective. Maria Smith alone decides when a build deserves a real run and what conclusion the data supports; agent probes cannot authorize, refuse, delay, veto, redefine parity, or set the endpoint.",
+  "provenance": "Keep Maria's declared conclusions, engine-forced consequences, measured implementation results, and agent-authored auxiliary hypotheses distinct. An agent-authored prediction that fails belongs only to that auxiliary hypothesis.",
+  "release_binding": "The Git commit containing this manifest binds the complete release tree; file hashes above bind the publication surfaces."
+}

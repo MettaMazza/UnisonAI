@@ -40,6 +40,7 @@ from fractions import Fraction
 from collections import defaultdict, Counter
 
 from omni.core import CTX_MAX, GEN_B, GEN_C
+from omni.generation_boundaries import COHERENCE_LOCK
 from omni.logging_config import get_logger
 
 logger = get_logger("OmniWordEngine", "word_engine.log")
@@ -825,7 +826,7 @@ class WordEngine:
         if getattr(self, "_openers", None) is None:
             self._openers = [w for w, c in sorted(fl["uni"].items(), key=lambda kv: -kv[1])
                              if len(w) > 1][:400]
-        LOCK = 0.5
+        LOCK = float(COHERENCE_LOCK)
         reply = []
         drift = 0
         for step in range(max_words):
@@ -991,7 +992,7 @@ class WordEngine:
         content = set(getattr(self, "_gen_bias", None) or frozenset())
         content.update(w for w in ctx if len(w) > 3)
         content = list(content)
-        LOCK = 0.5
+        LOCK = float(COHERENCE_LOCK)
         adj = []
         for w, sc in scored:
             if len(w) > 3 and content:               # a content word: gate by the lock

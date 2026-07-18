@@ -1,0 +1,74 @@
+{
+  "artifacts": {
+    "omni/kin_context.pkl": {
+      "bytes": 285668509,
+      "sha256": "363d75e256a8a1019c7f6e4fc93f2995da310615e470c14de9beabd7bf9766a4"
+    },
+    "omni/pairs.pkl": {
+      "bytes": 226572757,
+      "sha256": "6a5dcc9e9d2227e3445a7d6630ce52807e9c58d7259bbb488f53d9f05c022b17"
+    },
+    "omni/word_coupling.pkl": {
+      "bytes": 6680477,
+      "sha256": "717fb9bc05dc00e2165470e7685461bd95cd8b8ca0c4cf6c237305b8e424d8ac"
+    },
+    "omni/word_fluency.pkl": {
+      "bytes": 621336058,
+      "sha256": "0d4f89f63ad7c5e594cef04d2534ec247e9f185a111d872e8a7b9944342d6bf5"
+    },
+    "omni/word_kin.pkl": {
+      "bytes": 5281155,
+      "sha256": "4451cc507be6d8843b50982cdbbeb8f9fc82bea9140a86d118211d2505d2e0de"
+    },
+    "train_eval/conv_corpus.txt": {
+      "bytes": 80104404,
+      "sha256": "8439d1d5f46579a54d5c03bd848932e93217f916b015f38c9c19de3b21e4522e"
+    }
+  },
+  "builder_source_sha256": {
+    "train_eval/build_coupling.py": "31a0353d38af2158463b6fcd072ca456ad93662fad789e3e34657635ba55b5f7",
+    "train_eval/build_fluency.py": "54c31ff870cc06fbcb66ea83e31daf92e03bcd92ed0f5e817226ab98d21ac7f2",
+    "train_eval/build_kin_context.py": "972eafa5e064eb379ac3a847f6b61541974074c322c2425d9cd50c4df6d71f14",
+    "train_eval/build_kin_store.py": "a76865a7bd849db2f6a67f946d4e0f74713ea5c8a6ae95cab1ea30dfa3693a36",
+    "train_eval/build_pairs_from_datasets.py": "c13892f0d8142e2664cc6e65f8816c857a99f8cda2d40171dafb9df1f760cfb5",
+    "train_eval/download_conversational.py": "d5c5f112587467f91ae7a6296dd8bcb9319897f230f53d26ef8cc9c923163696",
+    "train_eval/seal_runtime_store_build.py": "b105f41ecedf245513a6480903e03acf25920c0279fa41b63cc735bb8e701204"
+  },
+  "commands": [
+    "python3 train_eval/download_conversational.py",
+    "python3 train_eval/build_pairs_from_datasets.py",
+    "python3 train_eval/build_fluency.py",
+    "python3 train_eval/build_coupling.py",
+    "python3 train_eval/build_kin_store.py",
+    "python3 train_eval/build_kin_context.py"
+  ],
+  "content_counts": {
+    "conditioned_context_count": 4618246,
+    "coupling_word_count": 11685,
+    "fluency_max_order": 4,
+    "fluency_vocabulary": 100303,
+    "kin_word_count": 11755,
+    "pair_count": 649917,
+    "pair_prompt_word_count": 88046,
+    "trigram_context_count": 8000727
+  },
+  "environment": {
+    "datasets": "4.5.0",
+    "platform": "macOS-15.6-arm64-arm-64bit",
+    "python": "3.9.6"
+  },
+  "rebuild_boundary": "The exact generated artifacts are hash-bound. Dataset builders currently request streaming sources without pinned revision arguments; resolved cache revisions are recorded where available, so future source drift must not be mistaken for byte-identical rebuildability.",
+  "resolved_dataset_revisions": {
+    "HuggingFaceH4/no_robots": "e6f9a4ac5c37faeb744ba9ecf0473184d7f8105b",
+    "HuggingFaceH4/ultrachat_200k": "8049631c405ae6576f93f445c6b8166f76f5505a",
+    "OpenAssistant/oasst1": "fdf72ae0827c1cda404aff25b6603abec9e3399b",
+    "OpenRL/daily_dialog": "1668faf0c0dc44664f108c489fd0666128db2c48",
+    "allenai/soda": "fdc848ab0183208ea7808206c91c724414d0a071",
+    "daily_dialog": "ffde34acefcd956529c39c4fc78d993b5b7f7520",
+    "databricks/databricks-dolly-15k": "bdd27f4d94b9c1f951818a7da7fd7aeea5dbff1a",
+    "google/Synthetic-Persona-Chat": "a520ad7f999ca7e6dfdc25fed9f5070bf6f87b42"
+  },
+  "schema": "unison-runtime-store-build/v1",
+  "sealed_at_utc": "2026-07-18T01:39:23.428538+00:00",
+  "status": "sealed"
+}

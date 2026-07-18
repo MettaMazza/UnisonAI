@@ -21,6 +21,7 @@ from omni.word_engine import tokenize, _content_words
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.abspath(os.path.join(HERE, "..", "omni", "pairs.pkl"))
+STAGE = OUT + ".building"
 CAP_PER_DS = 160_000
 CAP_ULTRACHAT = 260_000        # knowledge coverage: the topical source gets a larger share
 CAP_TOTAL = 800_000
@@ -203,11 +204,14 @@ def main():
     inv2 = {w: lst[:1500] for w, lst in inv.items()}
     N = len(responses)
     avgdl = (sum(plen) / N) if N else 1.0
-    with open(OUT, "wb") as fo:
+    if N <= 0:
+        raise RuntimeError("all pair sources failed; refusing an empty pair store")
+    with open(STAGE, "wb") as fo:
         pickle.dump({"responses": responses, "prompts": prompts, "inv": inv2,
                      "tf_extra": tf_extra, "plen": plen, "avgdl": avgdl, "N": N,
                      "src_certain": src_certain, "exact": dict(exact)}, fo,
                     protocol=pickle.HIGHEST_PROTOCOL)
+    os.replace(STAGE, OUT)
     print(f"saved TRUE-pair index: {N:,} pairs, {len(inv2):,} prompt-words, avgdl {avgdl:.1f} "
           f"-> {OUT} ({os.path.getsize(OUT)/1e6:.0f}MB) in {time.time()-t0:.0f}s", flush=True)
 

@@ -1,13 +1,13 @@
 # The Law Inside Trained Weights
 
-## The Fold Decode campaign: registered spectral instruments, function attribution, and refused predictions
+## The Fold Decode campaign: registered spectral instruments, function attribution, and attributed auxiliary hypotheses
 
 **Maria Smith — Ernos Labs**
-**Version 1.1 — 17 July 2026**
+**Version 1.2 — 18 July 2026**
 
 ## Abstract
 
-The Fold Decode campaign tests whether trained neural weights contain structured spectral placement rather than an uninterpretable collection of values. Its instruments are registered before measurement, compare each real tensor with shuffled copies of the same values, execute transform identities as halt conditions, and preserve negative results. Across the committed campaign, GPT-2's embedding and MLP expansion classes pass 39/39 registered real-versus-null checks; a widened coordinate-and-object hunt wakes previously quiet model families; matched-budget spectral ablation produces roughly 150× greater behavioral damage than random-coordinate deletion in the reported GPT-2 experiment; and checkpoint/twin experiments locate when structure enters weights and gradients.
+The Fold Decode campaign tests whether trained neural weights contain structured spectral placement rather than an uninterpretable collection of values. Its instruments are registered before measurement, compare each real tensor with shuffled copies of the same values, execute transform identities as halt conditions, and preserve every measured output. Across the committed campaign, GPT-2's embedding and MLP expansion classes pass 39/39 registered real-versus-null checks; a widened coordinate-and-object hunt wakes previously quiet model families; matched-budget spectral ablation produces roughly 150× greater behavioral damage than random-coordinate deletion in the reported GPT-2 experiment; and checkpoint/twin experiments locate when structure enters weights and gradients.
 
 The campaign does not claim that one basis, one coordinate map, or one measured model exhausts all neural computation. A quiet result is scoped to the registered instrument. The work argues that at least part of trained-model function is carried by discoverable placement law and can be investigated through transparent, falsifiable measurements.
 
@@ -55,18 +55,31 @@ Committed instruments report:
 
 - counted-prior corpus ranking with a calibrated twin;
 - bounded orbit echoes on named texts, with zero on the private-corpus and shuffled-stem controls in that run;
-- mature-embedding kinship provenance on GPT-2 and a refused result on a young twin;
+- mature-embedding kinship provenance on GPT-2 and the measured young-twin
+  readout from an agent-authored auxiliary expectation;
 - layerwise activation spectra with a late-layer departure retained as open;
 - attention distributions closer to a dyadic cascade than uniform in 12/12 examined GPT-2 layers, scoped by the proper simplex null;
 - a counted difference between thinking and answer spans in the recorded thought-trace experiment.
 
-## 4. Refused predictions and amendments
+## 4. Agent-authored auxiliary hypotheses and measured amendments
 
-The campaign treats a refused prediction as information. Quiet attention-weight readings did not become claims that attention contains no law; they triggered a coordinate/object investigation. A shuffle null for rank-sorted attention was recognized as vacuous because the statistic was permutation-invariant and was replaced by an appropriate simplex null. A young twin failed the kinship readout. Late GPT-2 activations departed from the weight pattern. These records are part of the result, not debris to be hidden.
+Some AI agents introduced auxiliary expectations about attention weights, a
+young twin, and late GPT-2 activations. Those expectations were not Maria's
+predictions and were not engine-derived consequences. The measured outputs are
+preserved: quiet attention-weight readings prompted a coordinate/object
+investigation; a permutation-invariant shuffle null was replaced by a simplex
+null; the named young-twin kinship readout did not fire; and late GPT-2
+activations differed from the weight pattern. Each measurement remains tied to
+its instrument, while failure of an auxiliary expectation belongs only to the
+agent hypothesis.
 
 ## 5. Claim boundary
 
-The campaign establishes registered spectral structure and function attribution for the stated objects and instruments. It does not declare a final ontology of neural networks or a theoretical wall around models not yet decoded. New bases, coordinates, tensor classes, architectures, and causal interventions remain open development. Every extension must preserve pre-registration, matched nulls, executable calibrations, and raw negative results.
+The campaign records registered spectral structure and function attribution for
+the stated objects and instruments. New bases, coordinates, tensor classes,
+architectures, and causal interventions continue under Maria's direction.
+Every extension preserves pre-registration, matched nulls, executable
+calibrations, raw measurements, and the ownership of any auxiliary hypothesis.
 
 ## 6. Reproduction and evidence
 
@@ -82,7 +95,7 @@ The instruments require different optional dependencies and model files. Their p
 
 ## 7. Conclusion
 
-Fold Decode replaces “black box” as a stopping phrase with a falsifiable measurement programme. In the registered experiments, trained-model structure is spectrally located, its deposition is timed, and a loud band is causally tied to behavior through matched-budget ablation. The campaign remains open: it reports what each instrument has secured without turning current coverage into a limit on future decode.
+Fold Decode replaces “black box” as a stopping phrase with a falsifiable measurement programme. In the registered experiments, trained-model structure is spectrally located, its deposition is timed, and a loud band is causally tied to behavior through matched-budget ablation. Benchmark victory and wider decode remain active objectives; agents do not turn their auxiliary expectations or early measurements into Maria's findings, losses, or endpoint.
 
 ## Repositories and lineage
 

@@ -1,0 +1,433 @@
+{
+  "calibration_sha256": "9a548dd2b72d8f7515fd477732269ea6ca97e1f2c974064d81c1b8f3f3da166b",
+  "pool_good": {
+    "baseline": {
+      "good": 0,
+      "rate": 0.0,
+      "total": 12
+    },
+    "f1": {
+      "good": 0,
+      "rate": 0.0,
+      "total": 12
+    },
+    "f3": {
+      "good": 0,
+      "rate": 0.0,
+      "total": 12
+    }
+  },
+  "registration_sha256": "39d433b7f2196c9710177fffbe2116722fc6091073bfa4c1f83219b443866857",
+  "rows": [
+    {
+      "prompt": "Hello, how are you?",
+      "replies": {
+        "baseline": "you, maddie.\" maddie:\" what do we' s a highly detailed and complex, and any other relevant details. there are also many pre - built iot applications they may be involved in the",
+        "f1": "Hello, i'm calling about a specific needs?",
+        "f3": "Nice to be doing today?"
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f1": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f3": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "how's it going?",
+      "replies": {
+        "baseline": "well as a key in the jsonobject;} / / if the user did not input\" y\" - this is a way of a pro. by the end of the key steps and strategies involved in",
+        "f1": "Oh this. it a versatile option.",
+        "f3": "I'm going to be really fun! can you add the first."
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f1": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f3": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "My name is Maria, what is your name?",
+      "replies": {
+        "baseline": "during the soviet forces on how to do the c - 130, the recipient of the company and promote our brand to be a mix of the salty air. 4. the shot, ran out of a",
+        "f1": "], i would like to do with a horse.",
+        "f3": "It's nice to meet you."
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f1": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f3": {
+          "agreement": false,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": true,
+          "judge_2_tail": "GOOD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "what do you think about the ocean",
+      "replies": {
+        "baseline": "example. com\") # = > 5. a hot wok with 2 tablespoons vegetable oil - 2 cloves of garlic, and a mix of sand, perlite, and other acrylates. cha has high compatibility",
+        "f1": "I can provide a brief explanation of you have been if you want an amazing person, too.",
+        "f3": "That's a very long. one of the key to a date."
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f1": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f3": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "tell me about space",
+      "replies": {
+        "baseline": "long - term strategies for promoting emotional acceptance, he was an optometrist with a few more examples of ai - generated content can try to implement in my own life. about the setting of the coffee shop'",
+        "f1": "That the shrimp before cooking temperature in the room was in disarray.",
+        "f3": "Can you tell me a bit about its beauty of the new job. as the day - space to add to the sum of a and b is: a = p ( 1 +"
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f1": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f3": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "I'm feeling a bit sad today",
+      "replies": {
+        "baseline": "she was feeling nervous and uncertain. cut to: ext. high - protein, no - nonsense. she was a simple act, a set of recommendations are presented for the mining industry and policymakers to these",
+        "f1": "I can't fit will do.",
+        "f3": "I'm not to be a better dad; the doctor had a lot of how much you can you give me."
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f1": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f3": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "what should I cook for dinner",
+      "replies": {
+        "baseline": "how to troubleshoot any connectivity issues can be frustrating, but it' s also a testament to 384 gib of memory! can you add a section to the mix of businesses and the strategies you can use to",
+        "f1": "I want to get away with your feet in a classic cast iron skillet cornbread: cornbread is a popular choice for it, and what it means.",
+        "f3": "I would be a lot of fun cooking, and i know."
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f1": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f3": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "do you like music",
+      "replies": {
+        "baseline": "way to a shabby - jim:\" no way, 000 per the recipe, you can try to add some call me cry. she had a lot of soul searching, and so, you can try",
+        "f1": "In their roots in low german.",
+        "f3": "I never had a big fan of classical music."
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f1": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f3": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "what are your hobbies",
+      "replies": {
+        "baseline": "traditional ceremonies and is not directly from its competitors. 4. use strong and unique passwords and ways to connect on a dentist for a new stories, or use a dress form if you have any further questions",
+        "f1": "Do you have any suggestions for stress management?",
+        "f3": "I love the way you too, and i don't always be a lot of fun to watch tv shows."
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f1": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f3": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "recommend a good book",
+      "replies": {
+        "baseline": "water the plant too! how did the aps team, i am thrilled to have the power of her new body. you can you recommend a way to balance the scales of power and \u00a1 hola! is",
+        "f1": "I'm sure, here i could have a rich and the poor quality to hear.",
+        "f3": "Can be a fun way to play a lot of bad luck. in the end of the day. the app can you add a big fan of it. i've got a few of"
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f1": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f3": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "I just finished a painting",
+      "replies": {
+        "baseline": "of college or vocational school for every graduating, but you can be as simple as a cup of tea, a rotor, the lok sabha can influence the types of the new product / repository - 40.",
+        "f1": "\u2026 a white. and now, surrounded by andy weir canyon.",
+        "f3": "Wow, that's great job."
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f1": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f3": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "what makes a good friend",
+      "replies": {
+        "baseline": "text on banners or did they were in the world. the symbol has come to the boil, then reduce the heat to low -\" in every eye, but in the end of the ad may work",
+        "f1": "Me to know that i will continue to show you every day just getting the job.",
+        "f3": "I'm sure, i would be a lot of the right."
+      },
+      "verdicts": {
+        "baseline": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f1": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        },
+        "f3": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    }
+  ],
+  "schema": "unison-generation-quality-result/v1",
+  "status": "completed"
+}

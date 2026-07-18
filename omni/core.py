@@ -4,7 +4,7 @@ from fractions import Fraction
 from omni.logging_config import core_logger as logger
 
 # =============================================================================
-# THE FORCED CONSTANTS (SFT Axioms)
+# THE FORCED CONSTANTS (FROM THE SELF-PROVEN THEOREM; ZERO AXIOMS)
 # =============================================================================
 # The generators of the Smithian Fold Theory
 GEN_B = 2   # Binary Count (The fold's period beyond the One)
