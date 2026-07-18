@@ -1,0 +1,58 @@
+{
+  "arms": [
+    "baseline",
+    "response_surface"
+  ],
+  "calibration_gate": "each judge must classify at least 9/10 known-good and 9/10 known-bad examples correctly in the same sealed run",
+  "claim_boundary": "Codex-authored auxiliary comparison of the legacy native surface and the explicitly registered response-only native surface; Maria Smith assigns conclusions",
+  "judge_endpoint": "http://127.0.0.1:11434",
+  "judge_rule": "GOOD only when both independently calibrated judges return GOOD; disagreement is not-good",
+  "judges": [
+    "gemma-4-31b:latest",
+    "qwen3.6-27b:latest"
+  ],
+  "optional_runtime_artifacts": [
+    "omni/free_closures.pkl",
+    "omni/pair_quality.pkl",
+    "omni/taught_pairs.pkl"
+  ],
+  "prompts": [
+    "Hello, how are you?",
+    "how's it going?",
+    "My name is Maria, what is your name?",
+    "what do you think about the ocean",
+    "tell me about space",
+    "I'm feeling a bit sad today",
+    "what should I cook for dinner",
+    "do you like music",
+    "what are your hobbies",
+    "recommend a good book",
+    "I just finished a painting",
+    "what makes a good friend"
+  ],
+  "required_runtime_artifacts": [
+    "omni/kin_context.pkl",
+    "omni/word_fluency.pkl",
+    "omni/word_coupling.pkl",
+    "omni/word_kin.pkl",
+    "omni/pairs.pkl",
+    "omni/response_fluency_v1.pkl",
+    "train_eval/response_fluency_v1_receipt.json",
+    "train_eval/response_fluency_runtime_arm_v1.json",
+    "train_eval/runtime_store_build_receipt.json"
+  ],
+  "response_fluency_arm": "train_eval/response_fluency_runtime_arm_v1.json",
+  "schema": "unison-generation-quality-campaign/v2",
+  "seed": 7,
+  "source_sha256": {
+    "omni/free_gen.py": "0413dd6ba3425a76ff77e99ba34451489fb2a15beec3ddfd95b99c1d06ddd50f",
+    "omni/generation_boundaries.py": "cdb544900c845be21706ac19d7fe410b22be409dc81a2a7993b36969fdefa18f",
+    "omni/pair_retrieval.py": "62fd4fae76796a5ca42d17ef620fd0942287c0112e1c66da7c259688919f501d",
+    "omni/word_engine.py": "ec4215d8194c0ab0409c82138e9c25cfdffdebac1a4622d5ad521147507703c9",
+    "train_eval/judge.py": "c5a7d8a11e9301692f7304e433a06d305c1437a2af0a3835abf4d46fa34f7306",
+    "train_eval/judge_calibration.py": "ae2a9a0a1cf643944d6e78761d8b54b2a272821b4aa40f254b1ff343955e12b6",
+    "train_eval/registered_generation_quality.py": "86c62f753d855365e2c4a7c13c79d2f54166fd11917a6f9e2a1c332c56d365bc",
+    "train_eval/seal_runtime_store_build.py": "b105f41ecedf245513a6480903e03acf25920c0279fa41b63cc735bb8e701204"
+  },
+  "store_build_receipt": "train_eval/runtime_store_build_receipt.json"
+}

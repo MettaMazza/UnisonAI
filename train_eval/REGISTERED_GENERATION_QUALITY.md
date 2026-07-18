@@ -66,3 +66,15 @@ explicit `--allow-source-drift` archival mode checks the immutable campaign,
 registration, calibration, result, unanimity arithmetic, and seal without
 pretending the historical source is the current checkout; it never rewrites the
 receipt.
+
+## Response-surface comparison v2
+
+`generation_quality_response_surface_v2.json` preserves the same twelve sealed
+conversation prompts and two independently calibrated judges while comparing
+the legacy native surface directly with the explicitly registered response-only
+native surface. The execution code now uses one deterministic random stream per
+arm, so adding an arm cannot perturb another arm's sequence. Registration binds
+the campaign, current source, runtime stores, response-arm record, sealed
+artifact receipt, artifact bytes, and local judge digests before generation.
+This is a Codex-authored auxiliary comparison; its rows and judge measurements
+remain separate from Maria Smith's conclusions and benchmark authority.

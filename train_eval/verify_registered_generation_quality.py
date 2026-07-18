@@ -35,14 +35,22 @@ def verify(campaign_path: Path, result_dir: Path, verify_runtime: bool,
     calibration = json.loads(calibration_path.read_text())
     result = json.loads(result_path.read_text())
     seal = json.loads(seal_path.read_text())
-    require(campaign.get("schema") == "unison-generation-quality-campaign/v1",
+    require(campaign.get("schema") in {
+                "unison-generation-quality-campaign/v1",
+                "unison-generation-quality-campaign/v2"},
             "unsupported campaign schema")
-    require(registration.get("schema") == "unison-generation-quality-registration/v1",
+    require(registration.get("schema") in {
+                "unison-generation-quality-registration/v1",
+                "unison-generation-quality-registration/v2"},
             "unsupported registration schema")
     require(registration.get("status") == "registered", "registration is not complete")
-    require(result.get("schema") == "unison-generation-quality-result/v1" and
+    require(result.get("schema") in {
+                "unison-generation-quality-result/v1",
+                "unison-generation-quality-result/v2"} and
             result.get("status") == "completed", "result is not completed")
-    require(seal.get("schema") == "unison-generation-quality-seal/v1" and
+    require(seal.get("schema") in {
+                "unison-generation-quality-seal/v1",
+                "unison-generation-quality-seal/v2"} and
             seal.get("status") == "completed", "result seal is not completed")
 
     campaign_sha = sha256_file(campaign_path)

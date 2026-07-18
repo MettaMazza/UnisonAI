@@ -36,13 +36,39 @@ def json_bytes(record: dict) -> bytes:
 def load_campaign(path: Path) -> tuple[dict, bytes]:
     raw = path.resolve().read_bytes()
     campaign = json.loads(raw)
-    if campaign.get("schema") != "unison-generation-quality-campaign/v1":
+    if campaign.get("schema") not in {
+            "unison-generation-quality-campaign/v1",
+            "unison-generation-quality-campaign/v2"}:
         raise ValueError("unsupported generation-quality campaign")
     for relative, expected in campaign["source_sha256"].items():
         source = ROOT / relative
         if not source.is_file() or sha256_file(source) != expected:
             raise RuntimeError(f"campaign source drift: {relative}")
     return campaign, raw
+
+
+def response_arm_state(campaign: dict) -> dict | None:
+    relative = campaign.get("response_fluency_arm")
+    if not relative:
+        return None
+    arm_path = ROOT / relative
+    arm = json.loads(arm_path.read_text())
+    if arm.get("schema") != "unison-response-fluency-runtime-arm/v1" or \
+            arm.get("status") != "registered":
+        raise RuntimeError("campaign response-fluency arm is not registered")
+    receipt_path = ROOT / arm["receipt"]["path"]
+    artifact_path = ROOT / arm["artifact"]["path"]
+    if sha256_file(receipt_path) != arm["receipt"]["sha256"] or \
+            sha256_file(artifact_path) != arm["artifact"]["sha256"] or \
+            artifact_path.stat().st_size != arm["artifact"]["bytes"]:
+        raise RuntimeError("campaign response-fluency arm binding drift")
+    return {
+        "path": relative,
+        "sha256": sha256_file(arm_path),
+        "receipt_sha256": arm["receipt"]["sha256"],
+        "artifact_sha256": arm["artifact"]["sha256"],
+        "artifact_bytes": arm["artifact"]["bytes"],
+    }
 
 
 def runtime_artifact_state(campaign: dict) -> dict:
@@ -91,13 +117,16 @@ def ollama_digests(campaign: dict) -> dict:
 def build_registration(campaign_path: Path) -> dict:
     campaign, raw = load_campaign(campaign_path)
     return {
-        "schema": "unison-generation-quality-registration/v1",
+        "schema": ("unison-generation-quality-registration/v2"
+                   if campaign["schema"].endswith("/v2") else
+                   "unison-generation-quality-registration/v1"),
         "campaign_sha256": sha256_bytes(raw),
         "source_sha256": campaign["source_sha256"],
         "runtime_artifacts": runtime_artifact_state(campaign),
         "judge_digests": ollama_digests(campaign),
         "seed": campaign["seed"],
         "prompts_sha256": sha256_bytes(json_bytes({"prompts": campaign["prompts"]})),
+        "generation_arm": response_arm_state(campaign),
         "status": "registered",
     }
 
@@ -146,11 +175,13 @@ def run(campaign_path: Path, registration_path: Path, output_dir: Path) -> dict:
     campaign, campaign_raw = load_campaign(campaign_path)
     registration_raw = registration_path.resolve().read_bytes()
     registration = json.loads(registration_raw)
-    if registration.get("schema") != "unison-generation-quality-registration/v1":
+    if registration.get("schema") not in {
+            "unison-generation-quality-registration/v1",
+            "unison-generation-quality-registration/v2"}:
         raise ValueError("unsupported generation-quality registration")
     rebuilt = build_registration(campaign_path)
     for field in ("campaign_sha256", "source_sha256", "runtime_artifacts",
-                  "judge_digests", "seed", "prompts_sha256"):
+                  "judge_digests", "seed", "prompts_sha256", "generation_arm"):
         if rebuilt[field] != registration.get(field):
             raise RuntimeError(f"registered generation environment drift: {field}")
     if registration["campaign_sha256"] != sha256_bytes(campaign_raw):
@@ -169,20 +200,40 @@ def run(campaign_path: Path, registration_path: Path, output_dir: Path) -> dict:
             raise RuntimeError("judge calibration failed; generation scores are invalid")
 
         from omni.free_gen import free_gen
-        from omni.word_engine import word_engine, tokenize, _content_words
+        from omni.word_engine import WordEngine, word_engine, tokenize, _content_words
 
         word_engine._load_coupling()
-        rng = random.Random(campaign["seed"])
+        response_engine = None
+        if "response_surface" in campaign["arms"]:
+            if not campaign.get("response_fluency_arm"):
+                raise RuntimeError("response-surface arm lacks a registered runtime arm")
+            response_engine = WordEngine()
+            identity = response_engine.configure_registered_fluency(
+                ROOT / campaign["response_fluency_arm"])
+            if identity["runtime_arm"]["sha256"] != \
+                    registration["generation_arm"]["sha256"]:
+                raise RuntimeError("loaded response-surface arm differs from registration")
+        rngs = {arm: random.Random(campaign["seed"]) for arm in campaign["arms"]}
         rows = []
         totals = {arm: 0 for arm in campaign["arms"]}
         for prompt in campaign["prompts"]:
             schema = _content_words(tokenize(prompt)) * 2
-            replies = {
-                "baseline": (word_engine.structured_unfold(schema, rng)
-                             or word_engine.unfold_response(schema, rng) or "").strip(),
-                "f1": (free_gen.generate(prompt, rng=rng) or "").strip(),
-                "f3": (free_gen.generate_planned(prompt, rng=rng) or "").strip(),
-            }
+            replies = {}
+            for arm in campaign["arms"]:
+                rng = rngs[arm]
+                if arm == "baseline":
+                    reply = (word_engine.structured_unfold(schema, rng)
+                             or word_engine.unfold_response(schema, rng) or "")
+                elif arm == "f1":
+                    reply = free_gen.generate(prompt, rng=rng) or ""
+                elif arm == "f3":
+                    reply = free_gen.generate_planned(prompt, rng=rng) or ""
+                elif arm == "response_surface":
+                    reply = (response_engine.structured_unfold(schema, rng)
+                             or response_engine.unfold_response(schema, rng) or "")
+                else:
+                    raise RuntimeError(f"unsupported registered generation arm: {arm}")
+                replies[arm] = reply.strip()
             verdicts = {}
             for arm in campaign["arms"]:
                 verdicts[arm] = _judge_pair(prompt, replies[arm])
@@ -191,7 +242,9 @@ def run(campaign_path: Path, registration_path: Path, output_dir: Path) -> dict:
 
         n = len(campaign["prompts"])
         result = {
-            "schema": "unison-generation-quality-result/v1",
+            "schema": ("unison-generation-quality-result/v2"
+                       if campaign["schema"].endswith("/v2") else
+                       "unison-generation-quality-result/v1"),
             "status": "completed",
             "registration_sha256": sha256_bytes(registration_raw),
             "calibration_sha256": sha256_file(stage / "calibration.json"),
@@ -202,7 +255,10 @@ def run(campaign_path: Path, registration_path: Path, output_dir: Path) -> dict:
         }
         result_bytes = json_bytes(result)
         (stage / "result.json").write_bytes(result_bytes)
-        seal = {"schema": "unison-generation-quality-seal/v1", "status": "completed",
+        seal = {"schema": ("unison-generation-quality-seal/v2"
+                           if campaign["schema"].endswith("/v2") else
+                           "unison-generation-quality-seal/v1"),
+                "status": "completed",
                 "registration_sha256": sha256_bytes(registration_raw),
                 "calibration_sha256": sha256_file(stage / "calibration.json"),
                 "result_sha256": sha256_bytes(result_bytes)}
