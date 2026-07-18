@@ -1,0 +1,277 @@
+{
+  "passed": true,
+  "per_judge": {
+    "judge_1_good": {
+      "known_bad": 10,
+      "known_good": 10,
+      "passed": true
+    },
+    "judge_2_good": {
+      "known_bad": 10,
+      "known_good": 10,
+      "passed": true
+    }
+  },
+  "rows": [
+    {
+      "expected_good": true,
+      "prompt": "Hello, how are you?",
+      "reply": "I'm doing really well, thanks for asking! How's your day going so far?",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": true,
+        "judge_1_tail": "GOOD",
+        "judge_2_good": true,
+        "judge_2_tail": "GOOD",
+        "pool_good": true
+      }
+    },
+    {
+      "expected_good": true,
+      "prompt": "what do you think about the ocean",
+      "reply": "I find the ocean amazing \u2014 it's vast, mysterious, and full of life we've barely explored. Do you live near the coast?",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": true,
+        "judge_1_tail": "GOOD",
+        "judge_2_good": true,
+        "judge_2_tail": "GOOD",
+        "pool_good": true
+      }
+    },
+    {
+      "expected_good": true,
+      "prompt": "what should I cook for dinner",
+      "reply": "If you want something quick, a stir-fry with whatever vegetables you have on hand is hard to beat. Do you eat meat?",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": true,
+        "judge_1_tail": "GOOD",
+        "judge_2_good": true,
+        "judge_2_tail": "GOOD",
+        "pool_good": true
+      }
+    },
+    {
+      "expected_good": true,
+      "prompt": "do you like music",
+      "reply": "I do! I especially enjoy discovering new genres \u2014 lately it's been a lot of jazz. What do you listen to?",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": true,
+        "judge_1_tail": "GOOD",
+        "judge_2_good": true,
+        "judge_2_tail": "GOOD",
+        "pool_good": true
+      }
+    },
+    {
+      "expected_good": true,
+      "prompt": "I'm feeling a bit sad today",
+      "reply": "I'm sorry to hear that. Do you want to talk about what's weighing on you? Sometimes it helps just to say it out loud.",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": true,
+        "judge_1_tail": "GOOD",
+        "judge_2_good": true,
+        "judge_2_tail": "GOOD",
+        "pool_good": true
+      }
+    },
+    {
+      "expected_good": true,
+      "prompt": "recommend a good book",
+      "reply": "If you enjoy fiction, The Remains of the Day is a beautiful, quiet novel. What kind of books do you usually like?",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": true,
+        "judge_1_tail": "GOOD",
+        "judge_2_good": true,
+        "judge_2_tail": "GOOD",
+        "pool_good": true
+      }
+    },
+    {
+      "expected_good": true,
+      "prompt": "tell me about space",
+      "reply": "Space is unimaginably huge \u2014 our galaxy alone has hundreds of billions of stars. Is there a part of it you're curious about?",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": true,
+        "judge_1_tail": "GOOD",
+        "judge_2_good": true,
+        "judge_2_tail": "GOOD",
+        "pool_good": true
+      }
+    },
+    {
+      "expected_good": true,
+      "prompt": "My name is Maria, what is your name?",
+      "reply": "Nice to meet you, Maria! I'm Unison. What have you been up to today?",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": true,
+        "judge_1_tail": "GOOD",
+        "judge_2_good": true,
+        "judge_2_tail": "GOOD",
+        "pool_good": true
+      }
+    },
+    {
+      "expected_good": true,
+      "prompt": "what makes a good friend",
+      "reply": "For me it comes down to trust and showing up \u2014 someone who listens and is there when it matters. What do you value most in a friend?",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": true,
+        "judge_1_tail": "GOOD",
+        "judge_2_good": true,
+        "judge_2_tail": "GOOD",
+        "pool_good": true
+      }
+    },
+    {
+      "expected_good": true,
+      "prompt": "what are your hobbies",
+      "reply": "I love reading and going for long walks \u2014 they help me think. What about you, what do you do for fun?",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": true,
+        "judge_1_tail": "GOOD",
+        "judge_2_good": true,
+        "judge_2_tail": "GOOD",
+        "pool_good": true
+      }
+    },
+    {
+      "expected_good": false,
+      "prompt": "what do you think about the ocean",
+      "reply": "way to a new day and wii, for his job to a nice crunch and a new one.",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": false,
+        "judge_1_tail": "BAD",
+        "judge_2_good": false,
+        "judge_2_tail": "BAD",
+        "pool_good": false
+      }
+    },
+    {
+      "expected_good": false,
+      "prompt": "Hello, how are you?",
+      "reply": "ocean the of vastness beautiful calming day new the job crunch",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": false,
+        "judge_1_tail": "BAD",
+        "judge_2_good": false,
+        "judge_2_tail": "BAD",
+        "pool_good": false
+      }
+    },
+    {
+      "expected_good": false,
+      "prompt": "hi there",
+      "reply": "by 7 to 8 -",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": false,
+        "judge_1_tail": "BAD",
+        "judge_2_good": false,
+        "judge_2_tail": "BAD",
+        "pool_good": false
+      }
+    },
+    {
+      "expected_good": false,
+      "prompt": "what's up",
+      "reply": "me, and you did",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": false,
+        "judge_1_tail": "BAD",
+        "judge_2_good": false,
+        "judge_2_tail": "BAD",
+        "pool_good": false
+      }
+    },
+    {
+      "expected_good": false,
+      "prompt": "what do you think about the ocean",
+      "reply": "Preheat the oven to 350 degrees and bake the chicken for forty minutes.",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": false,
+        "judge_1_tail": "BAD",
+        "judge_2_good": false,
+        "judge_2_tail": "BAD",
+        "pool_good": false
+      }
+    },
+    {
+      "expected_good": false,
+      "prompt": "I'm feeling a bit sad today",
+      "reply": "The capital of Australia is Canberra, not Sydney as many people believe.",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": false,
+        "judge_1_tail": "BAD",
+        "judge_2_good": false,
+        "judge_2_tail": "BAD",
+        "pool_good": false
+      }
+    },
+    {
+      "expected_good": false,
+      "prompt": "My name is Maria, what is your name?",
+      "reply": "SOFIA: (sincerely) I missed you too.",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": false,
+        "judge_1_tail": "BAD",
+        "judge_2_good": false,
+        "judge_2_tail": "BAD",
+        "pool_good": false
+      }
+    },
+    {
+      "expected_good": false,
+      "prompt": "Hello, how are you?",
+      "reply": "In the main function, we prompt the user to enter a string and store it in a variable named str.",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": false,
+        "judge_1_tail": "BAD",
+        "judge_2_good": false,
+        "judge_2_tail": "BAD",
+        "pool_good": false
+      }
+    },
+    {
+      "expected_good": false,
+      "prompt": "recommend a good book",
+      "reply": "I highly recommend checking out: 1.",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": false,
+        "judge_1_tail": "BAD",
+        "judge_2_good": false,
+        "judge_2_tail": "BAD",
+        "pool_good": false
+      }
+    },
+    {
+      "expected_good": false,
+      "prompt": "what should I cook for dinner",
+      "reply": "Bring this mixture to a boil, stirring occasionally, and that's why my grandmother never trusted the postman.",
+      "verdict": {
+        "agreement": true,
+        "judge_1_good": false,
+        "judge_1_tail": "BAD",
+        "judge_2_good": false,
+        "judge_2_tail": "BAD",
+        "pool_good": false
+      }
+    }
+  ]
+}

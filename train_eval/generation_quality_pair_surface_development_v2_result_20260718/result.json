@@ -1,0 +1,207 @@
+{
+  "calibration_sha256": "9a548dd2b72d8f7515fd477732269ea6ca97e1f2c974064d81c1b8f3f3da166b",
+  "pool_good": {
+    "pair_surface": {
+      "good": 1,
+      "rate": 0.08333333333333333,
+      "total": 12
+    }
+  },
+  "registration_sha256": "7d3df3df369951aaf6724dbc71b6cb8cd083d7fbd39ebd896731d9895af8b070",
+  "rows": [
+    {
+      "prompt": "Hey, are you doing okay today?",
+      "replies": {
+        "pair_surface": ""
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "empty",
+          "judge_2_good": false,
+          "judge_2_tail": "empty",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "People call me Elena. What are you called?",
+      "replies": {
+        "pair_surface": ""
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "empty",
+          "judge_2_good": false,
+          "judge_2_tail": "empty",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "Why does the ocean move in tides?",
+      "replies": {
+        "pair_surface": "Tides are very long waves moving across the ocean."
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": false,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": true,
+          "judge_2_tail": "GOOD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "Explain space exploration in one sentence.",
+      "replies": {
+        "pair_surface": "Space exploration is the exploration of space beyond Earth\u2019s atmosphere. Space exploration has had a significant impact on the history of humanity, starting from the early days of rocketry experiments to the advancements made in the 20th century."
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": false,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": true,
+          "judge_2_tail": "GOOD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "I feel miserable after a difficult afternoon.",
+      "replies": {
+        "pair_surface": "We have a flight at four thirty. It seems that you will have a nice day tomorrow."
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "Suggest a meat-free meal I could make tonight.",
+      "replies": {
+        "pair_surface": ""
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "empty",
+          "judge_2_good": false,
+          "judge_2_tail": "empty",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "Which music do you listen to most?",
+      "replies": {
+        "pair_surface": "I like to listen to all kinds of music, but my favorite is probably rap. I like to listen to all sorts of music, but I mostly listen to rock and pop."
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": false,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": true,
+          "judge_2_tail": "GOOD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "What do you usually do to relax?",
+      "replies": {
+        "pair_surface": ""
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "empty",
+          "judge_2_good": false,
+          "judge_2_tail": "empty",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "Name a novel you would recommend.",
+      "replies": {
+        "pair_surface": "Would you like to recommend some for our reference?"
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": false,
+          "judge_2_tail": "BAD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "I have just completed an acrylic picture.",
+      "replies": {
+        "pair_surface": "That would be great! Thanks! They look great. What made you choose the blue background?"
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": false,
+          "judge_1_good": false,
+          "judge_1_tail": "BAD",
+          "judge_2_good": true,
+          "judge_2_tail": "GOOD",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "What traits make someone a trustworthy companion?",
+      "replies": {
+        "pair_surface": ""
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": true,
+          "judge_1_good": false,
+          "judge_1_tail": "empty",
+          "judge_2_good": false,
+          "judge_2_tail": "empty",
+          "pool_good": false
+        }
+      }
+    },
+    {
+      "prompt": "Who are you?",
+      "replies": {
+        "pair_surface": "I'm Unison."
+      },
+      "verdicts": {
+        "pair_surface": {
+          "agreement": true,
+          "judge_1_good": true,
+          "judge_1_tail": "GOOD",
+          "judge_2_good": true,
+          "judge_2_tail": "GOOD",
+          "pool_good": true
+        }
+      }
+    }
+  ],
+  "schema": "unison-generation-quality-result/v2",
+  "status": "completed"
+}

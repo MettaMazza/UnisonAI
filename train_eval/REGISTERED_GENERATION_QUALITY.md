@@ -95,12 +95,14 @@ Bindings:
 - result SHA-256: `2a33c988c6a40b5b03de9441844f9d48de0b0e2571a0fede8270441e67944e14`;
 - seal SHA-256: `a5400521f83e846c864de15bf9d8f0103fa093d3dff7d36ea8ebb6918f897222`.
 
-## Live pair-surface development campaign
+## First-stage live pair-response development campaign
 
 `generation_quality_pair_surface_development_v1_20260718.json` is a separate
 Codex-authored auxiliary campaign over twelve new paraphrased conversation
-prompts.  It was registered before generation against the current live
-`pair_retrieval.reply` source, the 649,917-pair store, all declared runtime
+prompts. It exercises `pair_retrieval.reply`, the first response stage used by
+the Discord runtime; it does not exercise or score the complete Discord path,
+whose later stage may invoke `word_engine.compose_reply`. It was registered
+before generation against that exact first-stage source, the 649,917-pair store, all declared runtime
 artifacts, and the same two local judge digests.  The completed result passed
 10/10 known-good and 10/10 known-bad calibration for both judges and independently
 verified every current source and runtime binding.
@@ -123,3 +125,33 @@ Bindings:
 - calibration SHA-256: `9a548dd2b72d8f7515fd477732269ea6ca97e1f2c974064d81c1b8f3f3da166b`;
 - result SHA-256: `7cf61dcdf159f91b02b63b935ae0e70657ec9a5228b6f13232e62ba584cc80c0`;
 - seal SHA-256: `cd11021336c7de9142a99401ae4e5dbaa8a82a3db27585638f1060debed298da`.
+
+## First-stage pair-response development campaign v2
+
+`generation_quality_pair_surface_development_v2_20260718.json` is a second
+immutable Codex-authored auxiliary measurement of `pair_retrieval.reply` after
+role-canonical subject binding was introduced. Like v1, it measures only the
+first pair-response stage, not the complete Discord conversation path. The
+campaign was registered before execution against source SHA-256
+`aed34529aff74d72bda390d20e8cda131e28f6723b6a5c995f6fbf63595b92f9`,
+the sealed pair/runtime artifacts, and both local judge digests.
+
+Both judges calibrated at 10/10 known-good and 10/10 known-bad examples. The
+pooled unanimous-good measurement was 1/12: `Who are you?` returned `I'm
+Unison.` and both judges marked it good. Tides, space, and the acrylic-picture
+acknowledgement each received one good judgement but did not cross the protocol's
+unanimity rule. The remaining rows record the exact first-stage surfaces or
+empty deferrals produced by the registered source.
+
+This is Codex's auxiliary development evidence. It is not Maria's prediction,
+finding, benchmark loss, parity definition, or authority over a real benchmark
+run. Subsequent source changes are intentionally not folded back into the
+sealed result. Archival verification uses `--allow-source-drift` to check its
+immutable campaign, registration, calibration, rows, arithmetic, and seal.
+
+Bindings:
+
+- campaign SHA-256: `9cb357a99e88129e0531bd8ca485173ccd632b52101314a7049d3555245f28d7`;
+- registration SHA-256: `7d3df3df369951aaf6724dbc71b6cb8cd083d7fbd39ebd896731d9895af8b070`;
+- result SHA-256: `1ea95e69013888c16dc39c85a645cd535eadd87a9d728e2b6e27b16d6d763c4f`;
+- seal SHA-256: `d47534d693821f633c23c03c4cea864f65ffe2ff35151be18d8f5cdc1b338825`.

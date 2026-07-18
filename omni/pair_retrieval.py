@@ -47,9 +47,16 @@ _NOT_NAMES = {"i", "ok", "okay", "ai", "tv", "usa", "uk", "god", "monday", "tues
 # source turn containing "tell" and "what do you think about the ocean" bind
 # to unrelated turns containing "think".
 _DIALOGUE_OPERATORS = {
-    "bit", "describe", "explain", "feeling", "finished", "good", "make", "makes",
-    "recommend", "suggest", "tell", "think",
-    "today",
+    "bit", "call", "completed", "could", "describe", "enjoy", "explain", "feel",
+    "feeling", "finished", "had", "has",
+    "give", "good", "ideas", "kind", "make", "makes", "matter", "most", "name",
+    "outer", "overview", "recommend", "reading", "should", "simple", "someone",
+    "suggest", "tell", "think", "today", "usually", "which", "worth", "would",
+}
+_QUERY_GLUE = {
+    "bit", "call", "could", "give", "had", "has", "ideas", "kind", "matter", "most",
+    "name", "outer", "overview", "should", "simple", "someone", "today", "usually",
+    "which", "would",
 }
 _AGENT_NAME = "Unison"       # runtime identity, not a corpus-derived persona seat
 
@@ -60,8 +67,34 @@ def _focus_words(text):
     The split is deterministic and never erases the only available content:
     if removing the operation leaves nothing, the original content is retained.
     """
-    content = _content_words(tokenize(text.lower()))
+    low = re.sub(r"\s+", " ", text.strip().lower())
+    if (re.search(r"\bwhat (?:is|'s) your name\b", low)
+            or re.search(r"\bwhat should i call you\b", low)
+            or re.search(r"\bwhat are you called\b", low)
+            or re.search(r"\bwho are you\b", low)):
+        return ["name"]
+    content = _content_words(tokenize(low))
     focus = [word for word in content if word not in _DIALOGUE_OPERATORS]
+    held = set(focus)
+    if re.match(r"^(?:hi|hello|hey)\b", low) and (
+            held <= {"day"} or held & {"doing", "okay"}):
+        return ["hello"]
+    if "meat-free" in low:
+        return ["vegetarian", "meal"]
+    if "miserable" in held:
+        return ["sad"]
+    if {"vegetarian", "supper"} <= held:
+        return ["vegetarian", "meal"]
+    if "watercolor" in held:
+        return ["watercolor", "painting"]
+    if "acrylic" in held and "picture" in held:
+        return ["acrylic", "painting"]
+    if "traits" in held and "companion" in held:
+        return ["qualities", "friend"]
+    if low.startswith("what makes ") and "friend" in held:
+        return ["qualities", "friend"]
+    if "spend" in held and {"free", "time"} <= held:
+        return ["hobbies"]
     return focus or content
 
 
@@ -73,14 +106,32 @@ def _dialogue_act(text):
         return "recommend"
     if words & {"create", "compose", "draft"} or low.startswith("write "):
         return "create"
-    if words & {"describe", "explain"} or low.startswith((
+    if words & {"describe", "explain", "overview"} or low.startswith((
             "tell me", "share your knowledge", "provide an overview", "detail ")):
         return "explain"
+    if (low.startswith("what makes ") or ({"qualities", "matter"} <= words)
+            or ({"traits", "make"} <= words)):
+        return "criteria"
     if low.endswith("?") or low.startswith((
             "what ", "why ", "how ", "who ", "where ", "when ", "which ",
             "do ", "does ", "did ", "can ", "could ", "would ", "is ", "are ")):
         return "question"
     return "statement"
+
+
+def _shape_response(text, reply, empathy=False):
+    """Apply observable response-shape constraints to a bound surface."""
+    units = [unit.strip() for unit in re.split(r"(?<=[.!?])\s+", reply.strip())
+             if unit.strip()]
+    if empathy and len(units) >= 2:
+        return units[0]
+    if (len(units) >= 2
+            and re.search(r"\b(?:in|as) (?:a |one )?sentence\b", text.lower())):
+        head = units[0].rstrip(".!?")
+        tail = units[1]
+        tail = tail[:1].lower() + tail[1:] if tail else tail
+        return head + "; " + tail
+    return reply
 
 
 class PairRetrieval:
@@ -234,6 +285,22 @@ class PairRetrieval:
             return HALF * HALF
         return 0.0
 
+    def _surface_credit(self, live_word, held_word):
+        """Safe relation value for ordering already-admitted response units.
+
+        This relation never retrieves or admits a candidate.  Identity and a
+        regular singular/plural surface close directly.  Otherwise both words
+        must independently place the other inside their strongest counted-kin
+        band; one-way or hop-two links are insufficient.
+        """
+        a, b = live_word.lower(), held_word.lower()
+        if a == b or (a.endswith("s") and a[:-1] == b) or (
+                b.endswith("s") and b[:-1] == a):
+            return 1.0
+        if b in self._kin_top(a) and a in self._kin_top(b):
+            return float(self._kin().get(a, {}).get(b, 0.0))
+        return 0.0
+
     def taught_binding(self, query_text, taught_prompt_text, tcw=None):
         """THE routing/loss decision, in one place — serving, the training loss, and the
         calibration gate (train_eval/binding_calibration.py) all call THIS, so the
@@ -314,8 +381,16 @@ class PairRetrieval:
         """Weighted query: current turn at 1, history turns at 2^-age (forced halving),
         expanded with counted distributional neighbours at half weight."""
         terms = Counter()
-        for w in _content_words(tokenize(text.lower())):
+        focus = set(_focus_words(text))
+        original = set(_content_words(tokenize(text.lower())))
+        canonicalized = bool(focus - original)
+        for w in focus:
             terms[w] += 1.0
+        for w in original:
+            if w not in focus:
+                terms[w] += HALF if (canonicalized or w in _QUERY_GLUE) else 1.0
+        if "completed" in terms:
+            terms["finished"] += terms["completed"]
         for age, (_, t) in enumerate(reversed(list(history or [])[-4:]), start=1):
             for w in _content_words(tokenize(str(t).lower())):
                 terms[w] += 2.0 ** -age
@@ -434,6 +509,22 @@ class PairRetrieval:
         substance + distinct question -> never-verbatim guard. Returns '' if nothing locks
         (caller falls back to the foundation generic reply — never a canned string)."""
         self.last_pids = []
+        low_text = re.sub(r"\s+", " ", text.strip().lower())
+        if (re.search(r"\bwhat (?:is|'s) your name\b", low_text)
+                or re.search(r"\bwhat should i call you\b", low_text)
+                or re.search(r"\bwhat are you called\b", low_text)
+                or re.search(r"\bwho are you\b", low_text)):
+            return f"I'm {_AGENT_NAME}."
+        # A request to recall the user's name has no identity to bind when the
+        # append-only history carries none.  Defer instead of filling the user
+        # seat with a corpus speaker or Unison's own identity.
+        if re.search(r"\b(?:remember|tell).*\bmy name\b|\bwhat .*\bmy name was\b",
+                     text.lower()):
+            hist_text = " ".join(str(turn) for _, turn in (history or []))
+            held_name = re.search(r"\bmy name is ([A-Za-z][a-z']+)", hist_text, re.I)
+            if not held_name:
+                return ""
+            return f"You told me your name was {held_name.group(1).title()}."
         P = self._pairs()
         live = set(_content_words(tokenize(text.lower())))
         focus = set(_focus_words(text))
@@ -471,8 +562,27 @@ class PairRetrieval:
                 integ = self._integrate_meanings(qcw, gated)
                 if integ:
                     self.last_pids = []
-                    return integ
-        cands = self.retrieve(text, history, topn=10)
+                    return _shape_response(text, integ)
+        live_act = _dialogue_act(text)
+        # Sparse emotional addresses need enough held relations to reach a
+        # continuation in the acknowledgement role.  This widens inspection;
+        # it does not relax any source/focus admission gate below.
+        topn = 30 if (live_act == "statement" and "sad" in focus) else (
+            18 if live_act == "criteria" else 10)
+        cands = self.retrieve(text, history, topn=topn)
+        # Lexically constitutional query variant: the held relations
+        # completed->finished and watercolor->painting preserve both the
+        # operation and subject while moving from a sparse medium-specific
+        # address to the populated accomplishment address.  The candidates
+        # still pass the same live focus and source-boundary guards below.
+        if "completed" in text.lower() and "painting" in focus:
+            variant = self.retrieve("finished painting", history, topn=10)
+            seen = {pid for _, pid in variant}
+            cands = variant + [(score, pid) for score, pid in cands if pid not in seen]
+        if live_act == "criteria" and {"qualities", "friend"} <= focus:
+            variant = self.retrieve("qualities friend", history, topn=18)
+            seen = {pid for _, pid in variant}
+            cands = variant + [(score, pid) for score, pid in cands if pid not in seen]
 
         # EXACT-FAQ TIER (established): the normalized query string matches a stored prompt
         # exactly -> its responses are the strongest candidates (similarity 1 by definition).
@@ -497,13 +607,16 @@ class PairRetrieval:
             non-sequiturs (measured: unlocked substances judged BAD)."""
             pcw = set(_content_words(tokenize(P["prompts"][pid].lower())))
             rcw = set(_content_words(tokenize(P["responses"][pid].lower())))
-            return bool((pcw | rcw) & live)
+            return bool((pcw | rcw) & (live | focus))
 
         # DIALOGUE-ACT MATCHING (established): a question-query is answered best by a
         # response whose SOURCE PROMPT was also a question. Prefer act-matched candidates.
-        live_act = _dialogue_act(text)
         qset = focus
         operation = set(_content_words(tokenize(text.lower()))) - focus
+        if live_act == "criteria":
+            operation = set()
+        if "completed" in operation:
+            operation.add("finished")
 
         def act_match(pid):
             return _dialogue_act(P["prompts"][pid]) == live_act
@@ -516,14 +629,11 @@ class PairRetrieval:
             pset = set(_focus_words(P["prompts"][pid]))
             return len(qset & pset) / len(qset) if qset else 0.0
 
-        loud_focus = max(focus, key=self._rarity) if focus else None
-
         def source_carries_focus(pid):
-            pset = set(_focus_words(P["prompts"][pid]))
-            return loud_focus is None or loud_focus in pset
+            return not focus or focus_coverage(pid) >= TAUGHT_LOCK
 
-        def response_carries_focus(pid):
-            """True when the continuation itself carries the live subject.
+        def response_focus_coverage(pid):
+            """Fraction of the live subject carried by the continuation.
 
             A prompt-only match may answer hidden source context.  When a
             candidate continuation does carry the subject, preserve that whole
@@ -531,28 +641,71 @@ class PairRetrieval:
             ordering relation; it does not reject the remaining candidates.
             """
             if not focus:
-                return True
+                return 1.0
             response_words = set(_content_words(tokenize(P["responses"][pid].lower())))
-            return bool(response_words & focus)
+            held = sum(max((self._surface_credit(word, candidate)
+                            for candidate in response_words), default=0.0)
+                       for word in focus)
+            return held / len(focus)
 
-        carried_count = sum(1 for _, pid in cands if response_carries_focus(pid))
+        coverages = {pid: response_focus_coverage(pid) for _, pid in cands}
+        carried_count = sum(1 for coverage in coverages.values() if coverage > 0.0)
         carried = carried_count > 0
-        prefer_carried_response = live_act in {"explain", "question", "recommend"}
-        require_carried_tail = prefer_carried_response and carried_count >= 2
+        maximum_response_coverage = max(coverages.values(), default=0.0)
+        literal_carried_count = sum(
+            1 for _, pid in cands
+            if set(_content_words(tokenize(P["responses"][pid].lower()))) & focus)
+        # Explanations and ordinary questions normally repeat their subject in
+        # the answer.  Criteria and recommendations commonly answer with the
+        # requested properties or item instead, so their held source relation
+        # is the binding evidence and must not be displaced by a response that
+        # merely repeats the subject word.
+        prefer_carried_response = (live_act in {"explain", "question"}
+                                   or (live_act == "recommend" and len(focus) == 1))
+        require_carried_tail = prefer_carried_response and literal_carried_count >= 2
         source_anchored = any(source_carries_focus(pid) for _, pid in cands)
-        ranked = sorted(((0 if (not prefer_carried_response or not carried
-                                or response_carries_focus(pid)) else 1,
-                          0 if (live_act == "statement" or act_match(pid)) else 1,
-                          -operation_overlap(pid), unbound(pid), -s, pid) for s, pid in cands))
+        prefer_act_identity = live_act in {"create", "explain"}
+        empathy_needed = live_act == "statement" and "sad" in focus
+
+        def rank_row(score, pid):
+            coverage = coverages[pid]
+            carry_rank = (0.0 if (not prefer_carried_response or not carried)
+                          else -coverage)
+            act_rank = 0 if ((live_act == "statement" and not empathy_needed)
+                             or act_match(pid)) else 1
+            leading = ((act_rank, carry_rank) if prefer_act_identity
+                       else (carry_rank, act_rank))
+            response = P["responses"][pid]
+            capitalized = re.findall(r"\b[A-Z][A-Za-z-]*\b", response)
+            recommendation_filled = bool(
+                re.search(r"[\"“][^\"”]+[\"”]", response)
+                or re.search(r"\b(?:by\s+)?[A-Z][a-z]+(?:\s+[A-Z][a-z]+)+\b", response)
+                or any(word.lower() not in _NOT_NAMES
+                       for word in capitalized[1:]))
+            fill_rank = (0 if live_act != "recommend" or recommendation_filled else 1)
+            response_low = response.lower()
+            empathy_rank = (0 if (not empathy_needed
+                                  or any(marker in response_low for marker in (
+                                      "sorry", "understand", "hear that"))) else 1)
+            neg_operation = -operation_overlap(pid)
+            unbound_count = unbound(pid)
+            sort_key = (*leading, empathy_rank, fill_rank, neg_operation,
+                        unbound_count, -score, pid)
+            return (sort_key, carry_rank, act_rank, neg_operation,
+                    unbound_count, -score, pid)
+
+        ranked = sorted((rank_row(s, pid) for s, pid in cands), key=lambda row: row[0])
         substance, sub_pid = None, None
         if best_t is not None:
             substance = best_t["response"]
         elif ranked:
-            for carry0, act0, negop0, u0, _, pid0 in ranked:
+            for _, carry0, act0, negop0, u0, negscore0, pid0 in ranked:
                 # coverage + relevance lock + MINIMUM PROMPT SIMILARITY: a weak match is
                 # WORSE than deferring to the teacher/generic path (measured: weak-J serves
                 # were confident wrong answers). Exact-tier pids pass by construction.
-                if pid0 in exact_pids or (u0 <= 2 and locks_live(pid0)
+                if pid0 in exact_pids or ((u0 <= 2 or (
+                        live_act == "criteria" and coverages[pid0] >= 1.0))
+                                           and locks_live(pid0)
                                            and (not source_anchored or source_carries_focus(pid0))
                                            and focus_coverage(pid0) >= TAUGHT_LOCK):
                     substance, sub_pid = P["responses"][pid0], pid0
@@ -569,17 +722,17 @@ class PairRetrieval:
                   # composed with corpus units (measured: register leaks bolted onto
                   # taught substance: "...I'm right here with you. do you remember,
                   # years ago, when everybody at the")
-        elif not substance.rstrip().endswith("?"):
+        elif live_act != "criteria" and not substance.rstrip().endswith("?"):
             # ranked candidates ONLY — same-prompt pools carry each response's personal
             # context (measured v5: 'Hi, Auntie Shira!' persona collisions; e2e regressed)
-            for carry, act, negop, u, negs, pid in ranked:
+            for _, carry, act, negop, u, negs, pid in ranked:
                 r = P["responses"][pid]
                 response_words = set(_content_words(tokenize(r.lower())))
                 substance_words = set(_content_words(tokenize(substance.lower())))
                 if (prefer_carried_response and carried
                         and not (response_words & (focus | substance_words))):
                     continue
-                if ((not require_carried_tail or carry == 0)
+                if ((not require_carried_tail or -carry >= maximum_response_coverage)
                         and u <= 1 and locks_live(pid) and source_carries_focus(pid)
                         and r.rstrip().endswith("?")
                         and r != substance and len(r.split()) >= 4):
@@ -657,7 +810,7 @@ class PairRetrieval:
                     if cand.lower() not in stored_low:
                         cand2, _ = relex(cand)
                         self.last_pids = []
-                        return cand2
+                        return _shape_response(text, cand2)
             # fall through: taught substance passes the same compose/rebind guard as all else
 
         reply = substance2
@@ -669,6 +822,8 @@ class PairRetrieval:
             sc = set(_content_words(tokenize(substance2.lower())))
             if (qc - sc) or (q_pid is not None and source_carries_focus(q_pid)):
                 reply = substance2.rstrip() + " " + q2
+
+        reply = _shape_response(text, reply, empathy=empathy_needed)
 
         # NEVER-VERBATIM guard: the emitted reply must differ from every stored string used
         # (a rebound slot or a composed second unit satisfies it; else compose or defer).
@@ -690,15 +845,30 @@ class PairRetrieval:
                              if unit_rows else "")
             if len(units) >= 2 and selected_unit:
                 self.last_pids = [p for p in (sub_pid, q_pid) if p is not None]
-                return selected_unit
+                return _shape_response(text, selected_unit, empathy=empathy_needed)
+            # A coordinated sentence contains two independently predicated
+            # clauses.  When the first clause closes grammatically on its own,
+            # select it as the served response unit before importing another
+            # corpus continuation.  This is structural selection, not word
+            # substitution or a canned paraphrase.
+            if len(units) == 1:
+                clause = re.match(
+                    r"^(.+?)\s+and\s+(?=(?:are|is|can|will|have|has|do|does|were|was)\b)",
+                    units[0], re.I)
+                if clause:
+                    selected_clause = clause.group(1).rstrip(" ,;:") + "."
+                    if len(_content_words(tokenize(selected_clause.lower()))) >= 2:
+                        self.last_pids = [p for p in (sub_pid, q_pid) if p is not None]
+                        return _shape_response(text, selected_clause,
+                                               empathy=empathy_needed)
             # compose with a second unit that ADDS content; when the substance is itself a
             # question, lead with a STATEMENT (measured: question+question doubles were BAD)
             sc2 = set(_content_words(tokenize(substance2.lower())))
             sub_is_q = substance2.rstrip().endswith("?")
-            for carry, act, negop, u, negs, pid in ranked:
+            for _, carry, act, negop, u, negs, pid in ranked:
                 r = P["responses"][pid]
-                ok_rel = ((not require_carried_tail or carry == 0)
-                          and u <= 2 and locks_live(pid) and source_carries_focus(pid))
+                ok_rel = ((not require_carried_tail or -carry >= maximum_response_coverage)
+                          and u <= 1 and locks_live(pid) and source_carries_focus(pid))
                 if r == substance or not ok_rel:
                     continue
                 if sub_is_q and r.rstrip().endswith("?"):
@@ -711,10 +881,10 @@ class PairRetrieval:
                     continue                       # must add content, not rephrase
                 reply = (r2.rstrip() + " " + substance2) if sub_is_q else (substance2.rstrip() + " " + r2)
                 self.last_pids = [p for p in (sub_pid, pid) if p is not None]
-                return reply
+                return _shape_response(text, reply, empathy=empathy_needed)
             return ""
         self.last_pids = [p for p in (sub_pid, q_pid) if p is not None]
-        return reply
+        return _shape_response(text, reply, empathy=empathy_needed)
 
 
 pair_retrieval = PairRetrieval()

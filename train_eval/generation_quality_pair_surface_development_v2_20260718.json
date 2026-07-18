@@ -1,0 +1,51 @@
+{
+  "arms": [
+    "pair_surface"
+  ],
+  "calibration_gate": "each judge must classify at least 9/10 known-good and 9/10 known-bad examples correctly in the same sealed run",
+  "claim_boundary": "Codex-authored second auxiliary development measurement of the first-stage live pair-response surface after role-canonical subject binding; Maria Smith alone assigns conclusions and real benchmark status",
+  "judge_endpoint": "http://127.0.0.1:11434",
+  "judge_rule": "GOOD only when both independently calibrated judges return GOOD; disagreement is not-good",
+  "judges": [
+    "gemma-4-31b:latest",
+    "qwen3.6-27b:latest"
+  ],
+  "optional_runtime_artifacts": [
+    "omni/free_closures.pkl",
+    "omni/pair_quality.pkl",
+    "omni/taught_pairs.pkl"
+  ],
+  "prompts": [
+    "Hey, are you doing okay today?",
+    "People call me Elena. What are you called?",
+    "Why does the ocean move in tides?",
+    "Explain space exploration in one sentence.",
+    "I feel miserable after a difficult afternoon.",
+    "Suggest a meat-free meal I could make tonight.",
+    "Which music do you listen to most?",
+    "What do you usually do to relax?",
+    "Name a novel you would recommend.",
+    "I have just completed an acrylic picture.",
+    "What traits make someone a trustworthy companion?",
+    "Who are you?"
+  ],
+  "required_runtime_artifacts": [
+    "omni/kin_context.pkl",
+    "omni/word_fluency.pkl",
+    "omni/word_coupling.pkl",
+    "omni/word_kin.pkl",
+    "omni/pairs.pkl",
+    "train_eval/runtime_store_build_receipt.json"
+  ],
+  "schema": "unison-generation-quality-campaign/v2",
+  "seed": 23,
+  "source_sha256": {
+    "omni/generation_boundaries.py": "cdb544900c845be21706ac19d7fe410b22be409dc81a2a7993b36969fdefa18f",
+    "omni/pair_retrieval.py": "aed34529aff74d72bda390d20e8cda131e28f6723b6a5c995f6fbf63595b92f9",
+    "train_eval/judge.py": "c5a7d8a11e9301692f7304e433a06d305c1437a2af0a3835abf4d46fa34f7306",
+    "train_eval/judge_calibration.py": "ae2a9a0a1cf643944d6e78761d8b54b2a272821b4aa40f254b1ff343955e12b6",
+    "train_eval/registered_generation_quality.py": "3cb9fc5e55a0706ea9a94e1d182015f1d0a8028f1d58c76abc2cdaca3fc2bc90",
+    "train_eval/seal_runtime_store_build.py": "b105f41ecedf245513a6480903e03acf25920c0279fa41b63cc735bb8e701204"
+  },
+  "store_build_receipt": "train_eval/runtime_store_build_receipt.json"
+}

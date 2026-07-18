@@ -31,6 +31,11 @@ these boundaries as local numeric literals.
   subject carry, dialogue-act identity, source-bound operation, and unbound
   source content; these are relations over the held prompt/response pair, not a
   fitted semantic score.
+- A finite, disclosed role-canonical address maps observed surface relations
+  such as meat-free/vegetarian-meal, miserable/sad, acrylic/picture/painting,
+  and companion/friend/qualities before retrieval. Counted kin can order an
+  already admitted continuation only when the strongest relation is mutual; it
+  cannot independently admit a source.
 - Runtime identity occupies its own response seat.  A corpus speaker name in an
   assistant self-identification is rebound to `Unison`, while a user's declared
   name remains in the user seat.
@@ -38,6 +43,12 @@ these boundaries as local numeric literals.
   one complete subject-bearing unit may be selected before cross-response
   composition.  This preserves a grammatical response boundary without serving
   the stored response as a whole.
+- Observable response roles are preserved separately from subject address:
+  recommendation, explanation, criteria, question, statement, and creation
+  requests use their held source relation rather than treating operation words
+  as subject evidence. Explicit one-sentence requests compose already-bound
+  clauses structurally; emotional statements prefer held acknowledgement-role
+  continuations.
 
 ## Engineering quantities
 
@@ -45,7 +56,9 @@ These remain disclosed implementation status until separately forced or
 constitutionally re-derived: `TOPK_POS`, maximum/minimum word limits, beam width,
 beam expansion, `n_best`, candidate caps, closure multiplier, tie noise,
 paraphrase bounds, the finite dialogue-operator lexicon, and the legacy
-conversational fallback threshold `0.30`.
+conversational fallback threshold `0.30`. The finite role-canonical surface
+relations and response-role markers are likewise disclosed engineering
+constitution; they are not silently labelled as theorem constants.
 
 This provenance patch makes the generation boundary executable. It does not
 declare a conversational-quality result or replace the independent judge. The
@@ -55,6 +68,12 @@ same-run calibration. It is not Maria's prediction, finding, loss, parity
 definition, or authority over a real run. The response-only fluency artifact is
 a selectable development surface. Maria Smith alone decides when its evidence
 supports a publishable conclusion or when it enters a real benchmark run.
+
+The two registered pair-response campaigns exercise only
+`pair_retrieval.reply`, the first stage attempted by the live Discord runtime.
+They do not score the complete Discord conversation path, which may continue to
+the fallback composer when the first stage defers. Their immutable measurements
+therefore describe that registered stage and source only.
 
 ## Explicit response-only surface
 

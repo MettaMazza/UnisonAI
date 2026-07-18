@@ -1,0 +1,61 @@
+{
+  "campaign_sha256": "9cb357a99e88129e0531bd8ca485173ccd632b52101314a7049d3555245f28d7",
+  "generation_arm": null,
+  "judge_digests": {
+    "gemma-4-31b:latest": "ba706ea2c0ba1a0ad19c8dcb9aa89b15568c179c538283c6ea6570a17a2d0827",
+    "qwen3.6-27b:latest": "7ea81a10e901621933926f1a85388ebcc252893fd3a589ff049b3217141b5ae0"
+  },
+  "prompts_sha256": "efbf40014c3f9ae6fc773e5888dc33170daae3e6b24cbddac9a8faacedc61ab2",
+  "runtime_artifacts": {
+    "omni/free_closures.pkl": {
+      "status": "absent"
+    },
+    "omni/kin_context.pkl": {
+      "bytes": 285668509,
+      "sha256": "363d75e256a8a1019c7f6e4fc93f2995da310615e470c14de9beabd7bf9766a4",
+      "status": "present"
+    },
+    "omni/pair_quality.pkl": {
+      "status": "absent"
+    },
+    "omni/pairs.pkl": {
+      "bytes": 226572757,
+      "sha256": "6a5dcc9e9d2227e3445a7d6630ce52807e9c58d7259bbb488f53d9f05c022b17",
+      "status": "present"
+    },
+    "omni/taught_pairs.pkl": {
+      "status": "absent"
+    },
+    "omni/word_coupling.pkl": {
+      "bytes": 6680477,
+      "sha256": "717fb9bc05dc00e2165470e7685461bd95cd8b8ca0c4cf6c237305b8e424d8ac",
+      "status": "present"
+    },
+    "omni/word_fluency.pkl": {
+      "bytes": 621336058,
+      "sha256": "0d4f89f63ad7c5e594cef04d2534ec247e9f185a111d872e8a7b9944342d6bf5",
+      "status": "present"
+    },
+    "omni/word_kin.pkl": {
+      "bytes": 5281155,
+      "sha256": "4451cc507be6d8843b50982cdbbeb8f9fc82bea9140a86d118211d2505d2e0de",
+      "status": "present"
+    },
+    "train_eval/runtime_store_build_receipt.json": {
+      "bytes": 3450,
+      "sha256": "4cd2d0f5a1d440744cbd0f3043291bb5c397002ed1ffefe4fce9a358fce90a6f",
+      "status": "present"
+    }
+  },
+  "schema": "unison-generation-quality-registration/v2",
+  "seed": 23,
+  "source_sha256": {
+    "omni/generation_boundaries.py": "cdb544900c845be21706ac19d7fe410b22be409dc81a2a7993b36969fdefa18f",
+    "omni/pair_retrieval.py": "aed34529aff74d72bda390d20e8cda131e28f6723b6a5c995f6fbf63595b92f9",
+    "train_eval/judge.py": "c5a7d8a11e9301692f7304e433a06d305c1437a2af0a3835abf4d46fa34f7306",
+    "train_eval/judge_calibration.py": "ae2a9a0a1cf643944d6e78761d8b54b2a272821b4aa40f254b1ff343955e12b6",
+    "train_eval/registered_generation_quality.py": "3cb9fc5e55a0706ea9a94e1d182015f1d0a8028f1d58c76abc2cdaca3fc2bc90",
+    "train_eval/seal_runtime_store_build.py": "b105f41ecedf245513a6480903e03acf25920c0279fa41b63cc735bb8e701204"
+  },
+  "status": "registered"
+}
