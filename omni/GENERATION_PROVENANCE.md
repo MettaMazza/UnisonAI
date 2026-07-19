@@ -105,9 +105,15 @@ The current sealed native artifact is v4: 649,917 role-bound responses and
 11,140,970 assistant causal targets in a 2,921,639,096-byte store, SHA-256
 `f977d4d8adb0993a0ab0d63b86dea30bd845ae091e84a4859ae826d032a87219`.
 Its full prompt-token route executes structural, inverse-exposure information,
-and conditional counted Q/K heads. The complete Python suite passes 37/37.
-Codex development probes remain implementation evidence only and do not
-authorize a Maria benchmark conclusion.
+and conditional counted Q/K heads. The exact packed serving translation keeps
+every table row and count in memory-mapped index/data files; it performs no
+sampling, pruning, fitted quantization, or candidate cap. Its seal binds all
+seven table hashes, the original artifact, the manifest, and the two runtime
+source files. The runtime halts on manifest or serving-source drift. Exact
+integer argmax and bounded per-response row preparation are proven
+token-equivalent to the materialized rational head. Codex development probes
+remain implementation evidence only and do not authorize a Maria benchmark
+conclusion.
 
 ## Explicit response-only surface
 

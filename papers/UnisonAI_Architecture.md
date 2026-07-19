@@ -51,8 +51,17 @@ separately before exact residual addition and LM-head normalization. The
 2,921,639,096-byte artifact is sealed at SHA-256
 `f977d4d8adb0993a0ab0d63b86dea30bd845ae091e84a4859ae826d032a87219`.
 
-This one-block implementation is not yet declared full conversational
-generalisation. A Codex-authored eight-prompt development probe preserved exact
+An exact serving translation now stores all seven complete count tables in
+memory-mapped index/data files with no sampling, pruning, quantization, fitted
+capacity, or row eviction. Its receipt binds every packed-file hash to the
+sealed v4 artifact and runtime source; manifest or source drift halts. Exact
+integer accumulation and a response-local bounded row cache preserve the
+materialized rational head's token choice. On the fixed eight-prompt Codex
+probe, resident memory fell from approximately 59 GB to 559,185,920 bytes and
+generation time fell from 1,514.370707 seconds to 11.407350 seconds while every
+surface remained byte-identical across the representation change.
+
+A Codex-authored eight-prompt development probe preserved exact
 closure and improved the board-game, desert, astronomy, and public-speaking
 surfaces, while gardening, meal, music, and greeting prompts remained generic.
 The next one-to-one port is stacked prompt self-attention with distinct
@@ -84,9 +93,10 @@ Corrections, counted quality, and teacher comparisons are written to explicit le
 
 ### 4.2 Standalone Unison
 
-The current Python repository suite passes **37/37** tests, including the
+The current Python repository suite passes **42/42**, including tests for the
 native transformer role boundary, complete prompt-token retention, active Q/K
-weighting, exact distribution closure, lazy/full argmax equivalence, native
+weighting, exact distribution closure, lazy/full argmax equivalence, packed-row
+and surface identity, bounded-cache identity, sealed-source drift halts, native
 live routing, and reward-ledger separation. The standalone
 `python3 omni/benchmarks/verify_omni.py` receipt remains the separate **21/21**
 structural instrument covering forced locks, halt-on-mismatch, sight, hearing,

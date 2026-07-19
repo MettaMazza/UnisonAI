@@ -1,0 +1,101 @@
+{
+  "elapsed_seconds": 41.48999,
+  "identity": {
+    "decode_kernel": "exact-lcm-integer-cross-product/v1",
+    "responses": 649917,
+    "role_policy": "prompt-keys/assistant-causal-values",
+    "schema": "unison-counted-causal-transformer/v4",
+    "serving_representation": "unison-packed-exact-rows/v1",
+    "sha256": "f977d4d8adb0993a0ab0d63b86dea30bd845ae091e84a4859ae826d032a87219",
+    "source_pairs_sha256": "6a5dcc9e9d2227e3445a7d6630ce52807e9c58d7259bbb488f53d9f05c022b17",
+    "tokens": 11140970
+  },
+  "live_route": {
+    "surface": "I like to do for fun?",
+    "trace": [
+      {
+        "final_stage": "composed_fragments",
+        "segments": [
+          {
+            "accepted": true,
+            "segment": "Hello, how are you?",
+            "stages": [
+              {
+                "segment": "Hello, how are you?",
+                "stage": "native_causal_transformer",
+                "surface": "I like to do for fun?"
+              }
+            ]
+          }
+        ],
+        "surface": "I like to do for fun?"
+      }
+    ]
+  },
+  "provenance": {
+    "agent": "Codex",
+    "authority": "Not Maria's benchmark, finding, loss, parity definition, or run gate.",
+    "model": "gpt-5.6-sol",
+    "origin": "Codex-authored implementation smoke",
+    "reasoning_level": "high"
+  },
+  "rows": [
+    {
+      "addressed_keys": 6,
+      "argmax_equivalent": true,
+      "first_argmax_id": 38,
+      "first_distribution_candidates": 91451,
+      "first_distribution_closure": "1",
+      "prompt": "Hello, how are you?",
+      "surface": "I like to do for fun?"
+    },
+    {
+      "addressed_keys": 7,
+      "first_argmax_id": 38,
+      "prompt": "What do you enjoy about gardening?",
+      "surface": "I like to do for fun?"
+    },
+    {
+      "addressed_keys": 7,
+      "first_argmax_id": 38,
+      "prompt": "I am nervous about public speaking.",
+      "surface": "I don't have access to the specific information about the future."
+    },
+    {
+      "addressed_keys": 6,
+      "first_argmax_id": 38,
+      "prompt": "What makes board games interesting?",
+      "surface": "I like to play video games."
+    },
+    {
+      "addressed_keys": 8,
+      "first_argmax_id": 38,
+      "prompt": "Tell me something interesting about the desert.",
+      "surface": "I don't have access to the desert."
+    },
+    {
+      "addressed_keys": 6,
+      "first_argmax_id": 38,
+      "prompt": "Why do people enjoy astronomy?",
+      "surface": "I do not have access to the earliest civilizations, including the babylonians and the egyptians."
+    },
+    {
+      "addressed_keys": 8,
+      "first_argmax_id": 38,
+      "prompt": "Suggest a comforting meal for a cold evening.",
+      "surface": "I know, right?"
+    },
+    {
+      "addressed_keys": 8,
+      "first_argmax_id": 38,
+      "prompt": "What kind of music do you enjoy?",
+      "surface": "I like to do for fun?"
+    }
+  ],
+  "schema": "unison-native-transformer-smoke/v4-projected-heads",
+  "source": {
+    "path": "omni/native_transformer.py",
+    "sha256": "f7ebdc7d2b9582e217fc9a3d121a6230b67cc098cc012d6e8dc2f809d645058f"
+  },
+  "status": "completed"
+}

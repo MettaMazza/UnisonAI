@@ -451,10 +451,14 @@ The current sealed v4 store covers 649,917 role-bound pairs and 11,140,970
 assistant causal targets. Its 2,921,639,096-byte artifact is SHA-256
 `f977d4d8adb0993a0ab0d63b86dea30bd845ae091e84a4859ae826d032a87219`.
 V4 retains every prompt token and executes structural, information, and counted
-Q/K association heads. The complete Python suite passes 37/37. A Codex-authored
-development smoke improved several subject/operation surfaces but did not yet
-establish full conversational generalisation; stacked prompt self-attention and
-distinct within-turn positional addresses remain the next established organs.
+Q/K association heads. Its exact packed representation memory-maps every full
+count table without pruning, capping, quantization, or eviction. A sealed
+eight-prompt Codex probe preserved byte-identical surfaces while measured
+resident memory fell from about 59 GB to 559,185,920 bytes and generation time
+fell from 1,514.370707 seconds to 11.407350 seconds. The complete repository
+suite passes 42/42. A Codex-authored development
+smoke improved several subject/operation surfaces; stacked prompt self-attention
+and distinct within-turn positional addresses are the next established organs.
 
 ### The conversational architecture
 Serving now attempts the native counted causal transformer first. Pair retrieval remains a

@@ -104,7 +104,13 @@ def main() -> None:
         "rows": rows,
         "live_route": {"surface": live_surface, "trace": live_trace},
     }
-    output = ROOT / "train_eval/native_transformer_smoke_v4_projected_20260719.json"
+    if result["identity"].get("decode_kernel"):
+        suffix = "packed_integer"
+    elif result["identity"].get("serving_representation"):
+        suffix = "packed"
+    else:
+        suffix = "projected"
+    output = ROOT / f"train_eval/native_transformer_smoke_v4_{suffix}_20260719.json"
     stage = output.with_name(output.name + ".building")
     stage.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
     stage.replace(output)

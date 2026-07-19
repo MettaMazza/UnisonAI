@@ -61,6 +61,8 @@ The tracked `omni/` implementation includes:
 - counted kinship and pair retrieval;
 - a role-bound, full-token counted causal-transformer route with exact Q/K/V,
   feed-forward, residual, normalization, LM-head, and reward observations;
+- an exact memory-mapped serving form that retains every counted row, verifies
+  its sealed provenance, and bounds live memory without changing token output;
 - forced deep-context integration and generation-selection locks;
 - non-verbatim re-expression guards;
 - integer-Walsh sight and hearing;

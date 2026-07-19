@@ -26,6 +26,8 @@ from __future__ import annotations
 from collections import Counter, defaultdict
 from fractions import Fraction
 import hashlib
+import json
+import math
 import os
 import pickle
 import re
@@ -40,7 +42,11 @@ ROLE_POLICY = "prompt-keys/assistant-causal-values"
 BOS = "\x02assistant"
 EOS = "\x03assistant"
 DEFAULT_STORE = os.path.join(os.path.dirname(__file__), "native_transformer_v4.pkl")
+DEFAULT_PACKED = os.path.join(os.path.dirname(__file__), "native_transformer_v4_packed")
 DEFAULT_REWARD = os.path.join(os.path.dirname(__file__), "native_transformer_reward_v4.pkl")
+DEFAULT_PACKED_RECEIPT = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)),
+    "train_eval", "native_transformer_v4_packed_receipt.json")
 _TAILS = frozenset({"s", "t", "re", "ve", "ll", "d", "m"})
 _CLOSE = frozenset(".,!?;:)]}%…’\"'")
 _OPEN = frozenset("([{“‘")
@@ -216,8 +222,10 @@ class CountedCausalTransformer:
     """Executable one-block decoder transformer over exact counted state."""
 
     def __init__(self, store_path: str = DEFAULT_STORE,
-                 reward_path: str = DEFAULT_REWARD, record: dict | None = None):
+                 reward_path: str = DEFAULT_REWARD, record: dict | None = None,
+                 packed_path: str = DEFAULT_PACKED):
         self.store_path = store_path
+        self.packed_path = packed_path
         self.reward_path = reward_path
         self._record = record
         self._reward = None
@@ -225,12 +233,44 @@ class CountedCausalTransformer:
         self._unit_cache = {}
 
     def available(self) -> bool:
-        return self._record is not None or os.path.exists(self.store_path)
+        return (self._record is not None or os.path.isdir(self.packed_path)
+                or os.path.exists(self.store_path))
 
     def _store(self) -> dict:
         if self._record is None:
-            with open(self.store_path, "rb") as handle:
-                self._record = pickle.load(handle)
+            if os.path.isdir(self.packed_path):
+                if os.path.abspath(self.packed_path) == os.path.abspath(DEFAULT_PACKED):
+                    if not os.path.exists(DEFAULT_PACKED_RECEIPT):
+                        halt_violation("packed native transformer receipt missing")
+                    with open(DEFAULT_PACKED_RECEIPT, "r") as handle:
+                        receipt = json.load(handle)
+                    manifest_path = os.path.join(self.packed_path, "manifest.json")
+                    with open(manifest_path, "rb") as handle:
+                        manifest_hash = hashlib.sha256(handle.read()).hexdigest()
+                    source_root = os.path.dirname(os.path.dirname(__file__))
+                    expected_sources = receipt.get("sources", {})
+                    runtime_sources = (
+                        "omni/native_transformer.py",
+                        "omni/packed_rows.py",
+                    )
+                    source_match = True
+                    for relative_path in runtime_sources:
+                        source_path = os.path.join(source_root, relative_path)
+                        with open(source_path, "rb") as handle:
+                            source_hash = hashlib.sha256(handle.read()).hexdigest()
+                        if expected_sources.get(relative_path) != source_hash:
+                            source_match = False
+                    if (receipt.get("schema")
+                            != "unison-packed-native-transformer-receipt/v1"
+                            or receipt.get("status") != "sealed"
+                            or receipt.get("manifest_sha256") != manifest_hash
+                            or not source_match):
+                        halt_violation("packed native transformer receipt mismatch")
+                from omni.packed_rows import load_packed_record
+                self._record = load_packed_record(self.packed_path)
+            else:
+                with open(self.store_path, "rb") as handle:
+                    self._record = pickle.load(handle)
         record = self._record
         if record.get("schema") != SCHEMA or record.get("role_policy") != ROLE_POLICY:
             halt_violation("native transformer store provenance mismatch")
@@ -259,7 +299,12 @@ class CountedCausalTransformer:
             "responses": record["response_count"],
             "tokens": record["token_count"],
         }
-        if os.path.exists(self.store_path):
+        if record.get("artifact_sha256"):
+            identity["sha256"] = record["artifact_sha256"]
+            identity["serving_representation"] = record.get("packed_schema")
+            identity["decode_kernel"] = "exact-lcm-integer-cross-product/v1"
+            identity["value_cache"] = "prompt-bounded-exact/v1"
+        elif os.path.exists(self.store_path):
             with open(self.store_path, "rb") as handle:
                 identity["sha256"] = hashlib.sha256(handle.read()).hexdigest()
         return identity
@@ -298,7 +343,8 @@ class CountedCausalTransformer:
         return self._positional_keys(text, history)
 
     def _attention_key_weights(self, last_id: int,
-                               keys: Mapping[int, Fraction]) -> dict[int, Fraction]:
+                               keys: Mapping[int, Fraction],
+                               prepared_values=None) -> dict[int, Fraction]:
         """Combine exact structural, information, and Q/K association heads.
 
         Standard transformer heads learn different projections of the same
@@ -318,10 +364,13 @@ class CountedCausalTransformer:
             key_id: share / structural_total for key_id, share in keys.items()
             if share > 0
         }
-        exposure = {
-            key_id: sum(record["values"].get(key_id, {}).values())
-            for key_id in structural
-        }
+        exposure = {}
+        for key_id in structural:
+            if prepared_values is not None and key_id in prepared_values:
+                exposure[key_id] = prepared_values[key_id][1]
+            else:
+                exposure[key_id] = sum(
+                    record["values"].get(key_id, {}).values())
         information = {
             key_id: keys[key_id] / held
             for key_id, held in exposure.items() if held > 0
@@ -404,13 +453,104 @@ class CountedCausalTransformer:
             residual[token_id] *= Fraction(good + 1, good + bad + GEN_B)
         return dict(residual)
 
+    @staticmethod
+    def _add_integer_row(groups: dict[int, defaultdict[int, int]],
+                         counts: Mapping[int, int], weight: Fraction) -> None:
+        """Accumulate one exact normalized row as grouped integer numerators."""
+        total = sum(counts.values())
+        if total <= 0 or weight <= 0:
+            return
+        numerator = weight.numerator
+        denominator = weight.denominator * total
+        common = math.gcd(numerator, denominator)
+        numerator //= common
+        denominator //= common
+        group = groups.setdefault(denominator, defaultdict(int))
+        for token_id, count in counts.items():
+            if count > 0:
+                group[token_id] += numerator * count
+
+    def _integer_residual_scores(self, prev_id: int, last_id: int,
+                                 keys: Mapping[int, Fraction],
+                                 prepared_values=None) -> dict[int, int]:
+        """Return one common-denominator integer form of the exact residual.
+
+        This is algebraically identical to ``_unnormalized_residual`` before
+        reward multiplication. Grouping equal denominators replaces repeated
+        ``Fraction`` additions with integer accumulation; the least common
+        multiple closes all groups to one denominator without approximation.
+        """
+        record = self._store()
+        addressed = self._attention_key_weights(
+            last_id, keys, prepared_values=prepared_values)
+        groups: dict[int, defaultdict[int, int]] = {}
+
+        value_rows = [
+            (weight,
+             (prepared_values[key_id][0]
+              if prepared_values is not None and key_id in prepared_values
+              else record["values"].get(key_id)))
+            for key_id, weight in addressed.items()
+        ]
+        value_rows = [(weight, counts) for weight, counts in value_rows if counts]
+        value_weight = sum((weight for weight, _ in value_rows), Fraction(0))
+        if value_weight > 0:
+            for weight, counts in value_rows:
+                self._add_integer_row(groups, counts, weight / value_weight)
+
+        semantic_rows = []
+        for key_id, weight in addressed.items():
+            counts = record["semantic_ffn3"].get((prev_id, last_id, key_id))
+            if not counts:
+                counts = record["semantic_ffn"].get((last_id, key_id))
+            if counts:
+                semantic_rows.append((weight, counts))
+        semantic_weight = sum((weight for weight, _ in semantic_rows), Fraction(0))
+        if semantic_weight > 0:
+            for weight, counts in semantic_rows:
+                self._add_integer_row(groups, counts, weight / semantic_weight)
+
+        counts = record["ffn3"].get((prev_id, last_id))
+        if not counts:
+            counts = record["ffn2"].get(last_id)
+        if not counts:
+            counts = record["unigram"]
+        self._add_integer_row(groups, counts, Fraction(1))
+
+        if not groups:
+            return {}
+        denominator = math.lcm(*groups.keys())
+        scores: defaultdict[int, int] = defaultdict(int)
+        for held_denominator, numerators in groups.items():
+            scale = denominator // held_denominator
+            for token_id, numerator in numerators.items():
+                scores[token_id] += numerator * scale
+        return dict(scores)
+
     def next_token_id(self, prev_id: int, last_id: int,
-                      keys: Mapping[int, Fraction]) -> Optional[int]:
-        """Exact greedy argmax, equivalent to the normalized LM-head argmax."""
-        residual = self._unnormalized_residual(prev_id, last_id, keys)
-        if not residual:
+                      keys: Mapping[int, Fraction],
+                      prepared_values=None) -> Optional[int]:
+        """Exact integer greedy argmax, equivalent to the normalized LM head."""
+        scores = self._integer_residual_scores(
+            prev_id, last_id, keys, prepared_values=prepared_values)
+        if not scores:
             return None
-        return min(residual, key=lambda token_id: (-residual[token_id], token_id))
+        rewards = self._rewards()
+        best_id = None
+        best_numerator = 0
+        best_denominator = 1
+        for token_id, score in scores.items():
+            good, bad = rewards.get((prev_id, last_id, token_id), (0, 0))
+            numerator = score * (good + 1)
+            denominator = good + bad + GEN_B
+            if (best_id is None
+                    or numerator * best_denominator > best_numerator * denominator
+                    or (numerator * best_denominator == best_numerator * denominator
+                        and token_id < best_id)):
+                best_id = token_id
+                best_numerator = numerator
+                best_denominator = denominator
+        return best_id
 
     def _attention(self, prev_id: int, last_id: int,
                    keys: Mapping[int, Fraction]) -> dict[int, Fraction]:
@@ -517,10 +657,19 @@ class CountedCausalTransformer:
         keys = self._context_keys(text, history)
         if not keys:
             return []
+        # Bounded per-response cache: the same prompt-key value rows and their
+        # exact exposure totals are reused for every generated token, then the
+        # mapping is released with this call. It cannot grow across turns.
+        prepared_values = {}
+        for key_id in keys:
+            counts = record["values"].get(key_id)
+            if counts:
+                prepared_values[key_id] = (counts, sum(counts.values()))
         prev_id = last_id = record["bos_id"]
         out: list[str] = []
         for _ in range(token_budget):
-            next_id = self.next_token_id(prev_id, last_id, keys)
+            next_id = self.next_token_id(
+                prev_id, last_id, keys, prepared_values=prepared_values)
             if next_id is None:
                 break
             if next_id == record["eos_id"]:

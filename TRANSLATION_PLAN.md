@@ -127,8 +127,10 @@ thousands of real responses to "hello, how are you").
   one-to-one: role-bound sequence training, counted embeddings, causal Q/K/V attention,
   residual normalization, explicit FFN KV memory, exact LM head, and autoregressive decode.
   The historical word/generic fallback remains retired. V4 seals the full-token one-block
-  decoder. Its Codex smoke improves several topical operations but does not yet establish full
-  conversational generalisation. Port the next established organs: within-turn positional
+  decoder. Its exact memory-mapped representation retains every row and count while reducing
+  measured resident serving memory from about 59 GB to 559,185,920 bytes; its integer decode
+  and bounded per-response row preparation preserve token identity. Its Codex smoke improves
+  several topical operations. Port the next established organs: within-turn positional
   addresses and stacked prompt self-attention so each decoder key is context-dependent, then
   remeasure the same native route.
 - **Stage 4 — Learning + state.** Pair-quality counts; taught-pair precedence; **port the

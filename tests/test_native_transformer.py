@@ -1,7 +1,10 @@
 from fractions import Fraction
 import asyncio
+import hashlib
+import json
 import os
 import tempfile
+from pathlib import Path
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
@@ -12,6 +15,7 @@ from omni.native_transformer import (
     ROLE_POLICY,
     build_counted_transformer,
 )
+from omni.packed_rows import load_packed_record, pack_record, verify_packed_files
 
 
 class CountedCausalTransformerTests(unittest.TestCase):
@@ -82,11 +86,104 @@ class CountedCausalTransformerTests(unittest.TestCase):
                     break
                 prev_id, last_id = last_id, actual
 
+    def test_bounded_prepared_value_rows_preserve_exact_argmax(self):
+        keys = self.model._context_keys("gardening")
+        record = self.record
+        prepared = {}
+        for key_id in keys:
+            counts = record["values"].get(key_id)
+            if counts:
+                prepared[key_id] = (counts, sum(counts.values()))
+        bos = record["bos_id"]
+        self.assertEqual(
+            self.model.next_token_id(bos, bos, keys),
+            self.model.next_token_id(
+                bos, bos, keys, prepared_values=prepared),
+        )
+
+    def test_packed_serving_rows_and_generation_are_exactly_equivalent(self):
+        packed_path = Path(self.temp.name) / "packed"
+        manifest = pack_record(
+            self.record, packed_path, artifact_sha256="a" * 64)
+        self.assertEqual(manifest["schema"], "unison-packed-exact-rows/v1")
+        self.assertEqual(verify_packed_files(packed_path)["status"], "verified")
+        packed = load_packed_record(packed_path)
+        for namespace in (
+                "profiles", "qk", "values", "semantic_ffn",
+                "semantic_ffn3", "ffn2", "ffn3"):
+            original = self.record[namespace]
+            packed_table = packed[namespace]
+            self.assertEqual(len(packed_table), len(original))
+            for key, value in original.items():
+                self.assertEqual(packed_table.get(key), value)
+        packed_model = CountedCausalTransformer(
+            record=packed,
+            reward_path=os.path.join(self.temp.name, "packed_reward.pkl"),
+        )
+        for prompt in ("gardening", "astronomy"):
+            source_keys = self.model._context_keys(prompt)
+            packed_keys = packed_model._context_keys(prompt)
+            self.assertEqual(source_keys, packed_keys)
+            bos = self.record["bos_id"]
+            self.assertEqual(
+                self.model.next_distribution(bos, bos, source_keys),
+                packed_model.next_distribution(bos, bos, packed_keys),
+            )
+            self.assertEqual(self.model.generate(prompt), packed_model.generate(prompt))
+
     def test_role_provenance_mismatch_halts(self):
         broken = dict(self.record)
         broken["role_policy"] = "mixed-role-output"
         with self.assertRaises(SystemExit):
             CountedCausalTransformer(record=broken)._store()
+
+    def test_default_packed_receipt_drift_halts(self):
+        from omni import native_transformer as native_module
+        packed = Path(self.temp.name) / "default_packed"
+        pack_record(self.record, packed, artifact_sha256="b" * 64)
+        receipt = Path(self.temp.name) / "receipt.json"
+        receipt.write_text(json.dumps({
+            "schema": "unison-packed-native-transformer-receipt/v1",
+            "status": "sealed",
+            "manifest_sha256": "0" * 64,
+        }))
+        model = CountedCausalTransformer(packed_path=str(packed))
+        with patch.object(native_module, "DEFAULT_PACKED", str(packed)), \
+                patch.object(native_module, "DEFAULT_PACKED_RECEIPT", str(receipt)):
+            with self.assertRaises(SystemExit):
+                model._store()
+
+    def test_default_packed_missing_receipt_halts(self):
+        from omni import native_transformer as native_module
+        packed = Path(self.temp.name) / "default_packed"
+        pack_record(self.record, packed, artifact_sha256="b" * 64)
+        missing = Path(self.temp.name) / "missing-receipt.json"
+        model = CountedCausalTransformer(packed_path=str(packed))
+        with patch.object(native_module, "DEFAULT_PACKED", str(packed)), \
+                patch.object(native_module, "DEFAULT_PACKED_RECEIPT", str(missing)):
+            with self.assertRaises(SystemExit):
+                model._store()
+
+    def test_default_packed_runtime_source_drift_halts(self):
+        from omni import native_transformer as native_module
+        packed = Path(self.temp.name) / "default_packed"
+        pack_record(self.record, packed, artifact_sha256="b" * 64)
+        manifest = packed / "manifest.json"
+        receipt = Path(self.temp.name) / "receipt.json"
+        receipt.write_text(json.dumps({
+            "schema": "unison-packed-native-transformer-receipt/v1",
+            "status": "sealed",
+            "manifest_sha256": hashlib.sha256(manifest.read_bytes()).hexdigest(),
+            "sources": {
+                "omni/native_transformer.py": "0" * 64,
+                "omni/packed_rows.py": "0" * 64,
+            },
+        }))
+        model = CountedCausalTransformer(packed_path=str(packed))
+        with patch.object(native_module, "DEFAULT_PACKED", str(packed)), \
+                patch.object(native_module, "DEFAULT_PACKED_RECEIPT", str(receipt)):
+            with self.assertRaises(SystemExit):
+                model._store()
 
     def test_transformer_organs_close_exactly(self):
         keys = self.model._context_keys("gardening")

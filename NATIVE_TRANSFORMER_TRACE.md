@@ -28,7 +28,7 @@ below establish code behaviour only; they do not declare a benchmark result.
 | Residual addition | Add the unit attention value, semantic-FFN, and prefix-FFN distributions with the standard identity coefficient | `next_distribution` |
 | Normalisation | Divide exact positive mass by its total and assert closure to the One | `_normalize` |
 | LM head | Exact categorical next-token shares | `next_distribution` |
-| Autoregressive decoding | Standard greedy decode from BOS until the learned EOS; `BAND` is the explicit execution budget. The live argmax accumulates the same exact normalized organ rows lazily and omits only the final common normalization; tests compare it token-for-token with the materialized LM head | `next_token_id`, `_unnormalized_residual`, `generate_tokens`, `generate` |
+| Autoregressive decoding | Standard greedy decode from BOS until the learned EOS; `BAND` is the explicit execution budget. The live argmax groups exact row denominators, closes them to their least common multiple, and compares reward-conditioned integers by cross multiplication; tests compare it token-for-token with the materialized LM head. Prompt-key value rows are prepared once per response in a bounded local cache that is discarded after generation | `next_token_id`, `_integer_residual_scores`, `generate_tokens`, `generate` |
 | Pretraining | One deterministic counted pass over every role-bound pair, the closed-form categorical MLE | `train_eval/build_native_transformer.py` |
 | Reward-conditioned learning | Every observed good/bad native transition updates a persisted Laplace preference share `(good+1)/(good+bad+2)`; prompt and surface hashes bind each event, the live trace binds feedback to the exact native segment, and RAG/native ledgers cannot cross-update | `mark_feedback`, `_rewards`, `discord_bot._last_native_feedback`, `discord_bot._last_rag_feedback` |
 | RAG augmentation | Existing pair retrieval remains a separately disclosed response-selection/RAG surface; it is not the native generator and not the retired fallback | `discord_bot._generate_fragment_multiscale` |
@@ -55,15 +55,37 @@ The current v4 receipt seals 649,917 role-bound responses, 11,140,970
 assistant causal targets, 22,415,744 Q/K relations, 96,721 value vectors, and
 81,111,826 deep contextual FFN addresses. Artifact SHA-256 is
 `f977d4d8adb0993a0ab0d63b86dea30bd845ae091e84a4859ae826d032a87219`;
-the complete repository suite passes 37/37.
+the packed receipt verifies all seven serving tables with zero failures.
+
+The original pickle is translated into an exact memory-mapped serving
+representation by `train_eval/pack_native_transformer.py`. No row is sampled,
+pruned, capped, quantized, or evicted: the seven tables retain their complete
+keys and integer counts, and lookup verifies each stored key. The packed store
+contains 6,832,650,424 bytes and is bound to the original artifact SHA above.
+`train_eval/seal_packed_native_transformer.py` hashes every index and data file;
+the runtime additionally halts if the packed manifest or either serving source
+file drifts from `native_transformer_v4_packed_receipt.json`.
+
+Exact-equivalence tests compare every fixture row, full distributions, greedy
+argmax, and generated surfaces between the pickle and packed forms. The fixed
+eight-prompt development probe was byte-identical across the representation
+change. Measured on the same machine, resident memory fell from approximately
+59 GB for the unpacked Python object to 559,185,920 bytes for the bounded packed
+route. Cold activation took 0.032017 seconds and the eight generations took
+11.407350 seconds total, compared with 1,514.370707 seconds for the earlier
+unpacked projected-head probe. These are Codex implementation measurements,
+not a benchmark conclusion.
+
+The complete repository suite passes 42/42.
 
 The fixed Codex development probe does not establish full conversational
 generalisation. Its projected-head route improved several subject/operation
 surfaces, while greeting, gardening, meal, and music remained generic. The
 next established transformer organs are stacked prompt self-attention and
 distinct within-turn positional addresses, making keys context-dependent
-before decoder attention. Runtime representation must also become streamed or
-memory-mapped while preserving exact counts and argmax identity.
+before decoder attention. The exact memory-mapped representation and bounded
+decode kernel now remove the prior runtime-memory obstruction without changing
+the architectural computation.
 
 ## Superseded development interpretation
 

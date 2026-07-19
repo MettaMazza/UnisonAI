@@ -1,0 +1,100 @@
+{
+  "artifact_receipt_sha256": "0b4f0a211a7008a9738bb2f74cc234b58eda53cb46be0e36e4ccf29f8515bdca",
+  "artifact_sha256": "f977d4d8adb0993a0ab0d63b86dea30bd845ae091e84a4859ae826d032a87219",
+  "manifest_sha256": "30948b3b941c10d187ea95d0f449032977fdad07626ea7b4877ba176722913ee",
+  "packed_bytes": 6832650424,
+  "packed_schema": "unison-packed-exact-rows/v1",
+  "schema": "unison-packed-native-transformer-receipt/v1",
+  "sources": {
+    "omni/native_transformer.py": "a5ffa5ec63b12f7572ca39d77c4e893508b067b281a95065b1d6296f49df6751",
+    "omni/packed_rows.py": "ca369aa28d253ca916aca7377c6047caa01cd64fbff7da7ec76010ecce20dfcc",
+    "train_eval/pack_native_transformer.py": "d26b2eb04f6d6cfb4a97a7a2214522f27897e8e0cf84f9322e3807192e7189aa",
+    "train_eval/seal_packed_native_transformer.py": "242e3d8b105c06085e174702cad70b514f277c8db4894d1d02840fc128a5d6f8"
+  },
+  "status": "sealed",
+  "tables": [
+    {
+      "capacity": 134217728,
+      "data_bytes": 2914956460,
+      "data_sha256": "4507590b1b8428b9b09f1910955624bf1acc242f03fb70025dc662bea1428db8",
+      "index_bytes": 1073741824,
+      "index_sha256": "4ecaed2e352657401a0b9905671f5907492ac53de34dd6e3a09c4899a706f738",
+      "key_size": 3,
+      "name": "semantic_ffn3",
+      "rows": 81111826,
+      "scalar": false
+    },
+    {
+      "capacity": 33554432,
+      "data_bytes": 1242763896,
+      "data_sha256": "645d172c01f2ff72f90c0f2bbfd10e46408c367dd36b425025a7c12007e75942",
+      "index_bytes": 268435456,
+      "index_sha256": "96628914c19f1001b7397d5f3b2abf06b647db8f00b3eb99a74dc6d6f0b9f888",
+      "key_size": 2,
+      "name": "semantic_ffn",
+      "rows": 22415744,
+      "scalar": false
+    },
+    {
+      "capacity": 33554432,
+      "data_bytes": 358651904,
+      "data_sha256": "71285bc163e5969e7e042f92e9d7dd9137d4a2f982ee95e4e79dbc88409703ef",
+      "index_bytes": 268435456,
+      "index_sha256": "89cf75e234d5b1f8c42e96e1a7449f957058bb697ee5e8bf741cb76633051ef7",
+      "key_size": 2,
+      "name": "qk",
+      "rows": 22415744,
+      "scalar": true
+    },
+    {
+      "capacity": 131072,
+      "data_bytes": 269762696,
+      "data_sha256": "45bb1f10adc7a48b32f17be25149a33010616204705f81ff34ddc6d917f426d7",
+      "index_bytes": 1048576,
+      "index_sha256": "536fc5d8233d0546374d4791463b8c36d0d9daeee461963e55b2e0cd82ecd153",
+      "key_size": 1,
+      "name": "values",
+      "rows": 96721,
+      "scalar": false
+    },
+    {
+      "capacity": 2097152,
+      "data_bytes": 54433320,
+      "data_sha256": "298e1aa2963379e101d0d235fa0d5d0630406c01c6d7ff259653ad4d75605992",
+      "index_bytes": 16777216,
+      "index_sha256": "aeae11756c5a2c37e69e8d037771c9d990f06782acfe6c88713f1c555508dd78",
+      "key_size": 2,
+      "name": "ffn3",
+      "rows": 1183468,
+      "scalar": false
+    },
+    {
+      "capacity": 131072,
+      "data_bytes": 14946444,
+      "data_sha256": "581ee3767844746fca8449a153366276e146a33742e4d452db6305b064e0ba17",
+      "index_bytes": 1048576,
+      "index_sha256": "a9f908a8f908105fb9629c149e89906c9fc944efbd095fff17bc7fb7a0b55f2d",
+      "key_size": 1,
+      "name": "ffn2",
+      "rows": 93099,
+      "scalar": false
+    },
+    {
+      "capacity": 131072,
+      "data_bytes": 343840088,
+      "data_sha256": "69461e4326b6365ea50d0f92b31fd0c5f75ff8ce1c48c2dc89b843ebe477d3d9",
+      "index_bytes": 1048576,
+      "index_sha256": "d7606405f79277012c95d501d04acfc2c73b562570c8a62a51944ce9df5a8a64",
+      "key_size": 1,
+      "name": "profiles",
+      "rows": 96721,
+      "scalar": false
+    }
+  ],
+  "verification": {
+    "failures": [],
+    "schema": "unison-packed-exact-rows/v1/verification",
+    "status": "verified",
+    "tables": 7
+  }
+}
