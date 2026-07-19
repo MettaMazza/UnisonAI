@@ -151,6 +151,32 @@ the previous build already produced non-empty first turns and follow-ups on
 An official benchmark conclusion remains Maria's decision after she reviews
 that complete applied receipt; this recommendation is advisory, not a gate.
 
+That broader cumulative development benchmark has now executed on the same
+optimized v5 route. Across eight free two-turn conversations, native output was
+non-empty on **8/8 first turns and 8/8 follow-ups**, and the follow-up surface
+retained the user-supplied fact in **7/8** explicit continuity probes. This is a
+direct improvement over the earlier pre-position-context 0/4 auxiliary
+continuity receipt, while expanding the current non-empty multi-turn evidence
+from four to eight scenarios. The remaining comparison case produced a
+non-empty but incomplete answer; several first-turn surfaces also retain
+repetition or loose relevance, preserved as development behavior rather than
+converted into a limit.
+
+The same run exercised the required isolated reward ledger. A negative
+observation changed `I like to do for fun?` to a different served surface; a
+following positive observation retained that new surface on the next decode.
+This is implemented evidence that reward-conditioned counts actively change
+and stabilize native generation without becoming fixed parameters. The full
+run took **66.717157 seconds** and measured **771,932,160 bytes** maximum
+resident memory; this broader conversation-and-learning workload is not a
+matched memory comparison with the fixed single-turn panel.
+
+The next cumulative development trial should now target compositional response
+quality: retain the demonstrated 7/8 context continuity and reward response
+while measuring repetition, relevance, and the unresolved comparative
+relation across a larger source-bound conversation set. It remains a
+development benchmark unless Maria explicitly registers it as official.
+
 The next state is broader source-bound free multi-turn conversation,
 held-out transfer, and reward-conditioned learning on the integrated v5 route,
 then continued Maria-authorized benchmark work. The

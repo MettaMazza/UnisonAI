@@ -1,0 +1,305 @@
+{
+  "benchmark_authority": false,
+  "completed_at_utc": "2026-07-19T21:21:27.313678+00:00",
+  "conversation": {
+    "auxiliary_continuity_observed": 7,
+    "first_nonempty": 8,
+    "followup_nonempty": 8,
+    "rows": [
+      {
+        "auxiliary_continuity_observed": true,
+        "auxiliary_expected_any": [
+          "maria"
+        ],
+        "first_nonempty": true,
+        "followup_nonempty": true,
+        "scenario": "name",
+        "turns": [
+          {
+            "content": "My name is Maria.",
+            "role": "user"
+          },
+          {
+            "content": "I have a little white cat.",
+            "role": "assistant",
+            "seconds": 0.929533167
+          },
+          {
+            "content": "What is my name?",
+            "role": "user"
+          },
+          {
+            "content": "Is maria.",
+            "role": "assistant",
+            "seconds": 2.4108413339999997
+          }
+        ]
+      },
+      {
+        "auxiliary_continuity_observed": true,
+        "auxiliary_expected_any": [
+          "tea"
+        ],
+        "first_nonempty": true,
+        "followup_nonempty": true,
+        "scenario": "preference",
+        "turns": [
+          {
+            "content": "I prefer tea to coffee.",
+            "role": "user"
+          },
+          {
+            "content": "I love to read too! i love to read too! i love to read too! i love to read too! i love to read too! i love",
+            "role": "assistant",
+            "seconds": 2.4856077919999997
+          },
+          {
+            "content": "Which drink do I prefer?",
+            "role": "user"
+          },
+          {
+            "content": "Tea to coffee.",
+            "role": "assistant",
+            "seconds": 3.086243292
+          }
+        ]
+      },
+      {
+        "auxiliary_continuity_observed": true,
+        "auxiliary_expected_any": [
+          "tomato"
+        ],
+        "first_nonempty": true,
+        "followup_nonempty": true,
+        "scenario": "garden",
+        "turns": [
+          {
+            "content": "I am growing tomatoes in my garden.",
+            "role": "user"
+          },
+          {
+            "content": "Yes, absolutely! diced tomatoes would be a great way to add more details about the specific details of the best tomatoes for this salad: - ripe: choose tomatoes",
+            "role": "assistant",
+            "seconds": 4.272206082999999
+          },
+          {
+            "content": "What am I growing?",
+            "role": "user"
+          },
+          {
+            "content": "Tomatoes are really doing great! i'm sure you'll do great.",
+            "role": "assistant",
+            "seconds": 6.368279457999998
+          }
+        ]
+      },
+      {
+        "auxiliary_continuity_observed": true,
+        "auxiliary_expected_any": [
+          "nervous"
+        ],
+        "first_nonempty": true,
+        "followup_nonempty": true,
+        "scenario": "feeling",
+        "turns": [
+          {
+            "content": "I feel nervous about speaking tomorrow.",
+            "role": "user"
+          },
+          {
+            "content": "I know.",
+            "role": "assistant",
+            "seconds": 0.7976310410000025
+          },
+          {
+            "content": "How did I say I feel?",
+            "role": "user"
+          },
+          {
+            "content": "Nervous fingers fumble with buttons, eager to learn a lot of fun.",
+            "role": "assistant",
+            "seconds": 7.537678374999999
+          }
+        ]
+      },
+      {
+        "auxiliary_continuity_observed": true,
+        "auxiliary_expected_any": [
+          "kitchen"
+        ],
+        "first_nonempty": true,
+        "followup_nonempty": true,
+        "scenario": "place",
+        "turns": [
+          {
+            "content": "I left the notebook in the kitchen.",
+            "role": "user"
+          },
+          {
+            "content": "I love that book! i love that book! i love that book! i love that book! i love that book! i love that book! i love",
+            "role": "assistant",
+            "seconds": 5.585163999999999
+          },
+          {
+            "content": "Where is the notebook?",
+            "role": "user"
+          },
+          {
+            "content": "In the kitchen.",
+            "role": "assistant",
+            "seconds": 4.154229208000004
+          }
+        ]
+      },
+      {
+        "auxiliary_continuity_observed": true,
+        "auxiliary_expected_any": [
+          "thursday"
+        ],
+        "first_nonempty": true,
+        "followup_nonempty": true,
+        "scenario": "schedule",
+        "turns": [
+          {
+            "content": "My appointment is on Thursday.",
+            "role": "user"
+          },
+          {
+            "content": "I can.",
+            "role": "assistant",
+            "seconds": 0.7728715000000008
+          },
+          {
+            "content": "When is my appointment?",
+            "role": "user"
+          },
+          {
+            "content": "Is on thursday.",
+            "role": "assistant",
+            "seconds": 2.714255625
+          }
+        ]
+      },
+      {
+        "auxiliary_continuity_observed": true,
+        "auxiliary_expected_any": [
+          "protein",
+          "folding"
+        ],
+        "first_nonempty": true,
+        "followup_nonempty": true,
+        "scenario": "project",
+        "turns": [
+          {
+            "content": "The current project is about protein folding.",
+            "role": "user"
+          },
+          {
+            "content": "The folding of proteins into their proper functional shape is a complex process that is influenced by a variety of factors, including the presence of noncovalent bonds.",
+            "role": "assistant",
+            "seconds": 3.8266470419999976
+          },
+          {
+            "content": "What is the project about?",
+            "role": "user"
+          },
+          {
+            "content": "Protein folding.",
+            "role": "assistant",
+            "seconds": 3.659544541999999
+          }
+        ]
+      },
+      {
+        "auxiliary_continuity_observed": false,
+        "auxiliary_expected_any": [
+          "blue"
+        ],
+        "first_nonempty": true,
+        "followup_nonempty": true,
+        "scenario": "comparison",
+        "turns": [
+          {
+            "content": "The blue box is larger than the red box.",
+            "role": "user"
+          },
+          {
+            "content": "I do not have access to the delights of modern - day life.",
+            "role": "assistant",
+            "seconds": 2.9468332499999974
+          },
+          {
+            "content": "Which box is larger?",
+            "role": "user"
+          },
+          {
+            "content": "Than just a little bit.",
+            "role": "assistant",
+            "seconds": 5.069424333000001
+          }
+        ]
+      }
+    ],
+    "scenarios": 8
+  },
+  "declared_purpose": "Exercise broader free multi-turn serving and the required exact reward-conditioned learning ledger on the optimized sealed v5 route.",
+  "elapsed_seconds": 66.717156833,
+  "governance_authority": false,
+  "identity": {
+    "copy_attention": "role-conditioned-longest-induction-head/v1",
+    "decode_kernel": "exact-lcm-integer-cross-product/v1",
+    "decoder_context": "position-preserving-value-semantic-routing/v1",
+    "position_relation": {
+      "path": "/Users/mettamazza/Desktop/UnisonAI/omni/native_position_relation_v5.bin",
+      "rows": 212395127,
+      "schema": "unison-packed-position-relation/v1",
+      "sha256": "f1e355cfb0e93d781d79452e12c58bdb3e95635acb5408f7a98deb9000ca579c"
+    },
+    "position_semantic_ffn": "exact-relative-position-prefix-marginals/v5",
+    "position_value": "exact-relative-position-marginal/v5",
+    "prompt_context": "five-layer-ranked-cascade-final-position/v1",
+    "responses": 649917,
+    "role_policy": "prompt-keys/assistant-causal-values",
+    "schema": "unison-counted-causal-transformer/v4",
+    "serving_representation": "unison-packed-exact-rows/v1",
+    "sha256": "f977d4d8adb0993a0ab0d63b86dea30bd845ae091e84a4859ae826d032a87219",
+    "source_pairs_sha256": "6a5dcc9e9d2227e3445a7d6630ce52807e9c58d7259bbb488f53d9f05c022b17",
+    "tokens": 11140970,
+    "value_cache": "prompt-bounded-exact/v1"
+  },
+  "maximum_resident_bytes": 771932160,
+  "official_run": false,
+  "provenance": {
+    "agent": "Codex",
+    "authority": "Maria Smith alone registers official trials and assigns conclusions.",
+    "model": "gpt-5.6-sol",
+    "origin": "Codex implementation development run",
+    "reasoning_level": "high"
+  },
+  "result_type": "cumulative development benchmark",
+  "reward_learning": {
+    "after_negative_surface": "I like to go to the movies, and the blonde woman continued to travel and explore the world.",
+    "after_positive_surface": "I like to go to the movies, and the blonde woman continued to travel and explore the world.",
+    "baseline_surface": "I like to do for fun?",
+    "negative_observation_changed_surface": true,
+    "positive_observation_retained_surface": true,
+    "prompt": "What kind of music do you enjoy?",
+    "reward_artifact": {
+      "path": "train_eval/native_v5_conversation_learning_reward_20260719.pkl",
+      "sha256": "a95d5f38cc0390ad609140cd53be8f056267149bfeae12b9625563e72e1a46eb"
+    },
+    "seconds": {
+      "after_negative": 4.066464416999999,
+      "after_positive": 4.0137766250000055,
+      "baseline": 1.992320583999998
+    }
+  },
+  "schema": "unison-native-v5-conversation-learning-trial/v1",
+  "source_commit": "05a2820572700e6f66d0545b9e4585b8383333da",
+  "sources": {
+    "omni/native_transformer.py": "721523a7756a8d1ec4a5e45e62863bc92d7c10444b3f96f21d3d67867b2e8ea5",
+    "train_eval/native_transformer_v5_runtime_receipt.json": "00b3823b4019532abc66320b4a2dcfee8461f79612db857f8eebb28ab3fc5a70",
+    "train_eval/native_v5_conversation_learning_trial.py": "4eaa113e7a02fc57483e517bcc53feb287c5917922f9430f4ee41de3a11721e9"
+  },
+  "status": "completed"
+}

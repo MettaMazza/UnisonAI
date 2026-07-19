@@ -121,3 +121,7 @@ conversation, learning, or benchmark trial now; recommend it under a named
 condition/protocol; or recommend another development execution first, with
 exact evidence for and against. The recommendation is advisory and cannot
 authorize, veto, delay, or gate a trial Maria orders.
+Unless Maria explicitly registers a run as official, every recommended or
+executed trial is a **cumulative development benchmark** only. It adds applied
+evidence and never becomes an official result, victory, loss, rank, finding,
+or publication conclusion through agent wording.
