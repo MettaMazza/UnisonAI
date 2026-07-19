@@ -53,6 +53,36 @@ development programme with recorded structural, trained-twin, teaching, and
 benchmark evidence already on disk. Early auxiliary measurements inform
 Maria's next direction; they do not discard, freeze, or demote the programme.
 
+## Purpose-matched implemented evidence
+
+Proof and unit tests establish forcing and implementation closure. Applied
+evidence must then match the change's declared purpose; Unison must not inherit
+Chess or Go gameplay rules, and no universal score-improvement gate governs its
+architecture or learning programme.
+
+- A generation, context, memory, or learning change requires source-bound real
+  conversational execution with inspectable transcripts and the outcomes
+  relevant to its stated purpose. Generalisation claims require held-out inputs
+  appropriate to the claimed form of generalisation.
+- A forcing, correctness, provenance, or instrumentation repair requires a real
+  replay that demonstrates the intended closure and preserves the protected
+  architectural result. Identical conversational output can be positive and
+  sufficient evidence when the declared purpose is to repair provenance without
+  changing behaviour.
+- An optimisation requires identical declared outputs plus measured runtime or
+  memory evidence.
+- A benchmark-performance claim requires the named benchmark protocol and its
+  complete receipt. Benchmark victory remains an explicit objective, but a
+  benchmark score is not a universal admission rule for unrelated development.
+
+Record source, artifact, input, command, transcript or output, relevant outcome,
+latency or memory where applicable, and receipt identities. Preserve favourable
+and unfavourable evidence alike. An agent must not automatically reject, revert,
+retain, promote, or stop a change from a generic neutral/regressive label; Maria
+decides retention, real runs, conclusions, and the campaign direction from the
+purpose-matched evidence. Reward-conditioned learning remains required and may
+legitimately change behaviour; it is evaluated as learning, not as gameplay.
+
 ## Result provenance
 
 Every result must state one origin:
