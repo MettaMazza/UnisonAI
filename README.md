@@ -126,6 +126,13 @@ free multi-turn serving probe with non-empty native output on **4/4 first
 turns and 4/4 follow-ups**, preserving every surface without a target answer,
 lexical pass condition, or model judge.
 
+The combined result could indicate that contiguous iteration removed a large
+part of Python's per-row lookup overhead while touching a somewhat larger peak
+working set. The next optimisation is exact response-local batching of repeated
+prefix ranges—one complete aggregation per distinct canonical address, no
+sampling, eviction cap, or changed count—measured against the same eight
+surfaces for latency and resident memory before broader conversations.
+
 The next state is broader source-bound free multi-turn conversation,
 held-out transfer, and reward-conditioned learning on the integrated v5 route,
 then continued Maria-authorized benchmark work. The
