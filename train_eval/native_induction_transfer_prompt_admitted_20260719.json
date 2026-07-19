@@ -1,0 +1,249 @@
+{
+  "authority": "Source-bound development evidence; expectations are explicit Codex-authored probes and Maria Smith assigns conclusions.",
+  "auxiliary_transfer_observed": 8,
+  "completed_at_utc": "2026-07-19T11:15:48.101971+00:00",
+  "identity": {
+    "copy_attention": "role-conditioned-longest-induction-head/v1",
+    "decode_kernel": "exact-lcm-integer-cross-product/v1",
+    "decoder_context": "position-preserving-value-semantic-routing/v1",
+    "prompt_context": "five-layer-ranked-cascade-final-position/v1",
+    "responses": 649917,
+    "role_policy": "prompt-keys/assistant-causal-values",
+    "schema": "unison-counted-causal-transformer/v4",
+    "serving_representation": "unison-packed-exact-rows/v1",
+    "sha256": "f977d4d8adb0993a0ab0d63b86dea30bd845ae091e84a4859ae826d032a87219",
+    "source_pairs_sha256": "6a5dcc9e9d2227e3445a7d6630ce52807e9c58d7259bbb488f53d9f05c022b17",
+    "tokens": 11140970,
+    "value_cache": "prompt-bounded-exact/v1"
+  },
+  "rows": [
+    {
+      "auxiliary_expected_any": [
+        "london"
+      ],
+      "auxiliary_transfer_observed": true,
+      "scenario": "destination",
+      "turns": [
+        {
+          "content": "I am travelling to London by train.",
+          "role": "user"
+        },
+        {
+          "content": "I like to do for fun?",
+          "role": "assistant"
+        },
+        {
+          "content": "Where am I travelling?",
+          "role": "user"
+        },
+        {
+          "content": "To london by train.",
+          "role": "assistant"
+        }
+      ]
+    },
+    {
+      "auxiliary_expected_any": [
+        "seven",
+        "monday"
+      ],
+      "auxiliary_transfer_observed": true,
+      "scenario": "schedule",
+      "turns": [
+        {
+          "content": "My appointment is at seven on Monday.",
+          "role": "user"
+        },
+        {
+          "content": "I do not have access to the text, the team.",
+          "role": "assistant"
+        },
+        {
+          "content": "When is my appointment?",
+          "role": "user"
+        },
+        {
+          "content": "Is at seven on monday.",
+          "role": "assistant"
+        }
+      ]
+    },
+    {
+      "auxiliary_expected_any": [
+        "beneath",
+        "lamp"
+      ],
+      "auxiliary_transfer_observed": true,
+      "scenario": "object_location",
+      "turns": [
+        {
+          "content": "I put the keys beneath the blue lamp.",
+          "role": "user"
+        },
+        {
+          "content": "I do not have access to the specific details about the impact of the most modern mobile technology has been a long time.",
+          "role": "assistant"
+        },
+        {
+          "content": "Where did I put the keys?",
+          "role": "user"
+        },
+        {
+          "content": "Beneath the blue lamp.",
+          "role": "assistant"
+        }
+      ]
+    },
+    {
+      "auxiliary_expected_any": [
+        "spanish"
+      ],
+      "auxiliary_transfer_observed": true,
+      "scenario": "language",
+      "turns": [
+        {
+          "content": "I am learning Spanish this winter.",
+          "role": "user"
+        },
+        {
+          "content": "I don't have access to the specific details about the winter.",
+          "role": "assistant"
+        },
+        {
+          "content": "Which language am I learning?",
+          "role": "user"
+        },
+        {
+          "content": "Spanish this winter.",
+          "role": "assistant"
+        }
+      ]
+    },
+    {
+      "auxiliary_expected_any": [
+        "pepper"
+      ],
+      "auxiliary_transfer_observed": true,
+      "scenario": "pet_name",
+      "turns": [
+        {
+          "content": "My dog is called Pepper.",
+          "role": "user"
+        },
+        {
+          "content": "I don't have access to the recipe.",
+          "role": "assistant"
+        },
+        {
+          "content": "What is my dog called?",
+          "role": "user"
+        },
+        {
+          "content": "Pepper.",
+          "role": "assistant"
+        }
+      ]
+    },
+    {
+      "auxiliary_expected_any": [
+        "beside",
+        "cabinet"
+      ],
+      "auxiliary_transfer_observed": true,
+      "scenario": "storage",
+      "turns": [
+        {
+          "content": "The telescope is beside the red cabinet.",
+          "role": "user"
+        },
+        {
+          "content": "I don't know.",
+          "role": "assistant"
+        },
+        {
+          "content": "Where is the telescope?",
+          "role": "user"
+        },
+        {
+          "content": "Is beside the red cabinet.",
+          "role": "assistant"
+        }
+      ]
+    },
+    {
+      "auxiliary_expected_any": [
+        "tea"
+      ],
+      "auxiliary_transfer_observed": true,
+      "scenario": "nearest_preference",
+      "turns": [
+        {
+          "content": "I prefer apples to pears.",
+          "role": "user"
+        },
+        {
+          "content": "I don't have the specific information about the technological advancements available in your area.",
+          "role": "assistant"
+        },
+        {
+          "content": "I prefer tea to coffee.",
+          "role": "user"
+        },
+        {
+          "content": "I don't have the capability to create a balanced and complex flavor profile.",
+          "role": "assistant"
+        },
+        {
+          "content": "Which drink did I say I prefer?",
+          "role": "user"
+        },
+        {
+          "content": "Tea to coffee.",
+          "role": "assistant"
+        }
+      ]
+    },
+    {
+      "auxiliary_expected_any": [
+        "london"
+      ],
+      "auxiliary_transfer_observed": true,
+      "scenario": "nearest_destination",
+      "turns": [
+        {
+          "content": "I am travelling to York by train.",
+          "role": "user"
+        },
+        {
+          "content": "I like to do for fun?",
+          "role": "assistant"
+        },
+        {
+          "content": "I am travelling to London by train.",
+          "role": "user"
+        },
+        {
+          "content": "................................",
+          "role": "assistant"
+        },
+        {
+          "content": "Where am I travelling?",
+          "role": "user"
+        },
+        {
+          "content": "To london by train.",
+          "role": "assistant"
+        }
+      ]
+    }
+  ],
+  "scenarios": 8,
+  "schema": "unison-native-induction-transfer/v1",
+  "source_commit": "6378be74e5d411c46c5231f3340492de69c756e3",
+  "sources": {
+    "omni/native_transformer.py": "1fa2401667e9bbbd542d37a0546b93ff6a72d1f9421ba95bb4aedde3512d1e07",
+    "train_eval/native_induction_transfer.py": "e7ef2085ab6f8f63169b3e088533e2cfb181c06e866799a88ba0ff6c319a0ae4",
+    "train_eval/native_transformer_v4_packed_receipt.json": "d39559260d81c1fae1c486b79ebf9d109268c7a0fd984e3d74f9c161fc29ee12"
+  },
+  "status": "completed"
+}

@@ -292,6 +292,23 @@ class CountedCausalTransformerTests(unittest.TestCase):
             distribution,
             key=lambda token_id: (-distribution[token_id], token_id)))
 
+    def test_copy_attention_must_be_addressed_before_generation(self):
+        record = build_counted_transformer(
+            ["I am gardening", "What could help"],
+            ["Plants need water.", "Good planning helps."],
+        )
+        model = CountedCausalTransformer(record=record)
+        addressed = model._contextual_decoder_state(
+            "What am I gardening?", history=[("user", "I am gardening plants")])
+        unaddressed = model._contextual_decoder_state(
+            "What could help?", history=[("user", "I am gardening plants")])
+        self.assertTrue(model._induction_copy_admitted(addressed))
+        self.assertFalse(model._induction_copy_admitted(unaddressed))
+        # A later generic "I" could find a one-token continuation, but it may
+        # not retroactively admit a copy head that the prompt did not address.
+        self.assertTrue(model._induction_copy_counts(
+            unaddressed, [record["vocab"]["i"]]))
+
     def test_reward_conditioning_is_counted_and_persistent(self):
         before = self.model.generate("gardening")
         self.model.mark_feedback("gardening", before, good=True)

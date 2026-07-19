@@ -1,0 +1,62 @@
+{
+  "schema": "unison-native-prompt-admitted-copy-evidence/v1",
+  "status": "development-measured",
+  "authority": "Measured implementation evidence; Maria Smith assigns conclusions, retention, benchmark status, and publication.",
+  "declared_effect": "Prevent copy attention from self-activating on a generic generated token while preserving prompt-addressed cross-turn copying.",
+  "derivation": "Copy is a prompt-conditioned attention organ. The prompt must address an earlier user-role continuation before decoding begins; an unrelated language-head token cannot retroactively admit that head.",
+  "free_multiturn": {
+    "baseline": {
+      "receipt": "train_eval/native_free_multiturn_probe_20260719.json",
+      "sha256": "37a543b686d1273e0e4531f1c1c16a9e461561764a6a32448a37e5435131203b",
+      "first_nonempty": 3,
+      "second_nonempty": 3,
+      "copied_user_statements_on_followup": 2,
+      "empty_followups": 1
+    },
+    "changed": {
+      "receipt": "train_eval/native_free_multiturn_prompt_admitted_copy_20260719.json",
+      "sha256": "01fafcdf39f9524299d58d508c6a244e9e24d72db917ab55ddf5cb02665524e8",
+      "first_nonempty": 3,
+      "second_nonempty": 4,
+      "copied_user_statements_on_followup": 0,
+      "empty_followups": 0
+    },
+    "remaining_observation": "All four follow-ups are native and nonempty, but their free composition remains generic or weak."
+  },
+  "protected_measurements": {
+    "matched_continuity": {
+      "observed": 4,
+      "scenarios": 4,
+      "receipt": "train_eval/native_multiturn_prompt_admitted_copy_20260719.json",
+      "sha256": "9a885ee39b639668459ae5447123806f36c04d26227f0c2c576b506a87462b6c"
+    },
+    "separate_transfer": {
+      "observed": 8,
+      "scenarios": 8,
+      "receipt": "train_eval/native_induction_transfer_prompt_admitted_20260719.json",
+      "sha256": "386a73729874c850665f6d085dd23c87f9eac89bc2f0c00c6f8a7bcd1b36df4a"
+    },
+    "served_continuity": {
+      "observed": 4,
+      "scenarios": 4,
+      "receipt": "train_eval/native_served_multiturn_prompt_admitted_20260719.json",
+      "sha256": "c27db83a1db48040b054c41d732e6ce071eb07cdbe86dbba4a862481dd25330c"
+    }
+  },
+  "focused_tests": {
+    "passed": 21,
+    "failed": 0,
+    "command": "python3 -m unittest tests.test_native_transformer"
+  },
+  "packed_artifact": {
+    "bytes": 6832650424,
+    "artifact_sha256": "f977d4d8adb0993a0ab0d63b86dea30bd845ae091e84a4859ae826d032a87219",
+    "receipt_sha256": "d39559260d81c1fae1c486b79ebf9d109268c7a0fd984e3d74f9c161fc29ee12",
+    "verification_status": "verified"
+  },
+  "source_sha256": {
+    "omni/native_transformer.py": "1fa2401667e9bbbd542d37a0546b93ff6a72d1f9421ba95bb4aedde3512d1e07",
+    "tests/test_native_transformer.py": "68fce600f0d4a0ee6c5eb98ac06ca1ef4b76836320456aa01c1648443d1880dc"
+  },
+  "next_measurement": "Improve free response composition without weakening the 4/4 continuity, 8/8 transfer, served-path native-only route, or exact packed-artifact identity."
+}

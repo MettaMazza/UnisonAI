@@ -507,6 +507,15 @@ class CountedCausalTransformer:
             counts[token_id] += common // denominator
         return dict(counts)
 
+    def _induction_copy_admitted(self, context) -> bool:
+        """Admit copying only when the user prompt addresses earlier context.
+
+        A copy head is a prompt-conditioned attention organ. It may continue an
+        admitted relation autoregressively, but it cannot switch itself on only
+        because the unrelated language head later emitted a common token.
+        """
+        return bool(self._induction_copy_counts(context, ()))
+
     def _attention_key_weights(self, last_id: int,
                                keys: Mapping[int, Fraction],
                                prepared_values=None) -> dict[int, Fraction]:
@@ -860,9 +869,10 @@ class CountedCausalTransformer:
         prev_id = last_id = record["bos_id"]
         out: list[str] = []
         generated_ids: list[int] = []
+        copy_admitted = self._induction_copy_admitted(decoder_context)
         for _ in range(token_budget):
-            copy_counts = self._induction_copy_counts(
-                decoder_context, generated_ids)
+            copy_counts = (self._induction_copy_counts(
+                decoder_context, generated_ids) if copy_admitted else {})
             next_id = self.next_token_id(
                 prev_id, last_id, keys, prepared_values=prepared_values,
                 decoder_context=decoder_context, copy_counts=copy_counts)

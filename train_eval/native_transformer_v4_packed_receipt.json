@@ -6,7 +6,7 @@
   "packed_schema": "unison-packed-exact-rows/v1",
   "schema": "unison-packed-native-transformer-receipt/v1",
   "sources": {
-    "omni/native_transformer.py": "5ba1aa68b19ddc41decfa92bb40bef5b1472bd23755083e8bc7d3c1062c70ece",
+    "omni/native_transformer.py": "1fa2401667e9bbbd542d37a0546b93ff6a72d1f9421ba95bb4aedde3512d1e07",
     "omni/packed_rows.py": "ca369aa28d253ca916aca7377c6047caa01cd64fbff7da7ec76010ecce20dfcc",
     "omni/prompt_context.py": "6b0e7b78190c39941e3342bfd0436b0f7f08542b43348629d3a3d6d89d307f69",
     "train_eval/pack_native_transformer.py": "d26b2eb04f6d6cfb4a97a7a2214522f27897e8e0cf84f9322e3807192e7189aa",

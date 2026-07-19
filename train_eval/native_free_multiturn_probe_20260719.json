@@ -1,0 +1,275 @@
+{
+  "completed_at_utc": "2026-07-19T11:11:39.647545+00:00",
+  "conversations": 4,
+  "first_nonempty": 3,
+  "provenance": {
+    "agent": "Codex",
+    "authority": "No target answer or pass condition; Maria Smith assigns conclusions.",
+    "model": "gpt-5.6-sol",
+    "origin": "Codex-authored auxiliary transcript probe",
+    "reasoning_level": "high"
+  },
+  "rows": [
+    {
+      "conversation": "gardening",
+      "first_nonempty": false,
+      "second_nonempty": true,
+      "trace": {
+        "first": [
+          {
+            "final_stage": "defer",
+            "segments": [
+              {
+                "accepted": false,
+                "segment": "I am planning a tomato garden this weekend.",
+                "stages": [
+                  {
+                    "segment": "I am planning a tomato garden this weekend.",
+                    "stage": "defer",
+                    "surface": ""
+                  }
+                ]
+              }
+            ],
+            "surface": ""
+          }
+        ],
+        "second": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "What could help with that project?",
+                "stages": [
+                  {
+                    "segment": "What could help with that project?",
+                    "stage": "native_causal_transformer",
+                    "surface": "I am planning a tomato garden this weekend."
+                  }
+                ]
+              }
+            ],
+            "surface": "I am planning a tomato garden this weekend."
+          }
+        ]
+      },
+      "turns": [
+        {
+          "content": "I am planning a tomato garden this weekend.",
+          "role": "user"
+        },
+        {
+          "content": "",
+          "role": "assistant"
+        },
+        {
+          "content": "What could help with that project?",
+          "role": "user"
+        },
+        {
+          "content": "I am planning a tomato garden this weekend.",
+          "role": "assistant"
+        }
+      ]
+    },
+    {
+      "conversation": "presentation",
+      "first_nonempty": true,
+      "second_nonempty": false,
+      "trace": {
+        "first": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "I feel nervous about tomorrow's presentation.",
+                "stages": [
+                  {
+                    "segment": "I feel nervous about tomorrow's presentation.",
+                    "stage": "native_causal_transformer",
+                    "surface": "I do not have access to the."
+                  }
+                ]
+              }
+            ],
+            "surface": "I do not have access to the."
+          }
+        ],
+        "second": [
+          {
+            "final_stage": "defer",
+            "segments": [
+              {
+                "accepted": false,
+                "segment": "Could we talk through it?",
+                "stages": [
+                  {
+                    "segment": "Could we talk through it?",
+                    "stage": "defer",
+                    "surface": ""
+                  }
+                ]
+              }
+            ],
+            "surface": ""
+          }
+        ]
+      },
+      "turns": [
+        {
+          "content": "I feel nervous about tomorrow's presentation.",
+          "role": "user"
+        },
+        {
+          "content": "I do not have access to the.",
+          "role": "assistant"
+        },
+        {
+          "content": "Could we talk through it?",
+          "role": "user"
+        },
+        {
+          "content": "",
+          "role": "assistant"
+        }
+      ]
+    },
+    {
+      "conversation": "chess",
+      "first_nonempty": true,
+      "second_nonempty": true,
+      "trace": {
+        "first": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "I enjoy playing chess with my sister.",
+                "stages": [
+                  {
+                    "segment": "I enjoy playing chess with my sister.",
+                    "stage": "native_causal_transformer",
+                    "surface": "I don't know."
+                  }
+                ]
+              }
+            ],
+            "surface": "I don't know."
+          }
+        ],
+        "second": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "Why might that feel rewarding?",
+                "stages": [
+                  {
+                    "segment": "Why might that feel rewarding?",
+                    "stage": "native_causal_transformer",
+                    "surface": "I enjoy playing chess with my sister."
+                  }
+                ]
+              }
+            ],
+            "surface": "I enjoy playing chess with my sister."
+          }
+        ]
+      },
+      "turns": [
+        {
+          "content": "I enjoy playing chess with my sister.",
+          "role": "user"
+        },
+        {
+          "content": "I don't know.",
+          "role": "assistant"
+        },
+        {
+          "content": "Why might that feel rewarding?",
+          "role": "user"
+        },
+        {
+          "content": "I enjoy playing chess with my sister.",
+          "role": "assistant"
+        }
+      ]
+    },
+    {
+      "conversation": "travel",
+      "first_nonempty": true,
+      "second_nonempty": true,
+      "trace": {
+        "first": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "I am taking the train to London.",
+                "stages": [
+                  {
+                    "segment": "I am taking the train to London.",
+                    "stage": "native_causal_transformer",
+                    "surface": "I don't have access to the specific workforce needs in the world."
+                  }
+                ]
+              }
+            ],
+            "surface": "I don't have access to the specific workforce needs in the world."
+          }
+        ],
+        "second": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "What should I remember before I leave?",
+                "stages": [
+                  {
+                    "segment": "What should I remember before I leave?",
+                    "stage": "native_causal_transformer",
+                    "surface": "I am taking the train to london."
+                  }
+                ]
+              }
+            ],
+            "surface": "I am taking the train to london."
+          }
+        ]
+      },
+      "turns": [
+        {
+          "content": "I am taking the train to London.",
+          "role": "user"
+        },
+        {
+          "content": "I don't have access to the specific workforce needs in the world.",
+          "role": "assistant"
+        },
+        {
+          "content": "What should I remember before I leave?",
+          "role": "user"
+        },
+        {
+          "content": "I am taking the train to london.",
+          "role": "assistant"
+        }
+      ]
+    }
+  ],
+  "schema": "unison-native-free-multiturn-probe/v1",
+  "second_nonempty": 3,
+  "source_commit": "6378be74e5d411c46c5231f3340492de69c756e3",
+  "sources": {
+    "omni/discord_bot.py": "d7c25cfe9948cba291b7bd1365bbb4b2dff4c6bb8b0da55240d18c8c0922e0ee",
+    "omni/native_transformer.py": "5ba1aa68b19ddc41decfa92bb40bef5b1472bd23755083e8bc7d3c1062c70ece",
+    "train_eval/native_free_multiturn_probe.py": "998c4b5d2948790214aa17c9f4aabdaee1c12f429b7c07a940f4451269c0d25d"
+  },
+  "status": "completed"
+}
