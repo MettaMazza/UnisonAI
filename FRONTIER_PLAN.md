@@ -1,82 +1,99 @@
-# The Frontier Plan — generalised free generation from exact counts
+# UnisonAI frontier plan — full conversational generalisation
 
-**The goal (Maria, 2026-07-16):** the proofs live at generalised, LLM-style generation —
-fluent, coherent, on-topic free composition of novel surface — produced by the counted,
-zero-parameter, forced-constant substrate. Prediction is already won (char 1.289 vs 1.888;
-word 3.19 vs 3.43 against the gradient twin); the learning law is measured working
-(17%→92% after one teaching round); the instruments are calibrated. What remains is making
-the substrate SPEAK the way it already PREDICTS.
+**Current objective:** complete the one-to-one constitutional translation of
+the established causal attention-transformer architecture and its training
+computation into SFT exact counts and constraints, then carry that architecture
+through free multi-turn conversation, held-out generalisation, reward-conditioned
+learning, and benchmark victory.
 
-**Method discipline:** every ingredient below is an established, tested piece of
-mathematical computer science, translated 1-1 into exact counts and forced constants —
-never invented novelty ([[TRANSLATION_PLAN.md]]). Every stage is gated by the calibrated
-judge AND held-out cross-entropy (generation must improve without prediction regressing).
-No proxy ever steers and scores the same thing. Negatives are implementation verdicts:
-fix the translation, never lower the goal.
+This plan does not revive the retired word/generic fallback, does not promote
+pair retrieval into the native generator, and does not invent an alternative
+architecture. Established transformer organs are re-derived in SFT form:
+role-bound sequences, tokenizer, token/co-occurrence representation, position,
+causal Q/K/V, feed-forward memory, residual, normalization, LM head,
+autoregression, counted categorical training, and reward-conditioned learning.
 
----
+## Secured architecture and evidence
 
-## What buys an LLM its coherent generation — decomposed and translated
+- The main corpus closes coherence, contextual integration, and generation
+  selection in Steps 322–324: 27/27 checks inside the 326-suite, 2,002-check
+  zero-failure corpus.
+- Native v4 was built from 649,917 role-bound pairs in one complete counted
+  pass: 11,140,970 assistant targets, 22,415,744 Q/K relations, 96,721 values,
+  and 81,111,826 deep FFN addresses.
+- The exact packed serving form retains every row without sampling, pruning,
+  quantization, row eviction, fitted capacity, or candidate cap. On the fixed
+  eight-prompt comparison it reduced resident memory from about 59 GB to
+  559,185,920 bytes and generation time from 1,514.370707 to 11.407350 seconds,
+  with byte-identical output.
+- Every prompt occurrence retains its own turn, within-turn, and sequence
+  position through five contextual attention/FFN blocks. The final position
+  basis reaches decoder values and both semantic FFN depths.
+- Role-conditioned induction/copy attention changed matched continuity from
+  0/4 to 4/4 and produced 8/8 exact transfer continuations. Prompt admission
+  preserved both results, removed all full-statement copies, and produced
+  non-empty output on all four free follow-ups.
+- The complete v5 position-conditioned training relation is built and sealed:
+  277,583,049 observations, 212,395,127 unique canonical entries,
+  4,369,646,672 canonical bytes, and 5,097,483,048 packed bytes. One exact
+  canonical relation supplies position values and both semantic FFN depths by
+  marginalisation, with no observation dropped or triplicated.
+- Counted prediction has already beaten matched trained twins at character
+  scale (1.2891 versus 1.8878) and word scale (3.1907 versus 3.4292). The
+  source-backed taught loop rose from 17% to 75% after one round.
 
-| Ingredient of LLM coherence | Established mathematics | Counted/forced translation |
-|---|---|---|
-| Long-context conditioning P(next \| full context) | **kNN-LM** (Khandelwal et al. 2020): interpolate the local LM with a nearest-neighbour memory over contexts — retrieval *becomes* generation | **Kin-context mixing**: retrieve stored contexts similar by counted kinship (content overlap + kin at 1/2, recency 2⁻ᵃᵍᵉ); mix their observed continuations by similarity × the cascade 2^L into the local fluency distribution — the Rung-5e mixing law applied AT GENERATION, which the paper already registers as the next build step. Zero parameters. |
-| Long-range topic coherence (attention across sentences) | **Trigger-pair / cache LMs** (Rosenfeld 1996; Kuhn & De Mori): long-distance word pairs and a document cache raise continuation probability | The **PPMI coupling graph as a topic prior**: the conversation's accumulated content set boosts coupled continuations. (Note: as a *generation prior* this is the established trigger table; as a *judge* it stays banned — that was the retracted critic.) |
-| Implicit discourse planning | **Plan → realize NLG** (content planning; constrained decoding) | **Skeleton from kin responses**: what humans said in similar contexts supplies the dialogue-act + content-word PLAN only (never the surface); the kin-context generator realizes it, constrained to hit the plan's content words. Non-verbatim by construction — the surface is generated. |
-| Local grammatical fluency | n-gram backoff (Katz/KN lineage) | already held: the fluency store L1–4 + exact shares + Laplace floor + 2^L backoff — the CE-winning substrate |
-| Whole learned constructions | phrase/chunk memory | unit-capacity PHRASE emission over deep unique contexts (in the design; wire into the new mixer) |
-| RLHF-style improvement | **STaR / self-training with earned retention** | generate N candidates → judge/teacher selects → winners reinforce pairs/couplings; unverified output discarded (the paper's generation-closure law) — the mechanism whose taught form already measured 17%→92% |
-| Scale | the scaling laws (volume → capability) | corpus volume → deeper suffixes → longer coherent spans; "conversational fluency is a volume phenomenon with its growth rate measured hourly" (the paper) — /scrape + full ultrachat + broad register |
+These are engine receipts or source-bound implemented measurements. Agent-made
+auxiliary probes remain preserved in their own ledgers and do not become Maria
+Smith's findings, losses, predictions, parity definition, or theoretical limits.
 
----
+## Current stage — integrate the completed v5 relation
 
-## Stages (each gated; parallel-arm rule at the bottom)
+1. Load the sealed packed position relation through an exact memory-mapped
+   runtime with manifest and source-drift halts.
+2. Replace the v4 token-owned recombination bridge with position-owned value,
+   semantic-FFN2, and semantic-FFN3 marginals from the completed relation.
+3. Prove exact marginal reconstruction against the canonical relation and
+   preserve the existing v4 token-owned sum as an identity check.
+4. Preserve every established organ: complete prompt tokens and positions,
+   five contextual blocks, causal masking, exact multi-head addition, residual,
+   normalization to the One, LM head, autoregression, and reward observations.
+5. Measure the actual serving route for memory, latency, exact closure, and
+   conversational output; no projected performance substitutes for execution.
 
-**F0 — Instrument the target.**
-A free-generation harness with three gates: (a) judged GOOD-rate of the *pure free arm* (no
-response-serving allowed — the generator may only consume retrieved material as
-distributions/plans, never as surface units); (b) held-out CE unchanged or better than the
-committed baselines; (c) a multi-sentence coherence probe (judged, length-graded).
-Deliverable: `train_eval/gen_free_harness.py` + committed baseline row.
+## Next state — free multi-turn conversational generalisation
 
-**F1 — Kin-context mixing (the pivotal bridge; kNN-LM translated).**
-Generalize unit-capacity selection from exact-deepest-suffix to kin contexts. Retrieval
-stops being the *surface* and becomes the *distribution*: similar held contexts contribute
-their continuations, weighted by counted similarity × 2^L, mixed with local fluency.
-Expected first honest result: locally fluent multi-clause output that stays near the topic.
-Gate: free-arm judged rate > the current n-gram free baseline (≈0), CE non-regressing.
+1. Build the full source-bound native artifact with the position relation
+   integrated across the complete 649,917-pair role-bound corpus.
+2. Execute held-out single-turn, multi-turn continuity, paraphrased transfer,
+   and free response-composition panels through the native path only.
+3. Record exact prompts, histories, outputs, source/artifact hashes, runtime,
+   memory, closure checks, and reward-ledger provenance.
+4. Use reward-conditioned observations as the required learning surface;
+   measure learning by repeated real conversation, not a gameplay rule or a
+   universal auxiliary benchmark gate.
+5. Expand the role-bound corpus and modalities only through the same complete
+   organ map and evidence discipline.
+6. Execute benchmark runs when Maria designates the build and continue until
+   the named victory conditions are secured.
 
-**F2 — Topic cache (long-range coherence).**
-The trigger translation: conversation content set (weighted 2⁻ᵃᵍᵉ) multiplies coupled
-continuations' shares. Gate: the multi-sentence probe — topic held across 3+ sentences.
+## Why the objective is not theoretically walled off
 
-**F3 — Plan → realize.**
-The pair index (649k) serves PLANS (act + content words from kin responses), the F1+F2
-generator realizes them under constrained decoding. This is where free generation should
-first *answer like conversation* rather than merely flow. Gate: free-arm judged rate
-approaching the retrieval arm's on the opener set.
+The architecture required for conversational generalisation is already present
+organ by organ in executable SFT form. Complete-token causal attention,
+position, values, semantic FFNs, residual, normalization, LM head,
+autoregression, reward learning, exact packed serving, induction continuity,
+transfer, and full-corpus position-conditioned training have all executed.
+The remaining work is integration and continued measured development of those
+established organs, not the invention of a missing principle. The completed
+277.6-million-observation v5 relation removes the previously named position-
+ownership frontier. No engine theorem, execution receipt, or Maria-declared
+conclusion establishes a theoretical obstruction to full conversation.
 
-**F4 — Generation closure (the Learning Law at the generator).**
-Best-of-N with judge/teacher selection; earned retention reinforces what won. The taught
-curve (17%→92%) predicts this loop's shape. Gate: a climbing judged curve on the free arm.
+## Authority and promotion
 
-**F5 — Volume.**
-Scale the held corpus (full ultrachat, more vetted dialogue, broad register). Measure the
-scaling curve: judged rate and CE vs corpus size — the counted engine's own scaling law,
-committed like every other trajectory.
-
-**F6 — The proofs.**
-(a) CE: already held at both scales — keep it held. (b) Conversation: the judged
-head-to-head vs the 35B, trajectory from the honest 15% floor, opponent-integrity enforced.
-(c) The mechanism as theory: the ingredients above are engine constructs on forced
-primitives (the kin law, the cascade, the capacity lock, the halving) — whether the
-composition is *forced* through the corpus as .ep steps is Maria's derivation work, and the
-paper's claims stay scoped to what is forced vs what is engineering until then.
-(d) The architecture paper's §8.2 updated to the free generator the day it wins its gate.
-
-## The parallel-arm rule
-The retrieval surface (today's 12–25% + taught seats) **keeps serving live** while the free
-arm grows behind the same judge. The arms are measured side by side; the free arm takes
-over the moment its judged rate crosses the serving arm's — a measured handover, never a
-big-bang rewrite. Regressions get recorded, reverted, and kept in the trajectory table like
-every honest number so far.
+The engine's trace and halt standards determine forcing validity. Maria Smith
+alone determines publishable conclusions, benchmark timing, and project
+direction. A mechanism is promoted only through direct forcing, forward
+forcing, or constitutional re-derivation plus purpose-matched real execution.
+Development artifacts remain evidence of their named implementation and may
+not be converted by an agent into project findings or limits.

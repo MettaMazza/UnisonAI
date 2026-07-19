@@ -131,15 +131,18 @@ artifact currently owns those rows by token, repeated-position branches are
 required and tested to recombine to the identical exact decoder scores. This
 is an architectural port, not a new heuristic.
 
-The position-owned training artifact is now building from every one of the
-same 649,917 role-bound pairs. Its exact sizing receipt counts 277,583,049
+The position-owned training artifact has completed over every one of the same
+649,917 role-bound pairs. Its exact receipt counts 277,583,049
 position/target observations. One canonical
 `(relative position,prompt token,last,previous,next)->count` relation supplies
 the value, semantic-FFN2, and semantic-FFN3 tables by exact marginalisation,
 avoiding three physical copies without dropping an observation. The external
-builder is resumable and the factorisation passes its reconstruction test; it
-introduces no position limit, candidate cap, corpus sample, pruning rule, or
-fitted capacity.
+builder is resumable and the factorisation passes its reconstruction test. The
+completed canonical relation contains 212,395,127 unique entries in
+4,369,646,672 bytes; its exact packed form contains 5,097,483,048 bytes. Both
+are SHA-bound by their receipts. It introduces no position limit, candidate
+cap, corpus sample, pruning rule, or fitted capacity. Runtime integration of
+the position-owned marginals is the current next state.
 
 ## Explicit response-only surface
 

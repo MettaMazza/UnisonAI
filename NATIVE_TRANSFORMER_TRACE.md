@@ -22,7 +22,7 @@ below establish code behaviour only; they do not declare a benchmark result.
 | Causal query | The last two generated token identities form the current prefix query | `prev_id`, `last_id` |
 | Attention keys | Every addressed token occurrence from the current prompt and aged user history enters five contextual blocks; the final prompt position supplies the decoder readout, as in causal next-token prediction. No stop-word, punctuation, uniqueness, or authored semantic filter precedes attention | `prompt_context.contextualize`, `aggregate_keys`, `_contextual_keys` |
 | Multi-head Q/K compatibility | Prompt self-attention uses the exact counted-embedding Gram product plus the relative-position product; product order selects the complete forced dyadic cascade with its closing identity floor. Decoder attention then applies its structural, inverse-exposure information, and conditional counted Q/K heads. Head combination is exact identity addition with no fitted blend | `prompt_context._bilinear`, `_cascade_distribution`, `_attention_key_weights`, `_attention` |
-| Attention values | Final hidden mass remains split over every distinct prompt position through decoder value routing. Existing v4 response-token vectors remain token-owned. The active v5 build counts the complete `(relative position, prompt token, last, previous, next)` observation relation; exact marginals supply position-owned values and both semantic FFN depths without triplicating observations | `DecoderContext`, `_decoder_value_sources`, `values`, `build_position_conditioned_relation.py` |
+| Attention values | Final hidden mass remains split over every distinct prompt position through decoder value routing. Existing v4 response-token vectors remain token-owned for the exact reconstruction boundary. The completed and sealed v5 relation counts every `(relative position, prompt token, last, previous, next)` observation once; exact marginals supply position-owned values and both semantic FFN depths without triplicating observations | `DecoderContext`, `_decoder_value_sources`, `values`, `build_position_conditioned_relation.py`, `position_relation.py` |
 | Causal mask | Only the already-generated prefix and preceding prompt/history are addressable; future response tokens are absent by construction | sequential build and `generate_tokens` |
 | Feed-forward KV memory | Each prompt block applies a counted embedding-relation FFN over a response-local position basis. Decoder semantic branches now retain that position basis before reading `(previous, last, attended-key)→next-token`, falling to `(last, key)` only when the deeper address is absent; a separate assistant-prefix table retains syntax | `prompt_context._feed_forward`, `_decoder_value_sources`, `semantic_ffn3`, `semantic_ffn`, `ffn2`, `ffn3` |
 | Residual addition | Add the unit attention value, semantic-FFN, and prefix-FFN distributions with the standard identity coefficient | `next_distribution` |
@@ -96,9 +96,10 @@ unchanged from the packed v4 probe; public speaking changed to
 not Maria's benchmark conclusion. Decoder value and semantic routing now
 consume the complete contextual final-position basis; an exact equivalence
 test proves the branches recombine to the existing v4 token-owned rows. The
-active next training port is to count position-conditioned value/semantic rows
-from the role-bound corpus so those preserved branches can carry distinct
-learned observations.
+position-conditioned value/semantic relation has now been counted across the
+complete role-bound corpus and sealed. The active port is runtime integration:
+position-owned marginals replace the v4 recombination bridge while the
+token-owned totals remain an exact identity check.
 
 The source-bound contextual-cost receipt counts 14,510,060 prompt positions
 across the 649,917 training pairs. Dense within-prompt attention would produce
@@ -122,15 +123,35 @@ the native heads themselves: the combined head assigned `I` the largest share
 in all four cases (0.0857, 0.0866, 0.1070, and 0.0942). These are source-bound
 Codex implementation measurements, not Maria's benchmark findings.
 
-The next documented training port is now active rather than merely proposed.
-Its full-corpus sizing receipt counts 277,583,049 position/target observations.
+The documented training port is now completed and sealed. Its full-corpus
+receipt counts 277,583,049 position/target observations.
 Naively storing value, semantic-FFN2, and semantic-FFN3 copies could require up
 to 832,749,147 row/value entries. The implemented canonical relation stores
 each `(relative position, prompt token, last, previous, next)` observation once;
 exact marginalisation supplies all three established organs. The factorisation
-passes an external sort-and-aggregate reconstruction test, and the complete
-uncapped corpus build is resumable and currently in progress. No position
-limit, candidate cap, sampled corpus, pruning rule, or fitted capacity enters.
+passes an external sort-and-aggregate reconstruction test. The complete
+uncapped build contains 212,395,127 unique entries in 4,369,646,672 bytes and
+is SHA-256 `99f1e032a600a8b3625d5266658323b3f0a0bb0c542b4ee674877b838ca093b0`.
+Its exact 24-byte-record packed form contains 5,097,483,048 bytes and is sealed
+at SHA-256 `f1e355cfb0e93d781d79452e12c58bdb3e95635acb5408f7a98deb9000ca579c`.
+No position limit, candidate cap, sampled corpus, pruning rule, or fitted
+capacity enters.
+
+## Current stage and next state
+
+The native architecture now has the complete full-token v4 causal store,
+five-layer position-preserving context, exact packed serving, prompt-admitted
+induction/copy continuity at 4/4, transfer at 8/8, and the complete v5
+position-conditioned value/semantic training relation. The next state is to
+integrate the packed v5 marginals into native serving, prove v4/v5 marginal
+identity, rebuild the complete artifact, and execute source-bound held-out free
+multi-turn conversation with reward-conditioned learning retained.
+
+Every required causal-transformer organ is present in executable form and the
+previously named position-ownership frontier is now closed as a complete
+relation. This establishes a constructive integration and development path;
+no engine result establishes a theoretical wall on full conversational
+generalisation.
 
 ## Superseded development interpretation
 

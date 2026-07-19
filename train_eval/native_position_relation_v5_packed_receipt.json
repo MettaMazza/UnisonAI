@@ -1,0 +1,24 @@
+{
+  "canonical_receipt_sha256": "68b0e30a8683eb9093459a9693f6baa6f292912845b2b1387d4569b36c881e6e",
+  "canonical_relation_bytes": 4369646672,
+  "canonical_relation_sha256": "99f1e032a600a8b3625d5266658323b3f0a0bb0c542b4ee674877b838ca093b0",
+  "observations": 277583049,
+  "packed_bytes": 5097483048,
+  "packed_sha256": "f1e355cfb0e93d781d79452e12c58bdb3e95635acb5408f7a98deb9000ca579c",
+  "provenance": {
+    "agent": "Codex",
+    "authority": "Implementation artifact; Maria owns conclusions and benchmark timing.",
+    "model": "gpt-5.6-sol",
+    "origin": "Codex exact serving representation",
+    "reasoning_level": "high"
+  },
+  "record_bytes": 24,
+  "record_format": "little-endian 6 x uint32",
+  "schema": "unison-packed-position-relation/v1/receipt",
+  "sources": {
+    "omni/position_relation.py": "e43eccbc8466de285a83565149ea31db1b6786e860c5fba59ed5b1e930915ee7",
+    "train_eval/pack_position_relation.py": "e0f5e53ebc5a554cb0a5a39cdd8a83cf3586fba664041c55c5951c81346fdb80"
+  },
+  "status": "sealed",
+  "unique_canonical_entries": 212395127
+}

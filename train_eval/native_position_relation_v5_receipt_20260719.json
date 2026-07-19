@@ -1,0 +1,35 @@
+{
+  "factorisation": {
+    "canonical": "(relative_position,prompt_token,last,previous,next)->count",
+    "exact_marginals": [
+      "position_value",
+      "position_semantic2",
+      "position_semantic3"
+    ],
+    "observations_preserved": 277583049
+  },
+  "inputs": {
+    "metadata_sha256": "586966a0670fca726d6733fcb81a38ab252d7c68db14958f4d4581daaf294a51",
+    "pairs_sha256": "6a5dcc9e9d2227e3445a7d6630ce52807e9c58d7259bbb488f53d9f05c022b17",
+    "source_sha256": "83f7f19f8bc162a02c040998ae25787c92842b8d43aa69be2aa453dda998b678"
+  },
+  "observations": 277583049,
+  "pairs": 649917,
+  "provenance": {
+    "agent": "Codex",
+    "authority": "Implementation artifact; Maria owns conclusions and benchmark timing.",
+    "model": "gpt-5.6-sol",
+    "origin": "Codex implementation of documented transformer training port",
+    "reasoning_level": "high"
+  },
+  "relation_bytes": 4369646672,
+  "relation_sha256": "99f1e032a600a8b3625d5266658323b3f0a0bb0c542b4ee674877b838ca093b0",
+  "resource_configuration": {
+    "effect": "execution resources only; relation membership is unchanged",
+    "sort_memory": "8G",
+    "sort_workers": 4
+  },
+  "schema": "unison-position-conditioned-canonical-relation/v1",
+  "status": "completed",
+  "unique_canonical_entries": 212395127
+}

@@ -460,8 +460,11 @@ suite passes 55/55. Distinct prompt positions now pass through five exact
 contextual attention/FFN blocks before the final prompt position supplies the
 decoder keys. A Codex-authored development smoke improved several
 subject/operation surfaces. The final contextual position basis now reaches
-decoder value/semantic routing exactly; position-conditioned ownership of those
-training rows is the next established port.
+decoder value/semantic routing exactly. The complete position-conditioned
+training relation is now built and sealed from 277,583,049 observations:
+212,395,127 unique canonical entries in 4,369,646,672 bytes and an exact
+5,097,483,048-byte packed form. Runtime integration of those position-owned
+value and semantic-FFN marginals is the next established port.
 
 ### The conversational architecture
 Serving now attempts the native counted causal transformer first. Pair retrieval remains a

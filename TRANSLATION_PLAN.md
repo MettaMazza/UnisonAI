@@ -44,17 +44,17 @@ The SFT engine's ground rules are not exotic; each is a known discipline:
 | **Residual + normalization** | identity skip connection followed by scale normalization | exact addition of unit-normalized attention and feed-forward distributions, then exact rational normalization to the One; lazy greedy decode is token-equivalent to the materialized head | ✅ v4 built+measured |
 | **Knowledge store / FFN** (FFN key-value memories — Geva et al.) | expansion, nonlinear address, contraction back to model/vocabulary space | generated-prefix and attended-key count tables, including 81,111,826 deep `(previous,last,key)` addresses in sealed v4 | ✅ v4 built+measured; stacked prompt contextualization next |
 
-### I.2 Conversation (the active workfront — detail in Part II)
+### I.2 Conversation (native transformer workfront; RAG instruments remain separate)
 
 | Standard component | Established mathematics | SFT expression | State |
 |---|---|---|---|
-| **RAG / response selection** (retrieval chatbots) | context→response pair retrieval; inverted index + collection statistics | prompt→response **pair index** (395,787 pairs, `build_pairs.py`) | 🔧 |
-| **Ranking** | **BM25** (Robertson–Spärck Jones) | exact formula; k1=6/5, b=3/4 as the standard's canonical values marked engineering (b=3/4 coincides with the forced 3/4 — noted, not claimed); `log` confined to rank *order*, never a served probability | 📐 Stage 2 |
-| **Query expansion** | pseudo-relevance/thesaurus expansion over distributional similarity (counted, pre-neural) | **kin expansion** at half weight (`KIN_VOTE = 1/2` — the fold factor, already the engine's law) | 🔧 wire-in |
-| **NLG surface** (task-oriented NLG) | **delexicalize → relexicalize** (ELIZA→AIML→slot templates) | slot classes by counted structural rules (proper nouns, numbers, source-prompt-only content words) rebound to the live conversation; **never-verbatim guard** (≥1 rebound slot or next candidate); generalizes the corpus's own tool-trace template law | 📐 Stage 3 |
+| **RAG / response selection** (retrieval chatbots) | context→response pair retrieval; inverted index + collection statistics | separately disclosed pair index; not the native generator and not a fallback | ✅ separate instrument |
+| **Ranking** | **BM25** (Robertson–Spärck Jones) | disclosed exact ranking inside the separate pair/RAG instrument; it does not enter native causal generation | ✅ separate instrument |
+| **Query expansion** | pseudo-relevance/thesaurus expansion over distributional similarity (counted, pre-neural) | separate pair/RAG development surface; not a native attention head | 🔧 separate instrument |
+| **NLG surface** | causal transformer LM head and autoregressive decoding | exact counted Q/K/V + semantic FFNs + residual + normalization + LM head; prompt-admitted induction may copy tokens but never a complete stored statement | ✅ v4; v5 integration active |
 | **Dialogue state tracking** (rule-based DST) | entity/slot memory, structural parsing (tokenizer-tier) | **relation-facts channel** — in the paper's design, **NOT yet in `omni/`**; port it (name recall depends on it) | 📐 Stage 4 |
 | **Feedback learning** (click-through re-ranking; the counted core of RLHF's preference step) | **Laplace rule of succession** | per-pair quality `(good+1)/(good+bad+2)` — exact fraction multiplier on rank | 📐 Stage 4 (replaces span ±6 clamp 🔧) |
-| **Taught QA memory** (FAQ exact-match) | exact/near prompt match precedence | teacher corrections append as pairs; exact-match outranks BM25; served through the same relexicalization (non-verbatim by rebinding) | 📐 Stage 4 |
+| **Taught QA memory** (FAQ exact-match) | exact/near prompt match precedence | historical pair-memory instrument; native teaching enters through role-bound counted deposition and reward-conditioned transition observations | ✅ separate history / native route active |
 | **Utterance segmentation** | finite-state sentence splitting + learned boundary statistics | `_structural_segments` (authoritative) + counted `BoundaryStore` (supportive, confidence-gated) | ✅ |
 | ~~Loose-sentence splice generation~~ | *(no established counterpart — this was the improvisation)* | — | ⛔ retired (judged ceiling 0%) |
 
@@ -120,10 +120,10 @@ thousands of real responses to "hello, how are you").
   on their own prompts) vs known-bad (word-salad, off-topic, fragments); ≥9/10 separation each
   side. The calibration is recorded alongside any measurement that uses the judge; it does not
   authorize, delay, or veto a Maria-designated real run.
-- **Stage 1 — Index v2.** Standalone filter; tf, lengths, avgdl, N, df stored; full-corpus rebuild.
-- **Stage 2 — Ranking.** BM25 + kin expansion + `2^-age` context + quality fraction. **Measure
-  the judged top-1 ceiling** (diagnostic serve, raw) — the architecture's honest ceiling.
-- **Stage 3 — Transformer realization.** Port the established causal transformer organs
+- **Stage 1 — Separate retrieval instrumentation.** Pair/RAG indices remain available as
+  independently measured instruments. They are not the native generator, not a fallback,
+  and do not define conversational generalisation.
+- **Stage 2 — Native transformer realization.** Port the established causal transformer organs
   one-to-one: role-bound sequence training, counted embeddings, causal Q/K/V attention,
   residual normalization, explicit FFN KV memory, exact LM head, and autoregressive decode.
   The historical word/generic fallback remains retired. V4 seals the full-token one-block
@@ -137,16 +137,23 @@ thousands of real responses to "hello, how are you").
   products select the forced ranked cascade, all 55 repository tests pass, and the promoted
   native route completes the fixed eight-prompt Codex timing in 19.627877 seconds at
   701,612,032 bytes resident. The complete final-position basis now reaches decoder
-  value/semantic routing and recombines exactly to the existing token-owned rows. Count the
-  established position-conditioned decoder value/FFN training relation from the role-bound
-  corpus, then remeasure the same native route.
-- **Stage 4 — Learning + state.** Pair-quality counts; taught-pair precedence; **port the
-  relation-facts channel** (name recall); verify multi-turn recall on the no-stubs e2e.
-- **Stage 5 — Honest replacements.** Re-measure everything retracted (gen quality n≥32,
-  learning curve in judged units, bench_35b with calibrated judge); publish measured values.
-- **Stage 6 — Organ audit + cleanup.** Run the same honesty pass over the non-conversational
+  value/semantic routing and recombines exactly to the existing token-owned rows. The
+  established position-conditioned decoder value/FFN relation is now complete and sealed:
+  277,583,049 observations, 212,395,127 unique entries, 4,369,646,672 canonical bytes, and
+  5,097,483,048 packed bytes.
+- **Stage 3 — V5 runtime integration.** Load the exact packed relation; supply position-owned
+  values and semantic FFN2/FFN3 by exact marginalisation; prove reconstruction against both
+  canonical v5 and token-owned v4 totals; rebuild the full artifact.
+- **Stage 4 — Learning + state.** Preserve reward-conditioned native transition observations;
+  execute source-bound multi-turn continuity, paraphrased transfer, and free composition on
+  the integrated native path.
+- **Stage 5 — Benchmark campaign.** Run the named protocols when Maria designates the build,
+  preserve exact receipts, and continue through benchmark victories. Auxiliary judge rows do
+  not authorize or veto these runs.
+- **Stage 6 — Organ audit + cleanup.** Run the same evidence pass over the non-conversational
   organs marked 🔧 (fold eye/ear recognition, self-play retention instrument, tool breadth): each gets
-  a calibrated instrument before its next claim. Delete dead paths; sync dev→repo; one accurate push.
+  a calibrated instrument before its next claim. Delete dead paths; synchronize only on
+  Maria's instruction.
 
 ---
 

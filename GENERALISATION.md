@@ -1,79 +1,98 @@
-# Baseline Generalisation — the counted grokking, predicted, run, and measured
+# UnisonAI generalisation — current native evidence and continuation
 
-**The claim (from the forced laws, before the data):** gradient "grokking" — memorize first,
-generalise later, suddenly — is an observed mystery in trained networks. In the counted
-engine it is a **predicted crossing**: a novel prompt is answered from held material **iff
-its coupling to something held reaches the lock 1/2** (the binding law, reused). Every
-taught meaning covers a kin-NEIGHBORHOOD, not a point; as held meanings accumulate, the
-share of novel-prompt-space bound at the lock rises; generalisation onset is the measured
-moment that coverage crosses. **How** = kin-neighborhood coverage. **When** = the
-lock-crossing, read off a counted predictor *before* the quality curve moves. **Why** = the
-lock itself — the same forced 1/2 that gates attention, coherence, graduation, and binding.
+## Scope
 
-## The apparatus, v2 — epoch training, translated (`train_eval/generalisation_epochs.py`)
+Conversational generalisation is pursued through the native one-to-one
+translation of the established causal attention-transformer and its training
+computation into SFT exact counts and constraints. It is not defined by the
+retired word/generic fallback, pair-response retrieval, or an agent-invented
+substitute architecture.
 
-The fixed-round telescope below was the first instrument; it did its job — one full dyadic
-ladder proved the harness end to end and exposed the routing gap (paraphrases never reached
-taught meanings because binding counted literal word identity; kin now carries it — see
-"kin-carried binding" in the README). But a fixed teach set is an arbitrary total, and
-arbitrary totals are not how learning systems are trained. The current apparatus is the
-**1-1 translation of the standard epoch training loop**, continuous until the criterion:
+The engine determines forcing and halt validity. Maria Smith determines what
+the evidence supports for publication, when a benchmark run occurs, and the
+next direction. Agent-authored probes remain attributed development artifacts;
+their outcomes are not Maria's predictions, findings, losses, or theoretical
+limits.
 
-| Epoch training | The counted translation |
-|---|---|
-| training dataset, streamed | the pair corpus's real prompts (counted hygiene filters, deduped, probe-excluded), deterministic hash order — reproducible, no RNG |
-| batch | **32 = the band, 2^(b+c)** (forced constant, reused) |
-| epoch | **32 batches = band² prompts** (structural, not a knob) |
-| per-item loss | **the binding deficit**: kin-carried binding to held meanings vs the lock 1/2 — the same forced quantity that routes serving. Cheap, counted, computed for every item; no judge runs per training item, exactly as real training pays for evaluation only on validation |
-| loss-gated update | teach only where binding < the lock; the update is **deposition** (the meaning held with ≥ b = 2 expressions), not a gradient step — the zero-parameter analogue of the weight update |
-| held-out validation per epoch | frozen band-sized near/far probe sets under the **judge pool** (two independent calibrated models, concurrent, both must agree GOOD), full transcripts, binding-stratified (GOOD-given-bound vs GOOD-given-unbound — the hypothesis read directly) |
-| early stopping | near AND far transfer ≥ the lock for **b = 2 consecutive epochs** — then the run stops and reports; it declares nothing |
-| checkpoints / resume | stream cursor (`logs/epoch_state.json`), store backups, ledgers `logs/generalisation_epochs.jsonl` + `logs/epoch_teach.jsonl` (every teaching event: phrasings offered, drift rejected, expressions held) |
+## Secured prediction and learning results
 
-Where a transformer's generalisation appears in opaque weight space, here it must appear as
-**kin-coverage of held meanings crossing the lock** — which is why onset is predictable in
-this engine and only observable-after-the-fact in gradient training.
+- Character counted-context prediction measured **1.2891** against the matched
+  trained twin's **1.8878** on the same recorded split and metric.
+- Word counted prediction measured **3.1907** against the trained twin's
+  **3.4292**.
+- The source-backed taught loop rose from **17% to 75%** after one teaching
+  round.
+- Main-corpus Steps 322–324 close coherence, five-stage contextual integration,
+  and generation selection in **27/27** checks.
 
-## The first apparatus (`train_eval/grokking_run.py`)
+These results show that exact counted state predicts, transfers learned
+observations, and changes with teaching. They stand on their own receipts.
 
-- **Autonomous teaching**: rounds over a fixed 48-prompt teach set — the engine answers,
-  the calibrated judge verdicts (the believed scoreboard; gate passed 10/10|10/10), and on
-  a failure the teacher supplies the correction as **three phrasings** (re-expression law:
-  ≥ b held expressions; nothing ever served verbatim).
-- **Dyadic checkpoints** — rounds 1, 2, 4, 8, 16: the same 2^k telescope convention the
-  decode campaign used to read Pythia's training deposition, now reading this engine's
-  learning deposition. The two curves are methodological mirrors: gradient deposition read
-  from public checkpoints; counted deposition read from teaching rounds.
-- **Three frozen curves** (probes never taught, never feedback — read-only):
-  1. **Memorization** — judged GOOD on the taught prompts themselves (re-expressed service)
-  2. **Near-transfer** — judged GOOD on PARAPHRASES of taught topics (kin must carry the
-     meaning across wording: the first generalisation)
-  3. **Far-transfer** — judged GOOD on novel topics (coverage must reach them)
-- **The predictor**, measured beside the curves: the share of probe prompts whose best
-  binding (taught-overlap or pair-prompt similarity) ≥ the lock. The hypothesis is falsifiable
-  in one line: **transfer curves move when and only when the binding share crosses.**
-- Ledger: `logs/grokking.jsonl`, one row per checkpoint, timestamped.
+## Secured native conversational architecture
 
-## The predicted signature
+The sealed v4 route was deposited in one complete role-bound pass over 649,917
+prompt/assistant pairs. It contains 11,140,970 assistant causal targets,
+22,415,744 counted Q/K relations, 96,721 value vectors, and 81,111,826 deep FFN
+addresses. Every prompt token and position enters five exact contextual blocks;
+the final-position basis reaches decoder values and both semantic FFN depths.
 
-Memorization saturates early (the taught loop is measured at 17% → 75% after one round).
-Near-transfer lags it, then climbs as taught kin-neighborhoods overlap the paraphrases.
-Far-transfer climbs last, gated by coverage breadth. The binding-share predictor leads each
-transfer curve. If the curves move without the predictor, or the predictor crosses without
-the curves, the hypothesis is wrong — and that is reportable either way.
+Exact packed serving retains every count and row. On the fixed eight-prompt
+comparison, it reduced measured resident memory from approximately 59 GB to
+559,185,920 bytes and generation time from 1,514.370707 to 11.407350 seconds,
+with byte-identical surfaces.
 
-## Where the results fold
+Role-conditioned induction/copy attention produced **4/4** continuity on the
+matched multi-turn panel and **8/8** exact continuations on the transfer panel.
+Prompt admission preserved both measurements, removed all full-statement
+copies, and produced non-empty output on all four free follow-ups. This is
+positive applied evidence for context use and transfer while free composition
+continues to develop.
 
-- **Architecture paper (§9.1 / a new §9.2)**: the three curves + the predictor, the crossing
-  round, and the one-line law — generalisation onset as the lock-crossing of counted
-  coverage; grokking as a forced threshold rather than an emergent mystery.
-- **Decode paper (deposition section)**: the learning-side dyadic deposition curve beside
-  Pythia's training-side curve — the same telescope, both paradigms.
-- **Corpus (candidate step, drafted after the curves land)**: `generalisation_onset.ep` —
-  onset = binding coverage at the lock (a reuse-forcing of the binding law over prompt
-  space), with the measured crossing at the Measured wall.
+## Completed position-conditioned training relation
 
-## The gate
+The v5 relation is complete and sealed, not in progress:
 
-Results are local until Maria reviews them; papers fold and mint on her word (the publish
-gate). Manual sessions begin from the generalised store the run leaves behind.
+- 277,583,049 position/target observations;
+- 212,395,127 unique canonical entries;
+- 4,369,646,672 bytes in the canonical relation;
+- 5,097,483,048 bytes in the packed exact serving form.
+
+Each canonical row is
+`(relative position, prompt token, last, previous, next) -> count`. Exact
+marginalisation supplies position-owned attention values, semantic FFN2, and
+semantic FFN3 without sampling, pruning, capping, fitting, or triplicating the
+observations. The factorisation passes independent reconstruction checks.
+
+## Current stage
+
+The current work is to integrate the sealed v5 relation into the native decoder
+so that distinct contextual positions own their learned value and semantic-FFN
+observations, while preserving exact recombination to the v4 token-owned rows
+as an identity check. The packed runtime must bind the canonical and packed
+receipts and halt on source or manifest drift.
+
+## Next state
+
+After integration:
+
+1. rebuild the complete native artifact from the full role-bound corpus;
+2. execute source-bound held-out single-turn, multi-turn, paraphrased-transfer,
+   and free-composition conversations through the native path;
+3. preserve exact output, context, source/artifact identity, runtime, memory,
+   closure, and reward provenance;
+4. continue reward-conditioned learning through real conversation and measure
+   the learned change on matched held-out prompts;
+5. run benchmark protocols when Maria designates the build and continue through
+   the benchmark-victory campaign.
+
+## Why full conversation is not theoretically walled off
+
+The required transformer organs already execute in SFT form: role-bound causal
+training, complete tokens and positions, multi-head Q/K/V, five contextual
+blocks, semantic FFNs, residual, exact normalization, LM head, autoregression,
+reward-conditioned learning, and exact packed serving. Counted prediction has
+beaten matched trained twins; induction continuity and transfer have executed;
+and the complete uncapped position-conditioned relation is sealed. The next
+step is integration and continued applied development of established organs.
+No engine theorem, execution receipt, or Maria-declared conclusion establishes
+a theoretical obstruction to full conversational generalisation.
