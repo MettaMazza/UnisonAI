@@ -91,7 +91,9 @@ vectors, dyadically aged history, prefix-owned FFN key/value memory, residual
 normalisation, exact categorical LM-head shares, autoregressive decoding, and
 persisted reward observations. The real store is produced in one counted pass
 by `train_eval/build_native_transformer.py` and sealed against the source pair
-artifact. The live route attempts this native surface before pair/RAG.
+artifact. The served native method now returns native output or defers; pair
+retrieval remains a separately measured RAG instrument and is not called as a
+native fallback.
 
 Reward provenance is surface-bound in both directions. Discord records each
 exact segment produced by `native_causal_transformer`; only those segments may
@@ -127,8 +129,17 @@ The final contextual position distribution also remains distinct through the
 decoder value and semantic-FFN routing boundary. Because the sealed v4 training
 artifact currently owns those rows by token, repeated-position branches are
 required and tested to recombine to the identical exact decoder scores. This
-is an architectural port, not a new heuristic. The next training artifact will
-count position-conditioned row ownership from the same role-bound observations.
+is an architectural port, not a new heuristic.
+
+The position-owned training artifact is now building from every one of the
+same 649,917 role-bound pairs. Its exact sizing receipt counts 277,583,049
+position/target observations. One canonical
+`(relative position,prompt token,last,previous,next)->count` relation supplies
+the value, semantic-FFN2, and semantic-FFN3 tables by exact marginalisation,
+avoiding three physical copies without dropping an observation. The external
+builder is resumable and the factorisation passes its reconstruction test; it
+introduces no position limit, candidate cap, corpus sample, pruning rule, or
+fitted capacity.
 
 ## Explicit response-only surface
 

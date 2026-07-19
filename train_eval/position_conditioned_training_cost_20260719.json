@@ -1,0 +1,28 @@
+{
+  "causal_targets": 11140970,
+  "implementation_guard": "Materialise every observed relation or halt. Do not introduce a position limit, candidate cap, sampled corpus, pruning rule, or fitted capacity. Aggregate repeated observations before packing.",
+  "inputs": {
+    "pairs_sha256": "6a5dcc9e9d2227e3445a7d6630ce52807e9c58d7259bbb488f53d9f05c022b17",
+    "source_sha256": "4b5d79a56c92d151144a5e0f60891323a5a58de8b97cc71c3084c1c18bb84759"
+  },
+  "maximum_row_value_entries_all_relations": 832749147,
+  "maximum_rows_per_relation": 277583049,
+  "maximum_single_pair_observations": 6372,
+  "planned_complete_relations": [
+    "position_value(relative_position, token)->next_token",
+    "position_semantic2(last, relative_position, token)->next_token",
+    "position_semantic3(previous, last, relative_position, token)->next_token"
+  ],
+  "position_target_observations": 277583049,
+  "prompt_positions": 14510060,
+  "prompt_response_pairs": 649917,
+  "provenance": {
+    "agent": "Codex",
+    "authority": "Not Maria's benchmark, finding, parity definition, or run gate. Counts complete artifact growth only.",
+    "model": "gpt-5.6-sol",
+    "origin": "Codex-authored exact implementation sizing",
+    "reasoning_level": "high"
+  },
+  "schema": "unison-position-conditioned-training-cost/v1",
+  "status": "completed"
+}

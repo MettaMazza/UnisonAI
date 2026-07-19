@@ -36,3 +36,4 @@ omni/native_transformer_v4.pkl
 omni/native_transformer_reward_v4.pkl
 omni/native_transformer_v4_packed/
 omni/native_transformer_v4_packed.building.*/
+train_eval/native_position_relation_v5/

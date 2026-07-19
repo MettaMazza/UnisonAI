@@ -102,7 +102,7 @@ Corrections, counted quality, and teacher comparisons are written to explicit le
 
 ### 4.2 Standalone Unison
 
-The current Python repository suite passes **50/50**, including tests for the
+The current Python repository suite passes **55/55**, including tests for the
 native transformer role boundary, complete prompt-token retention, active Q/K
 weighting, exact distribution closure, lazy/full argmax equivalence, packed-row
 and surface identity, bounded-cache identity, sealed-source drift halts, native

@@ -22,7 +22,7 @@ below establish code behaviour only; they do not declare a benchmark result.
 | Causal query | The last two generated token identities form the current prefix query | `prev_id`, `last_id` |
 | Attention keys | Every addressed token occurrence from the current prompt and aged user history enters five contextual blocks; the final prompt position supplies the decoder readout, as in causal next-token prediction. No stop-word, punctuation, uniqueness, or authored semantic filter precedes attention | `prompt_context.contextualize`, `aggregate_keys`, `_contextual_keys` |
 | Multi-head Q/K compatibility | Prompt self-attention uses the exact counted-embedding Gram product plus the relative-position product; product order selects the complete forced dyadic cascade with its closing identity floor. Decoder attention then applies its structural, inverse-exposure information, and conditional counted Q/K heads. Head combination is exact identity addition with no fitted blend | `prompt_context._bilinear`, `_cascade_distribution`, `_attention_key_weights`, `_attention` |
-| Attention values | Final hidden mass remains split over every distinct prompt position through decoder value routing. Existing v4 response-token vectors remain token-owned, so repeated-position branches provably recombine to the same exact row while preserving the architectural boundary for position-conditioned training | `DecoderContext`, `_decoder_value_sources`, `values` |
+| Attention values | Final hidden mass remains split over every distinct prompt position through decoder value routing. Existing v4 response-token vectors remain token-owned. The active v5 build counts the complete `(relative position, prompt token, last, previous, next)` observation relation; exact marginals supply position-owned values and both semantic FFN depths without triplicating observations | `DecoderContext`, `_decoder_value_sources`, `values`, `build_position_conditioned_relation.py` |
 | Causal mask | Only the already-generated prefix and preceding prompt/history are addressable; future response tokens are absent by construction | sequential build and `generate_tokens` |
 | Feed-forward KV memory | Each prompt block applies a counted embedding-relation FFN over a response-local position basis. Decoder semantic branches now retain that position basis before reading `(previous, last, attended-key)→next-token`, falling to `(last, key)` only when the deeper address is absent; a separate assistant-prefix table retains syntax | `prompt_context._feed_forward`, `_decoder_value_sources`, `semantic_ffn3`, `semantic_ffn`, `ffn2`, `ffn3` |
 | Residual addition | Add the unit attention value, semantic-FFN, and prefix-FFN distributions with the standard identity coefficient | `next_distribution` |
@@ -31,7 +31,7 @@ below establish code behaviour only; they do not declare a benchmark result.
 | Autoregressive decoding | Standard greedy decode from BOS until the learned EOS; `BAND` is the explicit execution budget. The live argmax groups exact row denominators, closes them to their least common multiple, and compares reward-conditioned integers by cross multiplication; tests compare it token-for-token with the materialized LM head. Prompt-key value rows are prepared once per response in a bounded local cache that is discarded after generation | `next_token_id`, `_integer_residual_scores`, `generate_tokens`, `generate` |
 | Pretraining | One deterministic counted pass over every role-bound pair, the closed-form categorical MLE | `train_eval/build_native_transformer.py` |
 | Reward-conditioned learning | Every observed good/bad native transition updates a persisted Laplace preference share `(good+1)/(good+bad+2)`; prompt and surface hashes bind each event, the live trace binds feedback to the exact native segment, and RAG/native ledgers cannot cross-update | `mark_feedback`, `_rewards`, `discord_bot._last_native_feedback`, `discord_bot._last_rag_feedback` |
-| RAG augmentation | Existing pair retrieval remains a separately disclosed response-selection/RAG surface; it is not the native generator and not the retired fallback | `discord_bot._generate_fragment_multiscale` |
+| RAG augmentation | Pair retrieval remains a separately disclosed response-selection/RAG instrument; it is not the native generator or a fallback. The served native method now returns native output or defers without calling retrieval | `discord_bot._generate_fragment_multiscale`, `pair_retrieval.py` |
 
 ## Explicit exclusions
 
@@ -76,7 +76,8 @@ route. Cold activation took 0.032017 seconds and the eight generations took
 unpacked projected-head probe. These are Codex implementation measurements,
 not a benchmark conclusion.
 
-The complete repository suite passes 50/50.
+The focused native transformer and position-relation suite passes 23/23, and
+the complete current repository suite passes 55/55.
 
 The five-layer prompt-context route is now the production native key path.
 Hidden values remain factorised over the complete response-local position basis,
@@ -107,6 +108,29 @@ lower bound even if each touch held only one uint64 value and no key. The next
 port therefore keeps the complete five-layer computation but factorises shared
 counted relations and streams response-local position state; it does not
 materialize duplicated layer-pair rows or introduce a cap.
+
+The role-conditioned induction/copy head was exercised on a matched native
+multi-turn panel: continuity changed from 0/4 to 4/4, and a separate transfer
+panel returned 8/8 exact continuations. The served native path returned the
+same four surfaces and no longer called pair retrieval after native deferral.
+A free four-conversation probe then exposed self-activation after a generic
+language-head opening; requiring the prompt itself to admit the induction
+relation preserved 4/4 continuity and 8/8 transfer while removing every full
+statement copy. All four free follow-ups became non-empty, but their surfaces
+remained generic. A full-head probe located the remaining first-token issue in
+the native heads themselves: the combined head assigned `I` the largest share
+in all four cases (0.0857, 0.0866, 0.1070, and 0.0942). These are source-bound
+Codex implementation measurements, not Maria's benchmark findings.
+
+The next documented training port is now active rather than merely proposed.
+Its full-corpus sizing receipt counts 277,583,049 position/target observations.
+Naively storing value, semantic-FFN2, and semantic-FFN3 copies could require up
+to 832,749,147 row/value entries. The implemented canonical relation stores
+each `(relative position, prompt token, last, previous, next)` observation once;
+exact marginalisation supplies all three established organs. The factorisation
+passes an external sort-and-aggregate reconstruction test, and the complete
+uncapped corpus build is resumable and currently in progress. No position
+limit, candidate cap, sampled corpus, pruning rule, or fitted capacity enters.
 
 ## Superseded development interpretation
 

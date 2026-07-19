@@ -134,7 +134,7 @@ thousands of real responses to "hello, how are you").
   position pairs per layer and 2,375,465,990 pair touches through the forced five-step
   integration depth. Within-turn positional addresses and the five stacked prompt blocks are
   now built through shared counted relations and response-local position state. Exact Q/K
-  products select the forced ranked cascade, all 49 repository tests pass, and the promoted
+  products select the forced ranked cascade, all 55 repository tests pass, and the promoted
   native route completes the fixed eight-prompt Codex timing in 19.627877 seconds at
   701,612,032 bytes resident. The complete final-position basis now reaches decoder
   value/semantic routing and recombines exactly to the existing token-owned rows. Count the
