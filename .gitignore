@@ -26,3 +26,11 @@ omni/kin_context.pkl
 omni/pairs.pkl
 omni/word_kin.pkl
 omni/response_fluency_v1.pkl
+omni/native_transformer_v1.pkl
+omni/native_transformer_reward.pkl
+omni/native_transformer_v2.pkl
+omni/native_transformer_reward_v2.pkl
+omni/native_transformer_v3.pkl
+omni/native_transformer_reward_v3.pkl
+omni/native_transformer_v4.pkl
+omni/native_transformer_reward_v4.pkl

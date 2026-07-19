@@ -32,7 +32,7 @@ Every promoted component is tracked as:
 3. constitutionally re-derived from established mathematics/computation; or
 4. current engineering work being investigated through one of those routes.
 
-The fourth label records the implemented form; it does not authorize an agent to declare a wall or endpoint. Examples currently disclosed as engineering include the live BM25 instrument's constants and a `0.30` fallback serving threshold; neither is silently identified with the theorem-forced Step 322 value `1/2`.
+The fourth label records the implemented form; it does not authorize an agent to declare a wall or endpoint. The live BM25 augmentation instrument's constants remain disclosed engineering quantities. The former sub-half fallback serving thresholds were removed with the retired agent-authored fallback and are not current Unison quantities.
 
 ## Campaign and auxiliary measurements
 
@@ -59,6 +59,8 @@ The tracked `omni/` implementation includes:
 
 - held-orbit memory and exact rational prediction primitives;
 - counted kinship and pair retrieval;
+- a role-bound, full-token counted causal-transformer route with exact Q/K/V,
+  feed-forward, residual, normalization, LM-head, and reward observations;
 - forced deep-context integration and generation-selection locks;
 - non-verbatim re-expression guards;
 - integer-Walsh sight and hearing;

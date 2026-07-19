@@ -90,9 +90,10 @@ omni/
 ├── segmentation.py            # Utterance segmentation (structural + counted BoundaryStore)
 ├── pair_retrieval.py          # THE LIVE GENERATOR: counted pair retrieval (BM25 x question-similarity),
 │                              #   relexicalization, taught re-expression, the never-verbatim guard
-├── free_gen.py                # The frontier free arm: kin-context generation under the forced cascade
+├── free_gen.py                # Historical agent-authored development arm; not the native route
+├── native_transformer.py      # Native 1:1 counted causal-attention transformer route
 ├── context_state.py           # The integrated context state (contextual_integration.ep, halt-verified)
-├── word_engine.py             # Counted kinship, fluency stores, the fallback composer, the substrate arms
+├── word_engine.py             # Counted kinship/fluency substrate; retired fallback entry points
 ├── session.py                 # Session (working memory) + SessionManager (per-user sessions)
 ├── identity.py                # UnisonIdentity (response provenance), UserFingerprint (per-user profiles)
 ├── teacher_scaffold.py        # LocalTeacher, detect_context_window, GraduationLedger
@@ -157,8 +158,8 @@ When a user message arrives (`SFTDiscordClient.on_message`):
 1. **Per-character tokenization with speaker demarcation:** each segment becomes `[image chars] + ['\x02'] + list(text) + ['\x03']`.
 2. **Session update:** the user turn is appended to the session's `working_context`, and that context is banked to both the global graph and the session's **episodic memory**.
 3. **Utterance segmentation** (`segmentation.py`): the message is split into its distinct sub-utterances so each ask is answered on its own. A single-sentence message is one segment. See [Utterance Segmentation](#utterance-segmentation-segmentationpy).
-4. **Generation — the forced stack** (`pair_retrieval.reply`, tried first): counted pair retrieval — exact BM25 with question-similarity over 649,917 role-structured conversational pairs, query context weighted 2^-age (the forced halving), counted-kinship expansion at the fold factor 1/2, Laplace (g+1)/(g+b+2) feedback re-ranking, dialogue-act matching, and the **integrated context state** (five kin-diffusion rounds at the forced cascade weights, unit-capacity spread at the lock — `contextual_integration.ep` + `generation_selection_law.ep`, halt-verified at wake). The first-stage response selector preserves operation separately from subject, applies a disclosed finite role-canonical surface address, requires the selected held source relation to carry the subject, keeps counted kin to mutual ordering rather than source admission, binds assistant self-identification to Unison's runtime identity seat, and preserves response roles such as recommendation, explanation, criteria, and emotional acknowledgement. Complete held units and explicit one-sentence clause composition are preferred before cross-response splicing. Relexicalization rebinds live entities (the user's name from the append-only history); a matched **taught correction serves only re-expressed** (cross-composition over its held expressions — at least b = 2, or the engine defers and learns); a structural guard forbids any emitted reply equalling any stored string. Registered `pair_surface` campaigns measure this first stage only, not the complete Discord path.
-5. **Fallback composition** (`word_engine.compose_reply`): when nothing locks in the pair index, the older foundation composer runs (schema from `kin_route` + counted retrieval + recombination), with `generic_reply` for bare openers — **never a hardcoded/canned string, which is the same violation as verbatim.**
+4. **Native transformer stage** (`native_transformer.generate`, tried first): the complete prompt-token sequence enters role-bound counted embeddings and separately normalized structural and causal Q/K attention heads; key-owned value vectors, dyadic history, explicit contextual FFN KV memory, exact residual normalization and LM-head shares, greedy autoregressive decoding, and counted reward observations complete the route.
+5. **RAG augmentation and retired path:** if the native route has no surface, `pair_retrieval.reply` may provide the separately disclosed RAG/response-selection surface. Its BM25 constants, fixed candidate limits, and finite lexical routing remain trace gaps. The older word/generic fallback is retired and never served.
 6. **Display:** the reply renders as `[THINKING: …] Unison Response: …` — the `\x04`/`\x05` reasoning trace is shown in full. Tool JSON in the output is intercepted and executed by `ToolOrchestrator`.
 7. **Self-feedback with on-the-spot correction:** the output is rated (the graduation signal in-bot; the project's believed scoreboard is the **calibration-gated independent judge** — see the Empirical Record) and, until a topic graduates, by the teacher, which receives the conversation from an **append-only `history_log`** (session.py) — written once per finished turn and trimmed by nothing, so cross-turn context (e.g. a name given earlier) always reaches it. On a *bad* rating the bad trajectory is pruned, pair-quality Laplace counts are demoted, and — **live, not deferred** — the teacher supplies the correction, Unison posts the recovery, and the correction is **held as learning material** (multiple expressions of one meaning) for re-expressed service next time. A *good* reply reinforces the pairs it was built from. The correction replaces the bad turn so the discussion stays coherent long-horizon (see [The Learning Loop](#the-learning-loop)).
 
@@ -179,20 +180,23 @@ A single-sentence message returns one segment, so short chats behave exactly as 
 
 ## The Word Tier (`word_engine.py`)
 
-The live conversational generator is `pair_retrieval.py` (see §5). `word_engine.py` supplies the counted-kinship machinery, the fluency stores, the **fallback composer** below, and the exact-fractional / level-mix substrate arms (the cross-entropy record's objects). The fallback runs only when the pair index does not lock.
+The current live order is native counted causal transformer, then the separately disclosed `pair_retrieval.py` RAG/response-selection surface when native generation has no surface. `word_engine.py` retains counted-kinship machinery, fluency stores, and exact-fractional substrate arms. Its historical fallback selectors are retired agent-authored code, not a component awaiting a new selector.
 
-**The fallback composer (`compose_reply` → `retrieve_and_compose`).** When the pair stack finds nothing, a reply is composed from the sentence foundation, non-verbatim:
-
-1. **Foundation index.** `retrieval.pkl` holds ~**800k** clean conversational sentences (built from the corpus by `train_eval/build_retrieval.py`, filtered against code/essay/letter/list register) plus an inverted index `content-word → sentence-ids`.
-2. **Specificity-weighted vote.** Each schema word votes for the sentences it appears in, IDF-weighted (`1/log(3+df)`) so a rare topical word ("ocean") outweighs a common one ("name", "day"); genuinely topical words (`df < 4000`) also flag a "strong hit". Ranking adds learned **span quality** (Stage 3).
-3. **Coherence-scored topical splice.** Candidate sentences are spliced at a **topical (schema) pivot** — both halves about the subject — and **every** candidate is scored by the fold critic (`coherence_score`); the most coherent above the lock (≥ 0.30) is returned. Repetition ("…the ocean … of the ocean…") and register leaks are rejected. A distinct on-topic follow-up question is appended when the pair coheres and adds new content.
-4. **No on-topic lock → `generic_reply`.** For a bare greeting, an opener-appropriate reply is composed (a short first-person statement + a reciprocal question, from clean opener-register spans). Never a hardcoded string.
-
-The reply is always recombined — never an exact corpus sentence, never a taught orbit. It starts rough and develops coherence through the feedback loop below.
+**Retired agent-authored path.** `compose_reply`, `structured_unfold`,
+`retrieve_and_compose`, `unfold_response`, and `generic_reply` belong to the
+historical word/generic fallback interpretation. They are not served, do not
+define Unison generalisation, and are not a stage awaiting reconstruction.
+Their old instruments remain identifiable only so historical receipts retain
+their exact implementation provenance. Native generalisation is the
+one-to-one constitutional translation of established causal-transformer organs
+and reward-conditioned training under SFT arithmetic and constraints.
 
 **The fold coherence critic (`coherence_score`, `constants/coherence_value.ep`)** reads a reply's content-word coupling at the synchronization lock `g_c = 1/2`. Step 322 forces that lock from the marginal gap multiplier `2(1-g)`, folds the balance to the completed One, partitions the share as `2/3` bound and `1/3` free, and closes the finite cascade `1/2 + 1/4 + 1/8 + 1/16 + 1/16 = 1` (8/8 exact checks; claim `SFT-COHERENCE-322`). The critic serves as an internal signal (fallback ranking; the in-bot graduation race). The theorem fixes its structural value; it does **not** by itself calibrate the critic as a conversational-quality scoreboard. Conversational quality is believed only from the **calibration-gated independent judge** (Empirical Record) — no signal that steers generation ever scores it.
 
-**Feedback learning on the fallback (`span_quality.pkl`)** nudges the quality of spans a reply was built from; on the primary stack, feedback is the **Laplace pair-quality fraction** (g+1)/(g+b+2) — both counted, both persisted.
+Historical `span_quality.pkl` measurements apply only to the retired path. On
+the native route, feedback is persisted per-transition good/bad observation
+state under the exact Laplace preference share `(g+1)/(g+b+2)`, bound to the
+served native prompt and surface provenance.
 
 **Generalisation: counted kinship** (`NEIGH` / `kinship` / `kin_route`). `NEIGH` counts each word's immediate neighbours; `kinship(a, b)` is the Jaccard of two words' neighbour distributions — the exact-count stand-in for a trained embedding. `kin_route` scores the query against taught orbits by content-word overlap plus kin (half weight), normalised by the union — it supplies the reply's *meaning* (schema), not a span to replay:
 
@@ -229,7 +233,7 @@ Complementary self-feedback (`on_message`): a **good** output rated `good` is `f
 
 ### The fold-native learning loop (develops coherence, never replays)
 
-Generation is **always compositional** — the pair stack first, the foundation composer as fallback — never verbatim recall, from any store. It *starts* young and **develops through teaching**, the way any learner does; it never parrots. Measured: **17% → 75% judged-good after one round of teaching, stable across four further rounds.**
+Generation is required to be compositional and non-verbatim. The pair stack is the current served development stage; the former foundation fallback is retired, and the native causal-transformer translation is the active generalisation build. Historical learning measurements retain the scope and provenance of the named build that produced them.
 
 - **Corrections are internalized, never replayed:** a taught correction is held as **multiple expressions of one meaning** (the teacher supplies several phrasings — a human tutor could equally); serving cross-composes a fresh expression that equals no stored string. Re-expression lawfully requires **b = 2** held expressions (`generation_selection_law.ep`); below b, the engine defers and learns another.
 - **Feedback → counted quality:** 👍 / `good` raises the Laplace pair-quality fraction of the pairs a reply was built from; 👎 / `bad` lowers it — re-ranking without memorising anything.
@@ -433,38 +437,35 @@ one and the same. Corpus steps
 by cross-routed reuse of already-closed forms, zero new constants. The engine's lock layer
 cross-checks all of them forward at wake and **halts on any mismatch (halt proven)**.
 
-### Epoch training, translated
-The training loop itself is the same 1-1 discipline as the inference stack — the standard
-epoch loop expressed in counted terms, continuous until the criterion rather than run to an
-arbitrary total (`train_eval/generalisation_epochs.py`):
-**dataset** = the corpus's real prompts (counted hygiene filters, deduped, probe-excluded,
-deterministic hash order — no RNG); **batch** = the band, 2^(b+c) = 32; **epoch** = band²
-prompts; **per-item loss** = the binding deficit — kin-carried binding to held meanings
-against the lock 1/2, the identical quantity that routes serving (cheap and counted, so no
-judge runs per training item, exactly as gradient training computes loss per item but pays
-for evaluation only on validation); **the update** = deposition — the corrected meaning held
-with ≥ b = 2 expressions in one observation, the zero-parameter analogue of the weight step;
-**validation** = frozen band-sized near/far probe sets per epoch under the judge pool (two
-independent calibrated models, both must agree GOOD), never taught, never fed back, with
-full transcripts and binding-stratified transfer (GOOD-given-bound vs GOOD-given-unbound —
-the onset hypothesis read directly); **early stopping** = both transfer curves at the lock
-for b = 2 consecutive epochs, at which point the run stops and reports — it declares
-nothing. Where gradient training's generalisation hides in weight space, this engine's must
-appear as kin-coverage crossing the lock — which is why onset is predictable here and only
-observable after the fact there. Detail and ledgers: `GENERALISATION.md`.
+### Causal training, translated
+The native route uses the standard role-bound causal objective. Each training sequence is
+`prompt address → assistant BOS → assistant tokens → assistant EOS`; every next-token event
+is deposited once into the attention-value and FFN key/value tables. For a categorical
+table this counted pass is the closed-form maximum-likelihood result, so it replaces repeated
+gradient approximation without changing the target computation. Reward-conditioned learning
+continues as persisted good/bad transition observations under the Laplace preference share.
+Held-out conversational evaluation is separate from training and carries no architectural
+validity or benchmark authority. Full trace: `NATIVE_TRANSFORMER_TRACE.md`.
+
+The current sealed v4 store covers 649,917 role-bound pairs and 11,140,970
+assistant causal targets. Its 2,921,639,096-byte artifact is SHA-256
+`f977d4d8adb0993a0ab0d63b86dea30bd845ae091e84a4859ae826d032a87219`.
+V4 retains every prompt token and executes structural, information, and counted
+Q/K association heads. The complete Python suite passes 37/37. A Codex-authored
+development smoke improved several subject/operation surfaces but did not yet
+establish full conversational generalisation; stacked prompt self-attention and
+distinct within-turn positional addresses remain the next established organs.
 
 ### The conversational architecture
-Serving: counted pair retrieval (BM25 × question-similarity over 649,917 role-structured
-pairs) with relexicalization and a structural never-verbatim guard. Learning: the taught
-loop above. Free generation (the frontier arm): the kin-context datastore (25M+ positions)
-under the forced integration cascade — grown under the same calibrated instruments, with the
-retrieval arm serving until the free arm's judged rate crosses it (the parallel-arm rule).
-The system is young; its conversational quality grows by data and by teaching, both measured.
+Serving now attempts the native counted causal transformer first. Pair retrieval remains a
+separately disclosed RAG/response-selection augmentation. The historical word/generic
+fallback and the agent-authored `free_gen.py` frontier arm do not define the native
+architecture. Learning is exact corpus deposition plus reward-conditioned observations.
 
 ### Instruments
 `train_eval/judge.py` + `judge_calibration.py` (the calibration receipt; the pool — two independent judge
-models whose agreement is recorded), `generalisation_epochs.py` (the translated epoch loop,
-`--preflight` wiring verification on the real path), `grokking_run.py` (the first fixed-round
+models whose agreement is recorded), `generalisation_epochs.py` (historical pair-memory
+curriculum instrument, not native transformer training), `grokking_run.py` (the first fixed-round
 telescope), `gen_free_harness.py`, `gen_quality_honest.py`, `learning_curve_judged.py`,
 `measure_pairs.py`, `bench_35b.py` (opponent-integrity enforced), `e2e_live_path.py` (nothing
 stubbed). All committed; all reproducible.
@@ -475,10 +476,11 @@ stubbed). All committed; all reproducible.
 
 **The active workfront:**
 
-- **Conversational growth.** The serving arm composes from counted pair retrieval; the taught
-  loop converts corrections permanently (the measured learning law); the free arm grows under
-  the forced integration cascade behind the parallel-arm rule. The growth axes are data
-  volume and teaching — both instrumented, both measured by the calibrated judge.
+- **Conversational generalisation.** The native full-token counted causal transformer is the
+  primary serving architecture. Pair retrieval is a separately disclosed RAG augmentation,
+  not the generator. The active work is to complete full-corpus measurement, preserve
+  reward-conditioned learning, and continue the established transformer translation without
+  reintroducing agent-authored fallback architecture.
 
 **Roadmap:**
 

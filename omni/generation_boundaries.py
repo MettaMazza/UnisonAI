@@ -23,7 +23,6 @@ ADMISSION_LOCK = SPREAD_LOCK
 BINDING_LOCK = SPREAD_LOCK
 REEXPRESSION_MINIMUM = REEXPRESS_MIN
 
-
 def _exact(value):
     if isinstance(value, Fraction):
         return value

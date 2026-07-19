@@ -38,10 +38,11 @@ The SFT engine's ground rules are not exotic; each is a known discipline:
 | **LM head** (softmax over vocab) | categorical distribution from counts | **exact rational shares** `count/total` (`memory.py:415`) | ✅ |
 | **Smoothing** (unseen mass) | **Laplace/add-one smoothing** — the classical answer | the **No-Zero floor** `1/(total+1)` — identical formula, forced by the domain law rather than chosen | ✅ |
 | **Backoff/interpolation** (Katz, Jelinek-Mercer, Kneser-Ney) | interpolated n-gram mixing with tuned λ per level | **fold-factor level mix** `2^L` across all holding depths (`word_engine.py:281,407`) — interpolated backoff with **forced** weights (Rung 5e). Beat the trained twin at word scale (3.1907 vs 3.4292). | ✅ |
-| **Attention** (softmax QK selection) | soft selection over context; hard/top-1 attention is an established variant; her decode campaign measured trained attention leaning to the dyadic cascade 1/2,1/4,… in 12/12 layers | **unit-capacity selection** at the forced lock 1/2 (deepest-held-suffix selection); cascade weights `2^-k` where ranked mixing is needed | ✅ (substrate) |
+| **Attention** (causal Q/K/V selection) | causal query-key addressing followed by a weighted sum of value vectors | the full prompt-token sequence enters separately normalized structural, inverse-exposure information, and conditional counted Q/K heads; key-owned value rows are combined exactly and the causal mask is structural | ✅ v4 built+measured |
 | **Positional/context decay** (ALiBi-style recency bias) | exponential recency weighting | attention **halves with age**, `2^-age` — the forced factor b (Step 315), replacing a tuned decay (`session.py` design; wired into retrieval in Stage 2) | 🔧 |
 | **Pretraining** (SGD over corpus) | MLE fitting | **one exact counted pass** (closed-form MLE — 26 s vs 48,000 gradient batches at the task gate) | ✅ |
-| **Knowledge store** (FFN key-value memories — Geva et al.) | weights as implicit KV memory | **held orbits** — explicit, deterministically-addressed exact KV store; inspectable, editable at one record. The decode campaign measured the weight-store correspondence spectrally (Steps 308–320). | ✅ |
+| **Residual + normalization** | identity skip connection followed by scale normalization | exact addition of unit-normalized attention and feed-forward distributions, then exact rational normalization to the One; lazy greedy decode is token-equivalent to the materialized head | ✅ v4 built+measured |
+| **Knowledge store / FFN** (FFN key-value memories — Geva et al.) | expansion, nonlinear address, contraction back to model/vocabulary space | generated-prefix and attended-key count tables, including 81,111,826 deep `(previous,last,key)` addresses in sealed v4 | ✅ v4 built+measured; stacked prompt contextualization next |
 
 ### I.2 Conversation (the active workfront — detail in Part II)
 
@@ -76,7 +77,7 @@ The SFT engine's ground rules are not exotic; each is a known discipline:
 | **Curriculum learning** (Bengio) | staged practice distribution, teacher-authored | live teacher-generated curriculum (`curriculum_communication.py`), grows on completion | ✅ |
 | **Self-play** (TD-Gammon lineage) | generate → verify → retain only verified | `/auto` loop with **earned retention** (unverified output discarded) | 🔧 verification instrument must be calibrated |
 | **RLHF preference step** | preference-based re-ranking (bandit feedback) | 👍/👎 + judge verdicts → counted pair-quality fractions (I.2) — no reward model, the counts are the preferences | 📐 Stage 4 |
-| **Epoch training loop** (dataset → batches → per-item loss → loss-gated update → held-out validation → early stopping) | the standard training loop; loss cheap per item, evaluation paid only on validation | `generalisation_epochs.py`: stream = corpus prompts (hygiene-filtered, deterministic hash order); batch = **band 2^(b+c) = 32**; epoch = band²; **loss = binding deficit vs the lock 1/2** (the same kin-carried quantity that routes serving); **update = deposition** (≥ b = 2 held expressions, one observation — the zero-parameter weight step); validation = frozen probes under the judge **pool**, binding-stratified; stop = both transfer curves ≥ the lock for b = 2 consecutive epochs | ✅ built, preflighted on the real path; continuous run live |
+| **Causal LM training loop** | role-bound sequences; next-token categorical objective; optimizer update; validation | `build_native_transformer.py` executes the zero-parameter closed-form counterpart: one role-bound pass deposits every full prompt-token/assistant-prefix→next-token count, exactly maximizing each categorical table. `mark_feedback` supplies surface-bound reward-conditioned observations. | ✅ 649,917-pair v4 sealed |
 
 ### I.5 Agency, sessions, identity, evaluation
 
@@ -122,8 +123,14 @@ thousands of real responses to "hello, how are you").
 - **Stage 1 — Index v2.** Standalone filter; tf, lengths, avgdl, N, df stored; full-corpus rebuild.
 - **Stage 2 — Ranking.** BM25 + kin expansion + `2^-age` context + quality fraction. **Measure
   the judged top-1 ceiling** (diagnostic serve, raw) — the architecture's honest ceiling.
-- **Stage 3 — Realization.** Delexicalize/relexicalize; verbatim guard; wire `compose_reply` and
-  `generic_reply`; retire the splice path. **Measure judged end-to-end.**
+- **Stage 3 — Transformer realization.** Port the established causal transformer organs
+  one-to-one: role-bound sequence training, counted embeddings, causal Q/K/V attention,
+  residual normalization, explicit FFN KV memory, exact LM head, and autoregressive decode.
+  The historical word/generic fallback remains retired. V4 seals the full-token one-block
+  decoder. Its Codex smoke improves several topical operations but does not yet establish full
+  conversational generalisation. Port the next established organs: within-turn positional
+  addresses and stacked prompt self-attention so each decoder key is context-dependent, then
+  remeasure the same native route.
 - **Stage 4 — Learning + state.** Pair-quality counts; taught-pair precedence; **port the
   relation-facts channel** (name recall); verify multi-turn recall on the no-stubs e2e.
 - **Stage 5 — Honest replacements.** Re-measure everything retracted (gen quality n≥32,

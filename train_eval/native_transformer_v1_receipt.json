@@ -1,0 +1,28 @@
+{
+  "artifact": {
+    "bytes": 517382709,
+    "path": "omni/native_transformer_v1.pkl",
+    "sha256": "4a06c37384e9dba502e618d62ff0c025420ee112445f2660920abd6575b636ed"
+  },
+  "schema": "unison-counted-causal-transformer-receipt/v1",
+  "source_pairs": {
+    "bytes": 226572757,
+    "path": "omni/pairs.pkl",
+    "sha256": "6a5dcc9e9d2227e3445a7d6630ce52807e9c58d7259bbb488f53d9f05c022b17"
+  },
+  "sources": {
+    "omni/native_transformer.py": "192bf2ff68a35340138301cf5cafda39c63de887cba88487b35c4f66e251db86",
+    "train_eval/build_native_transformer.py": "b130f6af9fec17d6fe68c9176e1fbc85c8db7521e15762303b1f09b02063f394",
+    "train_eval/seal_native_transformer.py": "593243e0a25142338b074fdd9d49532969fa7a0fd01631f641dac4073df36b20"
+  },
+  "status": "sealed",
+  "training": {
+    "causal_targets": 11099521,
+    "ffn2_keys": 93063,
+    "ffn3_keys": 1182071,
+    "qk_relations": 19765845,
+    "responses": 646782,
+    "value_vectors": 95411,
+    "vocabulary": 114106
+  }
+}

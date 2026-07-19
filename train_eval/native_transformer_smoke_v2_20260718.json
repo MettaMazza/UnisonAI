@@ -1,0 +1,82 @@
+{
+  "elapsed_seconds": 99.675722,
+  "identity": {
+    "responses": 646782,
+    "role_policy": "prompt-keys/assistant-causal-values",
+    "schema": "unison-counted-causal-transformer/v2",
+    "sha256": "98871e64758369cf18d04b3af6291622c8598e2b47562e1602c9ec44d43b3091",
+    "source_pairs_sha256": "6a5dcc9e9d2227e3445a7d6630ce52807e9c58d7259bbb488f53d9f05c022b17",
+    "tokens": 11099521
+  },
+  "provenance": {
+    "agent": "Codex",
+    "authority": "Not Maria's benchmark, finding, loss, parity definition, or run gate.",
+    "model": "gpt-5.6-sol",
+    "origin": "Codex-authored implementation smoke",
+    "reasoning_level": "high"
+  },
+  "rows": [
+    {
+      "addressed_keys": 1,
+      "first_distribution_candidates": 17646,
+      "first_distribution_closure": "1",
+      "prompt": "Hello, how are you?",
+      "surface": "I like to do for fun?"
+    },
+    {
+      "addressed_keys": 2,
+      "first_distribution_candidates": 18948,
+      "first_distribution_closure": "1",
+      "prompt": "What do you enjoy about gardening?",
+      "surface": "I love to read, and i love to read, and i love to read, and i love to read, and i love to read, and i love"
+    },
+    {
+      "addressed_keys": 3,
+      "first_distribution_candidates": 20473,
+      "first_distribution_closure": "1",
+      "prompt": "I am nervous about public speaking.",
+      "surface": "I do not have access to the public transportation."
+    },
+    {
+      "addressed_keys": 4,
+      "first_distribution_candidates": 30618,
+      "first_distribution_closure": "1",
+      "prompt": "What makes board games interesting?",
+      "surface": "Yes, the."
+    },
+    {
+      "addressed_keys": 4,
+      "first_distribution_candidates": 48504,
+      "first_distribution_closure": "1",
+      "prompt": "Tell me something interesting about the desert.",
+      "surface": "Certainly! the the u."
+    },
+    {
+      "addressed_keys": 3,
+      "first_distribution_candidates": 24633,
+      "first_distribution_closure": "1",
+      "prompt": "Why do people enjoy astronomy?",
+      "surface": "I don't know."
+    },
+    {
+      "addressed_keys": 5,
+      "first_distribution_candidates": 23995,
+      "first_distribution_closure": "1",
+      "prompt": "Suggest a comforting meal for a cold evening.",
+      "surface": "Sure, i'd be happy to provide more information on the"
+    },
+    {
+      "addressed_keys": 3,
+      "first_distribution_candidates": 26694,
+      "first_distribution_closure": "1",
+      "prompt": "What kind of music do you enjoy?",
+      "surface": "I like to do you like to do you like to do you like to do you like to do you like to do you like to do you like to do"
+    }
+  ],
+  "schema": "unison-native-transformer-smoke/v2",
+  "source": {
+    "path": "omni/native_transformer.py",
+    "sha256": "1eb3b0fc6901680c73e5b25ba1a37a08d2164723a289dbd8d25d334d797b6504"
+  },
+  "status": "completed"
+}

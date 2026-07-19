@@ -14,6 +14,29 @@ established computation inside SFT mathematics and constraints. Measured
 implementation results and agent-authored auxiliary experiments remain
 separately attributed.
 
+Pair-response deferral does not require the conversational runtime to halt.
+Halt belongs to the main corpus engine and to the explicit checks of each
+additional derivation; it must not be invented as a universal cross-project
+rule.
+
+The historical word/generic fallback is an agent-authored interpretation, not
+a derived Unison component. It is retired and must not be renamed, repaired,
+or reconstructed as a novel conversational mechanism. Unison's generalisation
+route is a one-to-one constitutional translation of the established
+attention-transformer architecture and its established training loop into SFT
+mathematics and constraints: re-derive the required computer science, do not
+replace it with agent-invented architecture.
+
+The derived coherence lock is exactly `1/2`. A component must not label or use
+a sub-half engineering threshold as that lock. Unforced selection weights,
+acceptance thresholds, candidate limits, and similar tunable parameters are
+violations: remove them or trace their exact value through an admissible route.
+
+Reward-conditioned state is required for learning and is not itself a
+violation. Preserve it as traceable observations/counts, distinguish learned
+state from fixed parameters, and do not erase learning merely to satisfy the
+zero-parameter architecture.
+
 ## Benchmark authority
 
 Benchmark victory is an explicit UnisonAI objective. It is not dismissed or

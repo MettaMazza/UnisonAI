@@ -1,0 +1,104 @@
+{
+  "elapsed_seconds": 252.658971,
+  "identity": {
+    "responses": 646782,
+    "role_policy": "prompt-keys/assistant-causal-values",
+    "schema": "unison-counted-causal-transformer/v3",
+    "sha256": "8ce18e249f3893ce6fe39425be15dccbd5651bfd39ec383ec9f31be8fd6ef1a5",
+    "source_pairs_sha256": "6a5dcc9e9d2227e3445a7d6630ce52807e9c58d7259bbb488f53d9f05c022b17",
+    "tokens": 11099521
+  },
+  "live_route": {
+    "surface": "I like to do for fun?",
+    "trace": [
+      {
+        "final_stage": "composed_fragments",
+        "segments": [
+          {
+            "accepted": true,
+            "segment": "Hello, how are you?",
+            "stages": [
+              {
+                "segment": "Hello, how are you?",
+                "stage": "native_causal_transformer",
+                "surface": "I like to do for fun?"
+              }
+            ]
+          }
+        ],
+        "surface": "I like to do for fun?"
+      }
+    ]
+  },
+  "provenance": {
+    "agent": "Codex",
+    "authority": "Not Maria's benchmark, finding, loss, parity definition, or run gate.",
+    "model": "gpt-5.6-sol",
+    "origin": "Codex-authored implementation smoke",
+    "reasoning_level": "high"
+  },
+  "rows": [
+    {
+      "addressed_keys": 1,
+      "first_distribution_candidates": 17646,
+      "first_distribution_closure": "1",
+      "prompt": "Hello, how are you?",
+      "surface": "I like to do for fun?"
+    },
+    {
+      "addressed_keys": 2,
+      "first_distribution_candidates": 18948,
+      "first_distribution_closure": "1",
+      "prompt": "What do you enjoy about gardening?",
+      "surface": "I love to cook too."
+    },
+    {
+      "addressed_keys": 3,
+      "first_distribution_candidates": 20473,
+      "first_distribution_closure": "1",
+      "prompt": "I am nervous about public speaking.",
+      "surface": "I don't have access to the development of a large audience."
+    },
+    {
+      "addressed_keys": 4,
+      "first_distribution_candidates": 30618,
+      "first_distribution_closure": "1",
+      "prompt": "What makes board games interesting?",
+      "surface": "I like to do for fun?"
+    },
+    {
+      "addressed_keys": 4,
+      "first_distribution_candidates": 48504,
+      "first_distribution_closure": "1",
+      "prompt": "Tell me something interesting about the desert.",
+      "surface": "Yes, the sky, it is. the air."
+    },
+    {
+      "addressed_keys": 3,
+      "first_distribution_candidates": 24633,
+      "first_distribution_closure": "1",
+      "prompt": "Why do people enjoy astronomy?",
+      "surface": "Yes, the ancient egyptians had a significant impact on the history of the most important tools used in physics and astronomy."
+    },
+    {
+      "addressed_keys": 5,
+      "first_distribution_candidates": 23995,
+      "first_distribution_closure": "1",
+      "prompt": "Suggest a comforting meal for a cold evening.",
+      "surface": "I know, right?"
+    },
+    {
+      "addressed_keys": 3,
+      "first_distribution_candidates": 26694,
+      "first_distribution_closure": "1",
+      "prompt": "What kind of music do you enjoy?",
+      "surface": "I like to do for fun?"
+    }
+  ],
+  "schema": "unison-native-transformer-smoke/v3",
+  "source": {
+    "path": "omni/native_transformer.py",
+    "sha256": "e3903df63f2187b47a1308fab2a1e780fff2b6477f71bc684485883dad36947b"
+  },
+  "status": "completed"
+}

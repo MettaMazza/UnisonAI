@@ -1,6 +1,11 @@
-"""EPOCH TRAINING, TRANSLATED — continuous generalisation over the real data stream.
+"""Historical pair-memory curriculum instrument.
 
-The 1-1 translation of the standard training loop into the counted engine (no arbitrary
+This file trains and evaluates the pair-retrieval/taught-pair development arm.
+It is not the one-to-one native causal-transformer training path and must not be
+used to define that architecture. The native role-bound counted pass lives in
+``train_eval/build_native_transformer.py``.
+
+The retained pair-memory curriculum loop (no arbitrary
 totals — the run is CONTINUOUS until the generalisation criterion is met):
 
   training dataset -> the pair corpus's real user prompts (649,917), deterministic order

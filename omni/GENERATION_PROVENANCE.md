@@ -13,15 +13,17 @@ literals or prose do not create a second authority.
 - Step 324 admission and binding locks: `SPREAD_LOCK = FOCUS_LOCK = 1/2`.
 - Step 324 fresh cross-variant support: `REEXPRESS_MIN = b = 2`.
 
-The canonical quantities remain in `omni/core.py`.  Active generation code uses
+The canonical quantities remain in `omni/core.py`. Generation boundary code uses
 the executable operations in `omni/generation_boundaries.py`; it must not repeat
 these boundaries as local numeric literals.
 
-## Constitutional mechanisms
+## Constitutional mechanisms and active trace gaps
 
 - Experience is held as exact counts and addressed deterministically.
-- Retrieval produces counted continuation distributions rather than replaying a
-  stored response surface.
+- Retrieval is intended to produce counted continuation distributions rather
+  than replay a stored response surface. The current pair stage still contains
+  BM25 engineering constants and fixed candidate limits, so it is not described
+  here as fully forced.
 - Context is integrated through the five-stage dyadic cascade.
 - Generation is constrained by the admitted half-One context and by counted plan
   coverage.
@@ -53,11 +55,16 @@ these boundaries as local numeric literals.
 ## Engineering quantities
 
 These remain disclosed implementation status until separately forced or
-constitutionally re-derived: `TOPK_POS`, maximum/minimum word limits, beam width,
+constitutionally re-derived: BM25 `k1` and `b`, `TOPK_POS`, maximum/minimum word limits, beam width,
 beam expansion, `n_best`, candidate caps, closure multiplier, tie noise,
 paraphrase bounds, the finite dialogue-operator lexicon, and the legacy
-conversational fallback threshold `0.30`. The finite role-canonical surface
-relations and response-role markers are likewise disclosed engineering
+candidate limits. The former `0.30`, `0.40`, and `0.20` fallback acceptance
+thresholds were violations of the derived `1/2` coherence lock and have been
+removed. The word/generic fallback itself is retired: it was an agent-authored
+interpretation rather than a derived Unison component, and it is not awaiting
+reconstruction. Generalisation proceeds through the one-to-one constitutional
+translation of established attention-transformer and training computation.
+Reward-conditioned counts remain active learning, not fixed parameters. The finite role-canonical surface relations and response-role markers are likewise disclosed engineering
 constitution; they are not silently labelled as theorem constants.
 
 This provenance patch makes the generation boundary executable. It does not
@@ -70,10 +77,37 @@ a selectable development surface. Maria Smith alone decides when its evidence
 supports a publishable conclusion or when it enters a real benchmark run.
 
 The two registered pair-response campaigns exercise only
-`pair_retrieval.reply`, the first stage attempted by the live Discord runtime.
-They do not score the complete Discord conversation path, which may continue to
-the fallback composer when the first stage defers. Their immutable measurements
+`pair_retrieval.reply`, the separately disclosed RAG/response-selection stage.
+They do not score the complete Discord conversation path. In the present audit
+working tree a pair-stage deferral produces no word/generic surface. Their immutable measurements
 therefore describe that registered stage and source only.
+
+## Native counted causal-transformer surface
+
+`omni/native_transformer.py` is the production generalisation port. It keeps
+the established organs separate: role-bound prompt/assistant training,
+co-occurrence embeddings, causal query/key compatibility, key-owned value
+vectors, dyadically aged history, prefix-owned FFN key/value memory, residual
+normalisation, exact categorical LM-head shares, autoregressive decoding, and
+persisted reward observations. The real store is produced in one counted pass
+by `train_eval/build_native_transformer.py` and sealed against the source pair
+artifact. The live route attempts this native surface before pair/RAG.
+
+Reward provenance is surface-bound in both directions. Discord records each
+exact segment produced by `native_causal_transformer`; only those segments may
+update the native reward ledger. A pair/RAG segment may update only the RAG
+quality ledger. Native output does not update the retired span/coupling state or
+the RAG ledger, and RAG output does not update native transitions. Mixed
+multi-segment turns retain both origin lists. Focused tests cover the route
+separation.
+
+The current sealed native artifact is v4: 649,917 role-bound responses and
+11,140,970 assistant causal targets in a 2,921,639,096-byte store, SHA-256
+`f977d4d8adb0993a0ab0d63b86dea30bd845ae091e84a4859ae826d032a87219`.
+Its full prompt-token route executes structural, inverse-exposure information,
+and conditional counted Q/K heads. The complete Python suite passes 37/37.
+Codex development probes remain implementation evidence only and do not
+authorize a Maria benchmark conclusion.
 
 ## Explicit response-only surface
 

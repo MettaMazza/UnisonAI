@@ -540,81 +540,15 @@ class WordEngine:
                 logger.error("coupling graph load failed", exc_info=True)
         return self._coupling_graph
 
-    def structured_unfold(self, schema_words, rng, max_words=40, min_words=6):
-        """STAGE 4 — the structured-schema unfold (memory_abstraction.ep). Not bound to
-        retrieving a good span: PLAN a relational concept chain by walking the coupling graph
-        (topic -> related -> related — the invariant structure), then REALIZE it as surface
-        via the foundation fluency, steering through each concept in order. Generative and
-        structured: the reply flows through the meaning's relations, composed fresh, never
-        verbatim. Coherence is the discourse structure (the chain), grammar is the fluency."""
-        self._load_fluency(); self._load_coupling()
-        fl = self._fluency
-        if not fl or not fl.get("uni"):
-            return ""
-        gcoup = self._coupling_graph or {}
-        base = [w.lower() for w in schema_words if len(w) > 3]
-        if not base:
-            return ""
-        # 1. PLAN the concept chain (relational structure) from the most-connected topic word
-        topic = max(base, key=lambda w: len(gcoup.get(w, {})))
-        chain = [topic]; cur = topic
-        for _ in range(4):
-            nb = gcoup.get(cur, {})
-            cands = [w for w in sorted(nb, key=lambda k: -nb[k]) if w not in chain and len(w) > 3][:6]
-            if not cands:
-                break
-            nxt = cands[rng.randrange(len(cands))]
-            chain.append(nxt); cur = nxt
-        chain_set = set(chain)
-        if getattr(self, "_openers", None) is None:
-            self._openers = [w for w, c in sorted(fl["uni"].items(), key=lambda kv: -kv[1]) if len(w) > 1][:400]
-        # 2. REALIZE: generate surface, steering toward each concept of the chain in order
-        reply = []; ci = 0
-        for step in range(max_words):
-            target = chain[ci] if ci < len(chain) else None
-            ctx = [w.lower() for w in reply[-UNFOLD_CTX_MAX:]]
-            scored = self._scored_fluent(ctx)[0] if ctx else [(w, Fraction(1)) for w in self._openers]
-            if not scored:
-                scored = [(w, Fraction(1)) for w in self._openers]
-            adj = []
-            for w, sc in scored:
-                wl = w.lower()
-                if wl == target:
-                    sc = sc * Fraction(GEN_B ** 4)                 # drive to the current concept
-                elif target and wl in gcoup and target in gcoup.get(wl, {}):
-                    sc = sc * Fraction(GEN_B * GEN_C)              # a word that leads to it
-                elif len(wl) > 3 and wl not in chain_set:
-                    coup = self.coupling(wl, chain)
-                    if coup < 0.5:
-                        sc = sc / Fraction(GEN_B * GEN_C)          # off-structure content -> suppress
-                adj.append((w, sc))
-            total = Fraction(0)
-            for _, s in adj:
-                total += s
-            if total <= 0:
-                break
-            r = Fraction(rng.randrange(1_000_000_000), 1_000_000_000) * total
-            acc = Fraction(0); pick = adj[-1][0]
-            for w, s in adj:
-                acc += s
-                if r < acc:
-                    pick = w; break
-            if pick in _CONTROL:
-                if len(reply) >= min_words:
-                    break
-                continue
-            reply.append(pick)
-            if pick.lower() == target:
-                ci += 1                                            # concept reached -> advance
-            if ci >= len(chain) and pick in (".", "!", "?") and len(reply) >= min_words:
-                break
-        surface = ""
-        for w in reply:
-            surface += _emit_piece(surface, w)
-        return surface.strip()
+    def structured_unfold(self, schema_words, rng):
+        """Inactive historical unfold retained as an explicit audit boundary."""
+        return ""
 
     def _span_key(self, text):
-        return hash(text) & 0xffffffffff
+        # Stable content address: Python's process-randomised ``hash`` made the
+        # persisted learning state point at different spans after a restart.
+        import hashlib
+        return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
     def _load_span_quality(self):
         if getattr(self, "_span_quality", None) is not None:
@@ -638,7 +572,9 @@ class WordEngine:
         q = self._load_span_quality()
         for t in getattr(self, "_last_spans", []):
             k = self._span_key(t)
-            q[k] = max(-6, min(6, q.get(k, 0) + (1 if good else -1)))
+            # One observed judgement contributes one counted event.  The state
+            # is not clipped by an agent-selected bound.
+            q[k] = q.get(k, 0) + (1 if good else -1)
         self._span_quality_dirty = True
 
     def save_span_quality(self):
@@ -668,327 +604,21 @@ class WordEngine:
         return self._retrieval
 
     def compose_reply(self, schema_words, rng):
-        """STAGE 2 — multi-span composition. A coherent reply from more than one on-topic
-        foundation span: a SUBSTANCE span (recombined, non-verbatim) plus, when available,
-        a distinct on-topic FOLLOW-UP QUESTION — so the reply engages, not just states.
-        The whole reply is checked against the coherence lock (statement<->conversation
-        scale, coherence_value.ep); if the pair doesn't cohere, it falls back to substance."""
-        self._last_spans = []   # fresh record of the spans this reply is built from (Stage 3)
-        substance = self.retrieve_and_compose(schema_words, rng, only="statement")
-        if not substance:
-            substance = self.retrieve_and_compose(schema_words, rng)
-        if not substance:
-            # No on-topic span locked. Try the structured/word-tier unfold, but ONLY return it
-            # if it clears the coherence lock — an incoherent fallback (fold ~0) is worse than
-            # deferring to the caller's generic foundation reply. Never emit babble.
-            s4 = self.structured_unfold(schema_words, rng)
-            uf = self.unfold_response(schema_words, rng)
-            c4, _ = self.coherence_score(_content_words(tokenize(s4))) if s4 else (0.0, 0.0)
-            cu, _ = self.coherence_score(_content_words(tokenize(uf))) if uf else (0.0, 0.0)
-            best, bc = (s4, c4) if c4 >= cu else (uf, cu)
-            return best if bc >= 0.30 else ""
-        # Add an on-topic FOLLOW-UP question — but only if it introduces NEW content (not a
-        # rephrase of the substance, which read as "...acidification. How is acidification?").
-        follow = self.retrieve_and_compose(schema_words, rng, only="question")
-        reply = substance
-        if follow and follow.lower() != substance.lower() and len(follow.split()) >= 4:
-            sub_cw = set(_content_words(tokenize(substance.lower())))
-            fol_cw = set(_content_words(tokenize(follow.lower())))
-            if fol_cw - sub_cw:                # the question must add something new
-                candidate = substance.rstrip(" .!?") + ". " + follow
-                ccw = _content_words(tokenize(candidate.lower()))
-                ws, _ = self.coherence_score(ccw)
-                if ws >= 0.4 and not _degenerate_repeat(ccw):
-                    reply = candidate
-        return reply
+        """Retired agent-authored fallback entry point; never served."""
+        self._last_spans = []
+        return ""
 
     def generic_reply(self, rng):
-        """Foundation-composed generic conversational reply — used when nothing on-topic
-        locks (e.g. a bare greeting), so the system NEVER emits a hardcoded/canned string
-        (that is a violation, the same as verbatim). Prefers OPENER-register spans (short,
-        first/second-person or a reciprocal question — "how are you doing?"), applies the
-        register guard (no dialogue/list/essay leaks), splices two -> non-verbatim, and keeps
-        the most coherent result. So a greeting gets a warm reciprocal reply, not a random
-        off-topic sentence."""
-        R = self._load_retrieval()
-        sents = R.get("sentences")
-        if not sents:
-            return self.unfold_response([], rng)
-
-        def opener_ok(s):
-            low = s.lower()
-            if any(p in low for p in _REGISTER_LEAK):
-                return False
-            w = s.split()
-            if not (4 <= len(w) <= 16):
-                return False
-            # conversational opener register: reciprocal question or first/second person
-            return low.endswith("?") or bool(_CONV_MARKERS & set(low.replace("'", "").split()))
-
-        # sample a pool of clean opener-register sentences to recombine
-        pool = []
-        for _ in range(600):
-            s = sents[rng.randrange(len(sents))]
-            if opener_ok(s):
-                pool.append(s)
-            if len(pool) >= 60:
-                break
-        if len(pool) < 2:
-            pool = [sents[rng.randrange(len(sents))] for _ in range(20)]
-
-        # PRIMARY: join a short first-person STATEMENT opener with a short reciprocal
-        # QUESTION opener -> a natural greeting ("Doing well, thanks. How about you?").
-        # This is composition (two distinct spans), non-verbatim (neither is the reply alone),
-        # and reads as conversation, unlike a pivot-splice of two random sentences.
-        def short(s): return 3 <= len(s.split()) <= 11
-        statements = [s for s in pool if short(s) and not s.strip().endswith("?")
-                      and _CONV_MARKERS & set(s.lower().replace("'", "").split())]
-        questions = [s for s in pool if short(s) and s.strip().endswith("?")]
-        best_join, best_jsc = "", 0.0
-        for _ in range(24):
-            if not statements or not questions:
-                break
-            st = statements[rng.randrange(len(statements))]
-            q = questions[rng.randrange(len(questions))]
-            if st.lower() == q.lower():
-                continue
-            cand = st.rstrip(" .!") + ". " + q
-            ccw = _content_words(tokenize(cand.lower()))
-            if _degenerate_repeat(ccw):
-                continue
-            sc, _ = self.coherence_score(ccw)
-            if sc > best_jsc:
-                best_join, best_jsc, self._last_spans = cand, sc, [st, q]
-        if best_jsc >= 0.30:
-            return best_join
-
-        best, best_sc = "", 0.0
-        for _ in range(60):
-            A = pool[rng.randrange(len(pool))]; Aw = tokenize(A)
-            Acw = set(_content_words(tokenize(A.lower())))
-            B = pool[rng.randrange(len(pool))]; Bw = tokenize(B)
-            pivot = next((p for p in _content_words(tokenize(B.lower())) if p in Acw), None)
-            if not pivot:
-                continue
-            ai = next((k for k, w in enumerate(Aw) if w.lower() == pivot), None)
-            bi = next((k for k, w in enumerate(Bw) if w.lower() == pivot), None)
-            if ai is None or bi is None or ai < 2 or bi > len(Bw) - 2:
-                continue
-            spliced = Aw[:ai] + Bw[bi:]
-            if not (5 <= len(spliced) <= 24):
-                continue
-            s = ""
-            for w in spliced:
-                s += _emit_piece(s, w)
-            s = s.strip()
-            if not s or s == A or s == B:
-                continue
-            scw = _content_words(tokenize(s.lower()))
-            if _degenerate_repeat(scw):
-                continue
-            sc, _ = self.coherence_score(scw)
-            if sc > best_sc:
-                best, best_sc, self._last_spans = s, sc, [A, B]
-        # Return the most coherent composition found (join vs pivot-splice); never emit a
-        # near-zero fragment ("by 7 to 8 -"). A joined pair, even at a modest score, reads as
-        # conversation better than a broken splice.
-        if best_sc >= best_jsc and best_sc >= 0.20:
-            return best
-        if best_join:
-            self._last_spans = [] if not best_join else self._last_spans
-            return best_join
-        if best:
-            return best
-        return self.unfold_response([], rng)
+        """Retired agent-authored fallback entry point; never served."""
+        return ""
 
     def retrieve_and_compose(self, schema_words, rng, only=None):
-        """Richer generation: retrieve COHERENT on-topic sentences from the FOUNDATION
-        (locked to the schema) and SPLICE two at a shared pivot word — coherence from real
-        foundation language, relevance from the schema lock, non-verbatim from recombining
-        (never a taught orbit, never an exact corpus sentence). Returns '' if nothing locks."""
-        R = self._load_retrieval()
-        sents = R.get("sentences"); inv = R.get("inv")
-        if not sents:
-            return ""
-        self._load_coupling()
-        gcoup = self._coupling_graph or {}
-        schema = set(w.lower() for w in schema_words if len(w) > 3)
-        for w in list(schema):
-            nb = gcoup.get(w)
-            if nb:
-                for n in sorted(nb, key=lambda k: -nb[k])[:6]:
-                    schema.add(n)
-        import math
-        from collections import Counter
-        # SPECIFICITY: weight each schema word by how RARE it is in the index — a topical
-        # word ("ocean") must outweigh a common one ("name", "time", "day"), so retrieval
-        # locks to the actual subject, not an incidental common-word match.
-        votes = Counter()
-        strong_hit = Counter()   # count of SPECIFIC (topical) schema words a sentence hits
-        for w in schema:
-            posting = inv.get(w)
-            if not posting:
-                continue
-            df = len(posting)
-            wt = 1.0 / math.log(3 + df)        # IDF-like: common words contribute little
-            specific = df < 4000               # a genuinely topical word
-            for sid in posting:
-                votes[sid] += wt
-                if specific:
-                    strong_hit[sid] += 1
-        if not votes:
-            return ""
-        # Rank by specificity + LEARNED span quality (Stage 3): spans that have made good
-        # replies are preferred, spans that made bad ones are demoted.
-        sq = self._load_span_quality()
-        ranked = sorted(votes, key=lambda s: (strong_hit[s] > 0,
-                        votes[s] + 0.4 * sq.get(self._span_key(sents[s]), 0)), reverse=True)
-        if only == "question":
-            ranked = [s for s in ranked if sents[s].strip().endswith("?")]
-        elif only == "statement":
-            ranked = [s for s in ranked if not sents[s].strip().endswith("?")]
-        top = ranked[:18]
+        """Retired agent-authored fallback entry point; never served."""
+        return ""
 
-        def cw(s):
-            return _content_words(tokenize(s.lower()))
-
-        # Collect EVERY valid splice, score each with the fold critic, and return the most
-        # coherent one above the lock — never the first-found (which let repetitive/off-topic
-        # seams through). The pivot MUST be a TOPICAL (schema) word so both halves are about
-        # the same subject: an incidental shared word ("out", "it") spliced two unrelated
-        # sentences into nonsense. Repetition at the seam (pivot word echoed) is rejected.
-        def clean_register(s):
-            return not any(p in s.lower() for p in _REGISTER_LEAK)
-
-        candidates = []
-        for i in range(len(top)):
-            A = sents[top[i]]
-            if not clean_register(A):        # no code/letter/dialogue/list register served
-                continue
-            Aw = tokenize(A); Acw = set(cw(A))
-            for j in range(len(top)):
-                if j == i:
-                    continue
-                B = sents[top[j]]
-                if not clean_register(B):
-                    continue
-                Bw = tokenize(B)
-                pivot = next((p for p in cw(B) if p in Acw and p in schema), None)
-                if not pivot:                       # topical pivot only — no incidental splices
-                    continue
-                ai = next((k for k, w in enumerate(Aw) if w.lower() == pivot), None)
-                bi = next((k for k, w in enumerate(Bw) if w.lower() == pivot), None)
-                if ai is None or bi is None or ai < 2 or bi > len(Bw) - 2:
-                    continue
-                spliced = Aw[:ai] + Bw[bi:]
-                if not (5 <= len(spliced) <= 34):
-                    continue
-                surface = ""
-                for w in spliced:
-                    surface += _emit_piece(surface, w)
-                surface = surface.strip()
-                if not surface or surface == A or surface == B:
-                    continue
-                scw = _content_words(tokenize(surface.lower()))
-                if _degenerate_repeat(scw):         # e.g. "...the ocean ... of the ocean..."
-                    continue
-                sc, _ = self.coherence_score(scw)
-                candidates.append((sc, surface, A, B))
-        if not candidates:
-            return ""
-        candidates.sort(key=lambda c: -c[0])
-        sc, surface, A, B = candidates[0]
-        if sc < 0.30:                               # below the coherence lock -> let the caller fall back
-            return ""
-        self._last_spans = (getattr(self, "_last_spans", []) + [A, B])[-6:]
-        return surface
-
-    def unfold_response(self, schema_words, rng, max_words=45, min_words=5):
-        """THE STRUCTURED UNFOLD (memory_abstraction.ep + coherence_value.ep).
-
-        Compose a FRESH reply from the FOUNDATION (the conversational fluency corpus),
-        CONDITIONED on the schema — the retrieved meaning (content words of the relevant
-        memory + the user's message). The schema steers WHAT the reply is about; the
-        surface comes only from the foundation, so it is generalisation, never verbatim
-        replay of any orbit. At each step the fluency candidates are gated by the coherence
-        lock (coupling to the schema >= 1/2 locks in, off-topic is suppressed), so the reply
-        stays on the meaning. It starts from a foundation opener, not from orbit surface.
-        """
-        self._load_fluency(); self._load_coupling()
-        fl = self._fluency
-        if not fl or not fl.get("uni"):
-            return ""
-        schema = [w.lower() for w in schema_words if len(w) > 3]
-        # RICHER SCHEMA (coherence_value.ep): expand each meaning word with its strongest
-        # foundation neighbours, so the coherence lock matches the whole CONCEPT, not just
-        # the literal words — "ocean" pulls in water/sea/waves, so on-topic fluency locks.
-        gcoup = self._coupling_graph or {}
-        schema_set = set(schema)
-        for w in list(schema):
-            nb = gcoup.get(w)
-            if nb:
-                for n in sorted(nb, key=lambda k: -nb[k])[:8]:
-                    schema_set.add(n)
-        schema = list(schema_set)   # couple against the whole concept
-        # cached openers: frequent foundation words that can begin a reply
-        if getattr(self, "_openers", None) is None:
-            self._openers = [w for w, c in sorted(fl["uni"].items(), key=lambda kv: -kv[1])
-                             if len(w) > 1][:400]
-        LOCK = float(COHERENCE_LOCK)
-        reply = []
-        drift = 0
-        for step in range(max_words):
-            ctx = [w.lower() for w in reply[-UNFOLD_CTX_MAX:]]
-            scored = self._scored_fluent(ctx)[0] if ctx else []
-            if not scored:
-                # opener / dead-end: seed from foundation openers, biased to the schema
-                scored = [(w, (Fraction(3) if w in schema_set else Fraction(1))) for w in self._openers]
-            # The coherence lock (coherence_value.ep) is a THRESHOLD, not a nudge: a CONTENT
-            # word is admitted only if it LOCKS with the meaning (coupling >= 1/2); its weight
-            # scales with how hard it locks. Grammar glue (short words) always flows.
-            locked, glue = [], []
-            for w, sc in scored:
-                wl = w.lower()
-                if len(wl) <= 3:
-                    glue.append((w, sc)); continue
-                coup = 1.0 if wl in schema_set else (self.coupling(wl, schema) if schema else 0.0)
-                if coup >= LOCK:
-                    locked.append((w, sc * Fraction(1 + int(coup * (GEN_B + GEN_C)))))  # stronger lock -> heavier
-            if locked:
-                pool = locked + glue          # on-topic content leads, glue binds it
-                drift = 0
-            else:
-                pool = glue                   # nothing locks: only glue, and count the drift
-                drift += 1
-            if not pool:
-                break
-            # If the reply cannot hold the lock (no on-topic content) and it has said enough,
-            # CLOSE — the fold's closure — rather than drifting into off-topic fluency.
-            if drift >= 4 and len(reply) >= min_words:
-                break
-            total = Fraction(0)
-            for _, s in pool:
-                total += s
-            if total <= 0:
-                break
-            r = Fraction(rng.randrange(1_000_000_000), 1_000_000_000) * total
-            acc = Fraction(0); pick = pool[-1][0]
-            for w, s in pool:
-                acc += s
-                if r < acc:
-                    pick = w; break
-            if pick in _CONTROL:
-                if len(reply) >= min_words:
-                    break
-                continue
-            reply.append(pick)
-            if pick in (".", "!", "?") and len(reply) >= min_words:
-                break
-        # assemble surface with sensible spacing
-        surface = ""
-        for w in reply:
-            surface += _emit_piece(surface, w)
-        return surface.strip()
+    def unfold_response(self, schema_words, rng):
+        """Retired agent-authored fallback entry point; never served."""
+        return ""
 
     def reload_language_stores(self):
         """Drop the cached fluency + coupling stores so the next use reloads the freshly

@@ -25,7 +25,7 @@ Every promoted mechanism must enter through one of three routes:
 2. **Forward forcing:** a new SFT derivation that closes a required computational operation.
 3. **Constitutional re-derivation:** an established operation reconstructed under SFT mathematics and constraints.
 
-Current engineering choices are labelled rather than hidden. Examples include the BM25 constants used by the live pair-retrieval instrument and the `0.30` fallback serving threshold. They are not trained parameters. They are also not represented as Step 322's theorem-forced coherence value `1/2`. Recording that distinction leaves the route open for later derivation, replacement, or constitutional closure.
+Current engineering choices are labelled rather than hidden. The BM25 constants used by the pair-retrieval instrument are one example: they are neither trained parameters nor represented as Step 322's theorem-forced coherence value `1/2`. The former word/generic fallback and its sub-half serving thresholds were agent-authored interpretations, not derived Unison components; that path is retired rather than treated as an unfinished SFT derivation.
 
 ## 3. Architecture
 
@@ -39,7 +39,26 @@ Queries bind through counted overlap, counted kinship, and unit-capacity selecti
 
 ### 3.3 Context and generation
 
-Step 323 forces the five-stage dyadic context cascade and closes it to the One. Step 324 forces the half-One spread/binding lock and the binary minimum of held expressions for fresh re-expression. Free composition is being forward-forced and benchmarked. Agent-selected development measurements are retained with their ownership; they are not declared as Maria's findings or losses.
+Step 323 forces the five-stage dyadic context cascade and closes it to the One. Step 324 forces the half-One spread/binding lock and the binary minimum of held expressions for fresh re-expression. Conversational generalisation is being built as a one-to-one constitutional translation of established causal attention-transformer and training computation into the SFT model; it is not a reconstruction of the retired fallback. Agent-selected development measurements are retained with their ownership; they are not declared as Maria's findings or losses.
+
+The sealed native v4 artifact is the current executable translation. One exact
+role-bound pass over 649,917 prompt/assistant pairs deposited 11,140,970 causal
+targets, 22,415,744 counted Q/K relations, 96,721 key-owned value vectors, and
+81,111,826 deep contextual FFN addresses. Every prompt token—including
+function words, punctuation, and repetition—enters attention. Structural,
+inverse-exposure information, and conditional counted-association heads close
+separately before exact residual addition and LM-head normalization. The
+2,921,639,096-byte artifact is sealed at SHA-256
+`f977d4d8adb0993a0ab0d63b86dea30bd845ae091e84a4859ae826d032a87219`.
+
+This one-block implementation is not yet declared full conversational
+generalisation. A Codex-authored eight-prompt development probe preserved exact
+closure and improved the board-game, desert, astronomy, and public-speaking
+surfaces, while gardening, meal, music, and greeting prompts remained generic.
+The next one-to-one port is stacked prompt self-attention with distinct
+within-turn positional addresses, so value keys represent the whole prompt
+relation rather than one token's marginal response distribution. These are
+implementation observations and directions, not Maria's benchmark result.
 
 ### 3.4 Perception and common memory
 
@@ -65,7 +84,14 @@ Corrections, counted quality, and teacher comparisons are written to explicit le
 
 ### 4.2 Standalone Unison
 
-`python3 omni/benchmarks/verify_omni.py` currently passes **21/21** checks covering forced locks, halt-on-mismatch, sight, hearing, held memory, exact shares, diagnostics, removal-proof voice, and persistence across process death.
+The current Python repository suite passes **37/37** tests, including the
+native transformer role boundary, complete prompt-token retention, active Q/K
+weighting, exact distribution closure, lazy/full argmax equivalence, native
+live routing, and reward-ledger separation. The standalone
+`python3 omni/benchmarks/verify_omni.py` receipt remains the separate **21/21**
+structural instrument covering forced locks, halt-on-mismatch, sight, hearing,
+held memory, exact shares, diagnostics, removal-proof voice, and persistence
+across process death.
 
 The older `verify_unison_results.txt` is a historical **43/47** receipt. Earlier prose incorrectly called it 47/47; this release corrects that documentary drift rather than blending the historical and current suites.
 

@@ -28,6 +28,7 @@ from omni.session import SessionManager
 from omni.segmentation import segment_utterance
 from omni.word_engine import word_engine, generate_multiscale, tokenize, _content_words
 from omni.pair_retrieval import pair_retrieval
+from omni.native_transformer import native_transformer
 from omni.modalities import ImageEncoder, AudioEncoder, extract_modality_segments
 from omni.identity import UnisonIdentity, UserFingerprint
 from omni.observer import ObserverTeacher
@@ -52,7 +53,9 @@ engine = None
 tools_orchestrator = None
 
 class FeedbackView(discord.ui.View):
-    def __init__(self, ukey, context_chars, generated_chars, context_before_prompt, user_prompt_text="", response_text=""):
+    def __init__(self, ukey, context_chars, generated_chars, context_before_prompt,
+                 user_prompt_text="", response_text="", native_feedback=None,
+                 rag_feedback=False):
         super().__init__(timeout=None)
         self.ukey = ukey
         self.context_chars = context_chars
@@ -60,6 +63,8 @@ class FeedbackView(discord.ui.View):
         self.context_before_prompt = context_before_prompt
         self.user_prompt_text = user_prompt_text
         self.response_text = response_text  # For TTS
+        self.native_feedback = list(native_feedback or [])
+        self.rag_feedback = bool(rag_feedback)
         
     @discord.ui.button(label="👍", style=discord.ButtonStyle.success)
     async def thumbs_up(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -67,13 +72,17 @@ class FeedbackView(discord.ui.View):
         # content words (coherence_value.ep) and close the orbit (fold_orbit) — the
         # develop-over-time loop, driven by real feedback.
         try:
-            content = _content_words(tokenize(self.response_text))
-            await asyncio.to_thread(word_engine.reinforce_couplings, content, 1.0)
-            await asyncio.to_thread(word_engine.save_couplings)
+            for prompt, surface in self.native_feedback:
+                await asyncio.to_thread(
+                    native_transformer.mark_feedback, prompt, surface, True)
+            if self.rag_feedback:
+                await asyncio.to_thread(pair_retrieval.mark_feedback, True)
             omni_memory.fold_orbit(list(self.context_chars), ukey=self.ukey)
         except Exception:
             logger.error("thumbs_up learning failed", exc_info=True)
-        await interaction.response.send_message("Couplings reinforced — coherence learned.", ephemeral=True)
+        await interaction.response.send_message(
+            "Feedback recorded for the surface that produced this response.",
+            ephemeral=True)
     
     @discord.ui.button(label="🔊", style=discord.ButtonStyle.primary)
     async def tts_button(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -114,9 +123,11 @@ class FeedbackView(discord.ui.View):
         omni_memory.prune_orbit(full_seq, ukey=self.ukey)
         # LEARN from disapproval: weaken the couplings among the reply's content words.
         try:
-            content = _content_words(tokenize(self.response_text))
-            await asyncio.to_thread(word_engine.weaken_couplings, content, 1.0)
-            await asyncio.to_thread(word_engine.save_couplings)
+            for prompt, surface in self.native_feedback:
+                await asyncio.to_thread(
+                    native_transformer.mark_feedback, prompt, surface, False)
+            if self.rag_feedback:
+                await asyncio.to_thread(pair_retrieval.mark_feedback, False)
         except Exception:
             logger.error("thumbs_down learning failed", exc_info=True)
         
@@ -1057,63 +1068,102 @@ class SFTDiscordClient(discord.Client):
 
         return "".join(generated_chars)
 
-    async def _generate_fragment_multiscale(self, seg_context, session, ukey, diag):
-        """THE STRUCTURED UNFOLD (memory_abstraction.ep + coherence_value.ep).
+    async def _generate_fragment_multiscale(self, seg_context, session, ukey, diag,
+                                            rng=None, trace=None):
+        """Run the currently served RAG/response-selection development stage.
 
-        1. RETRIEVE the meaning (schema): kin_route finds the most-kin memory; its content
-           words + the user's message content are the schema — WHAT the reply is about.
-        2. UNFOLD: compose a FRESH reply from the FOUNDATION (conversational fluency),
-           conditioned on the schema (coherence lock steers it on-topic). The surface comes
-           only from the foundation corpus — generalisation, NEVER verbatim replay of an
-           orbit. No orbit stores, no char recall: there is no verbatim route.
-        It starts incoherent and develops via the learning loop; it never parrots.
+        The historical word/generic fallback is retired. It was an agent-authored
+        interpretation, not a derived Unison component. The native generalisation
+        route is the separate one-to-one causal-transformer translation.
         """
-        # STAGES 2-3 (TRANSLATION_PLAN): the established response-selection pipeline —
-        # BM25×Jaccard pair retrieval + relexicalization + composition, judged-gated by the
-        # calibrated harness. Falls through to the older path when nothing locks (the serve
-        # gate defers weak matches to the teacher/generic path rather than guessing).
+        seg_text = ("".join(str(c) for c in seg_context)
+                    .replace("\x02", " ").replace("\x03", " ").strip())
         try:
-            seg_text = ("".join(str(c) for c in seg_context)
-                        .replace("\x02", " ").replace("\x03", " ").strip())
+            if seg_text and native_transformer.available():
+                native = await asyncio.to_thread(
+                    native_transformer.generate, seg_text, list(session.history_log))
+                if native and not looks_repetitive(native):
+                    if trace is not None:
+                        trace.append({"stage": "native_causal_transformer",
+                                      "segment": seg_text, "surface": native})
+                    return native
+        except Exception:
+            logger.error("native causal transformer failed", exc_info=True)
+
+        # RAG/response selection is an established augmentation surface. It is
+        # not the retired word/generic fallback and does not define the native
+        # transformer architecture.
+        try:
             if seg_text:
                 pr = await asyncio.to_thread(
                     pair_retrieval.reply, seg_text, list(session.history_log), ukey)
                 if pr and not looks_repetitive(pr):
+                    if trace is not None:
+                        trace.append({"stage": "rag_pair_response", "segment": seg_text,
+                                      "surface": pr})
                     return pr
         except Exception:
-            logger.error("pair retrieval failed; falling through", exc_info=True)
-        if self.word_level:
-            try:
-                word_engine.ensure_built(omni_memory, ukey)
-                rng = random.Random()
-
-                def _detok(chars):
-                    return tokenize("".join(chars).replace("\x02", " ").replace("\x03", " ")
-                                    .replace("\x04", " ").replace("\x05", " "))
-
-                routed = await asyncio.to_thread(word_engine.kin_route, seg_context)
-                meaning = _content_words(_detok(routed)) if routed is not None else []
-                # CONVERSATION-LEVEL schema (Stage 2): the current turn leads, but the recent
-                # discussion conditions it too, so replies stay coherent across the thread.
-                # Current-turn words are added twice so specificity-ranking still favours the
-                # live topic over older context.
-                seg_content = _content_words(_detok(seg_context))
-                conv = []
-                for role, text in list(session.turns)[-2:]:
-                    conv += _content_words(tokenize(text))
-                schema = seg_content + seg_content + meaning + conv
-
-                # STAGE 2: multi-span composition (substance + on-topic follow-up), coherence-
-                # checked; foundation-only, non-verbatim (recombined, never a taught orbit).
-                surface = await asyncio.to_thread(word_engine.compose_reply, schema, rng)
-                if surface and not looks_repetitive(surface):
-                    return surface
-            except Exception:
-                logger.error("unfold generation failed", exc_info=True)
+            logger.error("pair retrieval stage failed", exc_info=True)
+        # The historical fallback is retired, not quarantined for reconstruction.
+        if trace is not None:
+            trace.append({"stage": "retired_agent_fallback", "segment": seg_text,
+                          "surface": ""})
         # NO char-engine fallback: the char engine is longest-suffix memory recall =
         # verbatim. There is no verbatim route. If foundation generation yields nothing,
         # return empty rather than replay memory.
+        if trace is not None:
+            trace.append({"stage": "defer", "segment": seg_text, "surface": ""})
         return ""
+
+    async def _generate_turn_surface(self, final_content, image_chars, session,
+                                     ukey, diag, rng=None, trace=None):
+        """Run the complete engine-owned conversational generation surface.
+
+        Discord and the read-only end-to-end instrument call this same method:
+        utterance segmentation, pair-response selection, and fragment
+        composition. The historical word/generic fallback is retired. Teacher judgement and correction happen
+        later and are deliberately not part of the engine-owned surface.
+        """
+        segments = segment_utterance(final_content)
+        fragments = []
+        segment_traces = []
+        native_feedback = []
+        rag_feedback = False
+        for si, seg in enumerate(segments):
+            seg_context = ((image_chars if si == 0 else [])
+                           + ['\x02'] + list(seg) + ['\x03'])
+            stage_trace = []
+            frag = await self._generate_fragment_multiscale(
+                seg_context, session, ukey, diag, rng=rng, trace=stage_trace)
+            segment_traces.append({"segment": seg, "stages": stage_trace,
+                                   "accepted": bool(frag)})
+            if frag:
+                fragments.append(frag)
+                if any(stage.get("stage") == "native_causal_transformer"
+                       for stage in stage_trace):
+                    native_feedback.append((seg, frag))
+                if any(stage.get("stage") == "rag_pair_response"
+                       for stage in stage_trace):
+                    rag_feedback = True
+
+        good = [fragment for fragment in fragments
+                if not looks_repetitive(fragment)]
+        if good:
+            composed = "\n\n".join(good)
+            final_stage = "composed_fragments"
+        elif fragments:
+            composed = fragments[0]
+            final_stage = "raw_fragment"
+        else:
+            composed = ""
+            final_stage = "defer"
+
+        if trace is not None:
+            trace.append({"segments": segment_traces, "final_stage": final_stage,
+                          "surface": composed})
+        self._last_native_feedback = native_feedback
+        self._last_rag_feedback = rag_feedback
+        return composed
 
     async def on_message(self, message):
         # Ignore own messages
@@ -1217,36 +1267,12 @@ class SFTDiscordClient(discord.Client):
             # Split the turn into sub-utterances and answer EACH from its own deepest
             # orbit, then compose the fragments. A single-sentence turn yields one
             # segment, so ordinary chats behave exactly as before.
-            segments = segment_utterance(final_content)
-            fragments = []
-            for si, seg in enumerate(segments):
-                # The image (if any) rides with the first segment's context.
-                seg_context = (image_chars if si == 0 else []) + ['\x02'] + list(seg) + ['\x03']
-                frag = await self._generate_fragment_multiscale(seg_context, session, ukey, diag)
-                if frag:
-                    fragments.append(frag)
-
-            # Keep the coherent fragments; drop ones that collapsed into a cycle.
-            good = [f for f in fragments if not looks_repetitive(f)]
-            if good:
-                composed = "\n\n".join(good)
-            elif fragments:
-                # Nothing coherent survived — show the system's own raw attempt; the
-                # self-feedback path below judges it and queues a /auto correction.
-                composed = fragments[0]
-            else:
-                composed = ""
+            composed = await self._generate_turn_surface(
+                final_content, image_chars, session, ukey, diag)
             generated_chars = list(composed)
 
             diag.finish(len(generated_chars), composed)
 
-            if not generated_chars:
-                # NEVER a hardcoded/canned reply — that is the same violation as verbatim.
-                # Compose a generic conversational reply FROM THE FOUNDATION instead.
-                fb = await asyncio.to_thread(word_engine.generic_reply, random.Random())
-                if fb:
-                    generated_chars = list(fb)
-                    composed = fb
             if generated_chars:
                 out_text = "".join(generated_chars)
 
@@ -1276,7 +1302,9 @@ class SFTDiscordClient(discord.Client):
                 
                 view = FeedbackView(
                     ukey, list(session.working_context), generated_chars, context_before_prompt,
-                    user_prompt_text=message.content, response_text=out_text
+                    user_prompt_text=message.content, response_text=out_text,
+                    native_feedback=getattr(self, "_last_native_feedback", []),
+                    rag_feedback=getattr(self, "_last_rag_feedback", False)
                 )
                 
                 with Timer() as t_send:
@@ -1371,13 +1399,15 @@ class SFTDiscordClient(discord.Client):
                 if self_rating == "bad" or teacher_rating == "bad":
                     # Remove the bad trajectory from the graph.
                     omni_memory.prune_orbit(session.working_context, ukey=ukey)
-                    # LEARN (Stage 3): a bad reply weakens its content-word couplings AND
-                    # demotes the foundation spans it was built from, so retrieval avoids them.
-                    await asyncio.to_thread(word_engine.weaken_couplings, resp_content)
-                    word_engine.reinforce_spans(False)
-                    await asyncio.to_thread(pair_retrieval.mark_feedback, False)  # Laplace counts
-                    await asyncio.to_thread(word_engine.save_couplings)
-                    await asyncio.to_thread(word_engine.save_span_quality)
+                    # Reward observations are deposited only in the learning
+                    # system that produced the served surface.
+                    if getattr(self, "_last_rag_feedback", False):
+                        await asyncio.to_thread(pair_retrieval.mark_feedback, False)
+                    for native_prompt, native_surface in getattr(
+                            self, "_last_native_feedback", []):
+                        await asyncio.to_thread(
+                            native_transformer.mark_feedback,
+                            native_prompt, native_surface, False)
                     reason = teacher_reason if teacher_rating == "bad" else self_reason
 
                     # ── ON-THE-SPOT TEACHING (don't leave the turn dead) ──
@@ -1448,15 +1478,13 @@ class SFTDiscordClient(discord.Client):
                     omni_ledger.add_prompt(ukey, final_content)
                     if teacher_rating == "good":
                         omni_memory.fold_orbit(session.working_context, ukey=ukey)
-                        # LEARN (Stage 3): a good reply reinforces (a) the couplings among its
-                        # content words and (b) the QUALITY of the foundation spans it was
-                        # built from — so retrieval prefers what works. The engine develops
-                        # coherence with use, without memorising the reply.
-                        await asyncio.to_thread(word_engine.reinforce_couplings, resp_content)
-                        word_engine.reinforce_spans(True)
-                        await asyncio.to_thread(pair_retrieval.mark_feedback, True)  # Laplace counts
-                        await asyncio.to_thread(word_engine.save_couplings)
-                        await asyncio.to_thread(word_engine.save_span_quality)
+                        if getattr(self, "_last_rag_feedback", False):
+                            await asyncio.to_thread(pair_retrieval.mark_feedback, True)
+                        for native_prompt, native_surface in getattr(
+                                self, "_last_native_feedback", []):
+                            await asyncio.to_thread(
+                                native_transformer.mark_feedback,
+                                native_prompt, native_surface, True)
                 
                 # RECORD the finalized turn into the append-only history_log so the NEXT
                 # turn's teacher sees the real conversation (e.g. the user's name). The reply
