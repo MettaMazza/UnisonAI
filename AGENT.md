@@ -116,3 +116,8 @@ next concrete re-derived transformer or training operation intended to advance
 it. A development regression is reported but is not a theoretical wall,
 Maria-authored loss, benchmark conclusion or endpoint. A positive measured
 result is reported directly and is not minimized. Maria assigns conclusions.
+End with a **full-trial recommendation**: recommend the next complete
+conversation, learning, or benchmark trial now; recommend it under a named
+condition/protocol; or recommend another development execution first, with
+exact evidence for and against. The recommendation is advisory and cannot
+authorize, veto, delay, or gate a trial Maria orders.

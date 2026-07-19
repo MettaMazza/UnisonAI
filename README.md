@@ -126,12 +126,30 @@ free multi-turn serving probe with non-empty native output on **4/4 first
 turns and 4/4 follow-ups**, preserving every surface without a target answer,
 lexical pass condition, or model judge.
 
-The combined result could indicate that contiguous iteration removed a large
-part of Python's per-row lookup overhead while touching a somewhat larger peak
-working set. The next optimisation is exact response-local batching of repeated
-prefix ranges—one complete aggregation per distinct canonical address, no
-sampling, eviction cap, or changed count—measured against the same eight
-surfaces for latency and resident memory before broader conversations.
+Exact response-local prefix identity now prevents those complete intervals
+from being rescanned under redundant aliases. On the same applied panel this
+reduced generation time again, from **43.244280 to 17.952392 seconds**
+(**58.49% faster**, and **72.86% faster** than the original 66.154159-second
+v5 route), with **8/8 byte-identical surfaces**. Position-value interval reads
+fell from **628 to 57**, semantic2 reads from **628 to 595**, and semantic3
+remained **628** because its canonical prefix uses the complete context.
+Maximum resident memory also improved from **707,772,416 to 677,953,536
+bytes**, slightly below the original v5 measurement of 678,100,992 bytes.
+Nothing in the marginal, attention, sampling, cache lifetime, or response was
+changed.
+
+The combined result indicates that exact canonical cache identity removed a
+large repeated-scan cost while recovering the prior iterator's additional
+working set; the remaining measured work is concentrated in the genuinely
+context-dependent semantic2 and semantic3 prefixes. The next development
+state is a broader source-bound free multi-turn and reward-conditioned
+learning trial on this exact build, retaining transcripts, context continuity,
+learning observations, time, and memory. A complete development conversation
+and learning trial is now recommended: the fixed surfaces are 8/8 identical,
+the previous build already produced non-empty first turns and follow-ups on
+4/4 cases, and the new build is substantially faster without a memory trade.
+An official benchmark conclusion remains Maria's decision after she reviews
+that complete applied receipt; this recommendation is advisory, not a gate.
 
 The next state is broader source-bound free multi-turn conversation,
 held-out transfer, and reward-conditioned learning on the integrated v5 route,

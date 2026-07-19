@@ -12,6 +12,38 @@ from train_eval.build_position_conditioned_relation import observations
 
 
 class NativePositionRuntimeTests(unittest.TestCase):
+    def test_cache_identity_matches_each_exact_canonical_prefix(self):
+        class Relation:
+            def __init__(self):
+                self.calls = Counter()
+
+            def value_counts(self, relative, key):
+                self.calls[("value", relative, key)] += 1
+                return {9: 1}
+
+            def semantic2_counts(self, last, relative, key):
+                self.calls[("semantic2", last, relative, key)] += 1
+                return {10: 1}
+
+            def semantic3_counts(self, previous, last, relative, key):
+                self.calls[("semantic3", previous, last, relative, key)] += 1
+                return {11: 1}
+
+        relation, cache = Relation(), {}
+        read = CountedCausalTransformer._position_counts
+        self.assertEqual(read(relation, cache, "value", 1, 2, 3, 4), {9: 1})
+        self.assertEqual(read(relation, cache, "value", 8, 9, 3, 4), {9: 1})
+        self.assertEqual(read(relation, cache, "semantic2", 1, 2, 3, 4), {10: 1})
+        self.assertEqual(read(relation, cache, "semantic2", 8, 2, 3, 4), {10: 1})
+        self.assertEqual(read(relation, cache, "semantic3", 1, 2, 3, 4), {11: 1})
+        self.assertEqual(read(relation, cache, "semantic3", 8, 2, 3, 4), {11: 1})
+        self.assertEqual(relation.calls, Counter({
+            ("value", 3, 4): 1,
+            ("semantic2", 2, 3, 4): 1,
+            ("semantic3", 1, 2, 3, 4): 1,
+            ("semantic3", 8, 2, 3, 4): 1,
+        }))
+
     def test_sealed_position_relation_changes_the_exact_runtime_scores(self):
         prompts = ["alpha beta", "alpha beta"]
         responses = ["one.", "two."]

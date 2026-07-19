@@ -506,7 +506,17 @@ class CountedCausalTransformer:
                          previous: int, last: int, relative: int,
                          key_id: int) -> dict[int, int]:
         """Read one exact v5 marginal into the response-bounded row cache."""
-        address = (namespace, previous, last, relative, key_id)
+        # Cache identity is the exact canonical prefix actually queried.  The
+        # position-value marginal does not depend on generated-prefix tokens;
+        # semantic2 depends on ``last`` but not ``previous``; semantic3 uses
+        # both. Carrying unused fields in the key rescanned the same complete
+        # interval under multiple aliases without changing its counts.
+        if namespace == "value":
+            address = (namespace, relative, key_id)
+        elif namespace == "semantic2":
+            address = (namespace, last, relative, key_id)
+        else:
+            address = (namespace, previous, last, relative, key_id)
         held = cache.get(address)
         if held is not None:
             return held
