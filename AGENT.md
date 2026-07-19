@@ -103,3 +103,16 @@ Work and commit locally in this repository. Push only when Maria requests it.
 When she requests sync and push, re-run the relevant engine and benchmark
 receipts, synchronize the declared result with the main SFT corpus and related
 papers, then commit and push each repository separately.
+
+## Required end-of-turn report
+
+Every development turn must end with **Completed, Ongoing, Todo, and Suggested
+direction**. For each real conversational, learning, optimisation or benchmark
+execution, name the baseline and candidate and state separately what improved,
+what regressed, and what remained identical in output, context behaviour,
+learning observations, latency, memory, closure and provenance. State what the
+combined pattern could indicate as an explicit engineering inference and the
+next concrete re-derived transformer or training operation intended to advance
+it. A development regression is reported but is not a theoretical wall,
+Maria-authored loss, benchmark conclusion or endpoint. A positive measured
+result is reported directly and is not minimized. Maria assigns conclusions.
