@@ -1,0 +1,29 @@
+{
+  "architecture": {
+    "learned_parameters": 0,
+    "missing_position_address": "no-row-contribution",
+    "position_semantic2": "exact-position-prefix-marginal/v5",
+    "position_semantic3": "exact-position-causal-prefix-marginal/v5",
+    "position_value": "exact-relative-position-marginal/v5"
+  },
+  "bound_receipts": {
+    "train_eval/native_position_relation_v5_packed_receipt.json": "2f6ffcfc7715725f41e5cf4d65a10ffd01ce02b258c1e08d05bbc28c986b0ee9",
+    "train_eval/native_transformer_v4_packed_receipt.json": "d39559260d81c1fae1c486b79ebf9d109268c7a0fd984e3d74f9c161fc29ee12"
+  },
+  "provenance": {
+    "agent": "Codex",
+    "authority": "Implementation artifact; Maria owns conclusions and run gates.",
+    "model": "gpt-5.6-sol",
+    "origin": "Codex implementation seal",
+    "reasoning_level": "high"
+  },
+  "schema": "unison-native-transformer-v5-runtime/v1",
+  "sources": {
+    "omni/native_transformer.py": "8359952eb4bd2f89f5cb4805daa730ca1b9fecdb4b82b4835eb02078056dfbc0",
+    "omni/packed_rows.py": "ca369aa28d253ca916aca7377c6047caa01cd64fbff7da7ec76010ecce20dfcc",
+    "omni/position_relation.py": "e43eccbc8466de285a83565149ea31db1b6786e860c5fba59ed5b1e930915ee7",
+    "omni/prompt_context.py": "6b0e7b78190c39941e3342bfd0436b0f7f08542b43348629d3a3d6d89d307f69",
+    "train_eval/seal_native_transformer_v5_runtime.py": "35ffdacae9441c92e3e3caafffff8ec4f24735608711da1c67e33f8a2c9ca73d"
+  },
+  "status": "sealed"
+}

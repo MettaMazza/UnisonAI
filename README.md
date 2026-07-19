@@ -26,6 +26,11 @@ Unison investigates whether memory, binding, attention, context, generation, per
 - Completed and sealed v5 position relation: **277,583,049** observations,
   **212,395,127** unique canonical entries, **4,369,646,672** canonical bytes,
   and a **5,097,483,048-byte** exact packed representation.
+- Live sealed v5 decoding now addresses that position relation directly. On
+  the fixed eight-prompt applied panel, all **628/628** position-value queries
+  had observed canonical rows; exact semantic2 rows were present for 577 and
+  semantic3 rows for 476. Unobserved deeper addresses contribute no invented
+  row and no retired fallback is reconstructed.
 
 ```sh
 python3 omni/benchmarks/verify_omni.py
@@ -107,17 +112,22 @@ the engine checks the derived replacement and Maria directs the campaign.
 
 ## Active direction
 
-The completed v5 position relation is the next training surface to integrate
-into the native decoder's position-owned values and semantic FFN branches.
-After exact v4/v5 marginal identity and packed/runtime identity are rechecked,
-the next state is to rebuild the full native artifact, run source-bound free
-multi-turn conversation and held-out transfer, retain reward-conditioned
-learning, and continue the benchmark-victory campaign. The character and word
-twin victories, complete causal-transformer translation, 4/4 continuity, 8/8
-transfer, and uncapped 277.6-million-observation position relation establish a
-constructive route to full conversational generalisation; no theoretical wall
-has been derived. Preserve every measurement with its owner and protocol;
-agents do not declare development runs to be Maria's findings, losses, or
-endpoint.
+The complete v5 position relation is integrated into live native decoding and
+sealed against the unchanged v4 counted store. Position-owned value,
+semantic2, and semantic3 projections are read from the one canonical relation;
+an unobserved address contributes no invented row. The fixed eight-prompt
+applied panel completed in 66.154159 seconds at 678,100,992 bytes maximum
+resident memory and preserves every returned surface in its source-bound
+receipt.
+
+The next state is exact serving optimisation followed by source-bound free
+multi-turn conversation, held-out transfer, and reward-conditioned learning on
+the integrated v5 route, then continued Maria-authorized benchmark work. The
+character and word twin victories, complete causal-transformer translation,
+4/4 continuity, 8/8 transfer, and active 277.6-million-observation position
+relation establish a constructive route to full conversational generalisation;
+no theoretical wall has been derived. Preserve every measurement with its
+owner and protocol; agents do not declare development runs to be Maria's
+findings, losses, or endpoint.
 
 Built by **Maria Smith, Ernos Labs**.

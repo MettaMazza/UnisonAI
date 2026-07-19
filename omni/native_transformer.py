@@ -48,6 +48,14 @@ DEFAULT_REWARD = os.path.join(os.path.dirname(__file__), "native_transformer_rew
 DEFAULT_PACKED_RECEIPT = os.path.join(
     os.path.dirname(os.path.dirname(__file__)),
     "train_eval", "native_transformer_v4_packed_receipt.json")
+DEFAULT_POSITION_RELATION = os.path.join(
+    os.path.dirname(__file__), "native_position_relation_v5.bin")
+DEFAULT_POSITION_RECEIPT = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)),
+    "train_eval", "native_position_relation_v5_packed_receipt.json")
+DEFAULT_RUNTIME_RECEIPT = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)),
+    "train_eval", "native_transformer_v5_runtime_receipt.json")
 _TAILS = frozenset({"s", "t", "re", "ve", "ll", "d", "m"})
 _CLOSE = frozenset(".,!?;:)]}%…’\"'")
 _OPEN = frozenset("([{“‘")
@@ -224,11 +232,21 @@ class CountedCausalTransformer:
 
     def __init__(self, store_path: str = DEFAULT_STORE,
                  reward_path: str = DEFAULT_REWARD, record: dict | None = None,
-                 packed_path: str = DEFAULT_PACKED):
+                 packed_path: str = DEFAULT_PACKED,
+                 position_path: str | None = None,
+                 position_receipt_path: str | None = None):
         self.store_path = store_path
         self.packed_path = packed_path
         self.reward_path = reward_path
+        self._position_explicit = (position_path is not None
+                                   or position_receipt_path is not None)
+        self._position_default_allowed = record is None
+        self.position_path = position_path or DEFAULT_POSITION_RELATION
+        self.position_receipt_path = (
+            position_receipt_path or DEFAULT_POSITION_RECEIPT)
         self._record = record
+        self._position_relation = None
+        self.last_position_runtime = None
         self._reward = None
         self._reward_events = None
         self._unit_cache = {}
@@ -236,6 +254,25 @@ class CountedCausalTransformer:
     def available(self) -> bool:
         return (self._record is not None or os.path.isdir(self.packed_path)
                 or os.path.exists(self.store_path))
+
+    def position_available(self) -> bool:
+        return (self._position_relation is not None
+                or ((self._position_explicit or self._position_default_allowed)
+                    and os.path.isfile(self.position_path)
+                    and os.path.isfile(self.position_receipt_path)))
+
+    def _position_store(self):
+        """Open the sealed complete position relation only when decoding uses it."""
+        if self._position_relation is None and self.position_available():
+            from omni.position_relation import PackedPositionRelation
+            self._position_relation = PackedPositionRelation(
+                self.position_path, self.position_receipt_path)
+        return self._position_relation
+
+    def close(self) -> None:
+        if self._position_relation is not None:
+            self._position_relation.close()
+            self._position_relation = None
 
     def _store(self) -> dict:
         if self._record is None:
@@ -248,26 +285,12 @@ class CountedCausalTransformer:
                     manifest_path = os.path.join(self.packed_path, "manifest.json")
                     with open(manifest_path, "rb") as handle:
                         manifest_hash = hashlib.sha256(handle.read()).hexdigest()
-                    source_root = os.path.dirname(os.path.dirname(__file__))
-                    expected_sources = receipt.get("sources", {})
-                    runtime_sources = (
-                        "omni/native_transformer.py",
-                        "omni/packed_rows.py",
-                        "omni/prompt_context.py",
-                    )
-                    source_match = True
-                    for relative_path in runtime_sources:
-                        source_path = os.path.join(source_root, relative_path)
-                        with open(source_path, "rb") as handle:
-                            source_hash = hashlib.sha256(handle.read()).hexdigest()
-                        if expected_sources.get(relative_path) != source_hash:
-                            source_match = False
                     if (receipt.get("schema")
                             != "unison-packed-native-transformer-receipt/v1"
                             or receipt.get("status") != "sealed"
-                            or receipt.get("manifest_sha256") != manifest_hash
-                            or not source_match):
+                            or receipt.get("manifest_sha256") != manifest_hash):
                         halt_violation("packed native transformer receipt mismatch")
+                    self._validate_runtime_seal()
                 from omni.packed_rows import load_packed_record
                 self._record = load_packed_record(self.packed_path)
             else:
@@ -277,6 +300,31 @@ class CountedCausalTransformer:
         if record.get("schema") != SCHEMA or record.get("role_policy") != ROLE_POLICY:
             halt_violation("native transformer store provenance mismatch")
         return record
+
+    @staticmethod
+    def _validate_runtime_seal() -> None:
+        """Bind the unchanged v4 counts and v5 position relation to this code."""
+        if not os.path.isfile(DEFAULT_RUNTIME_RECEIPT):
+            halt_violation("native transformer v5 runtime receipt missing")
+        with open(DEFAULT_RUNTIME_RECEIPT, "r") as handle:
+            receipt = json.load(handle)
+        source_root = os.path.dirname(os.path.dirname(__file__))
+        if (receipt.get("schema") != "unison-native-transformer-v5-runtime/v1"
+                or receipt.get("status") != "sealed"):
+            halt_violation("native transformer v5 runtime receipt mismatch")
+        for relative_path, expected in receipt.get("sources", {}).items():
+            source_path = os.path.join(source_root, relative_path)
+            with open(source_path, "rb") as handle:
+                observed = hashlib.sha256(handle.read()).hexdigest()
+            if observed != expected:
+                halt_violation("native transformer v5 runtime source drift")
+        bound_receipts = receipt.get("bound_receipts", {})
+        for relative_path, expected in bound_receipts.items():
+            source_path = os.path.join(source_root, relative_path)
+            with open(source_path, "rb") as handle:
+                observed = hashlib.sha256(handle.read()).hexdigest()
+            if observed != expected:
+                halt_violation("native transformer v5 bound receipt drift")
 
     def _rewards(self) -> dict:
         if self._reward is None:
@@ -315,6 +363,13 @@ class CountedCausalTransformer:
         elif os.path.exists(self.store_path):
             with open(self.store_path, "rb") as handle:
                 identity["sha256"] = hashlib.sha256(handle.read()).hexdigest()
+        position_relation = self._position_store()
+        if position_relation is not None:
+            identity["position_relation"] = position_relation.identity()
+            identity["position_value"] = (
+                "exact-relative-position-marginal/v5")
+            identity["position_semantic_ffn"] = (
+                "exact-relative-position-prefix-marginals/v5")
         return identity
 
     def _positional_keys(self, text: str,
@@ -433,6 +488,40 @@ class CountedCausalTransformer:
                     key_id,
                 ))
         return routed
+
+    @staticmethod
+    def _relative_prompt_position(context, position_index: int) -> int:
+        """Return the training relation's end-relative position address."""
+        address = context.positions[position_index]
+        end = max(
+            held.within_turn for held in context.positions
+            if held.turn_age == address.turn_age)
+        relative = end - address.within_turn
+        if relative < 0:
+            halt_violation("native position relation produced a negative address")
+        return relative
+
+    @staticmethod
+    def _position_counts(position_relation, cache: dict, namespace: str,
+                         previous: int, last: int, relative: int,
+                         key_id: int) -> dict[int, int]:
+        """Read one exact v5 marginal into the response-bounded row cache."""
+        address = (namespace, previous, last, relative, key_id)
+        held = cache.get(address)
+        if held is not None:
+            return held
+        if namespace == "value":
+            held = position_relation.value_counts(relative, key_id)
+        elif namespace == "semantic2":
+            held = position_relation.semantic2_counts(
+                last, relative, key_id)
+        elif namespace == "semantic3":
+            held = position_relation.semantic3_counts(
+                previous, last, relative, key_id)
+        else:
+            halt_violation("unknown native position-relation marginal")
+        cache[address] = held
+        return held
 
     @staticmethod
     def _decoder_value_sources(addressed: Mapping[int, Fraction], context=None):
@@ -648,7 +737,9 @@ class CountedCausalTransformer:
                                  keys: Mapping[int, Fraction],
                                  prepared_values=None,
                                  decoder_context=None,
-                                 copy_counts: Mapping[int, int] | None = None) \
+                                 copy_counts: Mapping[int, int] | None = None,
+                                 position_relation=None,
+                                 position_cache: dict | None = None) \
             -> dict[int, int]:
         """Return one common-denominator integer form of the exact residual.
 
@@ -662,15 +753,27 @@ class CountedCausalTransformer:
             last_id, keys, prepared_values=prepared_values)
         position_sources = self._decoder_position_sources(
             addressed, decoder_context)
+        if position_relation is None and decoder_context is not None:
+            position_relation = self._position_store()
+        if position_cache is None:
+            position_cache = {}
         groups: dict[int, defaultdict[int, int]] = {}
 
-        value_rows = [
-            (weight,
-             (prepared_values[key_id][0]
-              if prepared_values is not None and key_id in prepared_values
-              else record["values"].get(key_id)))
-            for _, weight, key_id in position_sources
-        ]
+        value_rows = []
+        for position_index, weight, key_id in position_sources:
+            counts = None
+            if position_relation is not None and position_index is not None:
+                relative = self._relative_prompt_position(
+                    decoder_context, position_index)
+                counts = self._position_counts(
+                    position_relation, position_cache, "value",
+                    prev_id, last_id, relative, key_id)
+            if position_relation is None:
+                counts = (
+                    prepared_values[key_id][0]
+                    if prepared_values is not None and key_id in prepared_values
+                    else record["values"].get(key_id))
+            value_rows.append((weight, counts))
         value_rows = [(weight, counts) for weight, counts in value_rows if counts]
         value_weight = sum((weight for weight, _ in value_rows), Fraction(0))
         if value_weight > 0:
@@ -678,16 +781,37 @@ class CountedCausalTransformer:
                 self._add_integer_row(groups, counts, weight / value_weight)
 
         semantic_rows = []
-        for _, weight, key_id in position_sources:
-            counts = record["semantic_ffn3"].get((prev_id, last_id, key_id))
-            if not counts:
-                counts = record["semantic_ffn"].get((last_id, key_id))
+        semantic2_rows = []
+        for position_index, weight, key_id in position_sources:
+            counts = None
+            if position_relation is not None and position_index is not None:
+                relative = self._relative_prompt_position(
+                    decoder_context, position_index)
+                counts = self._position_counts(
+                    position_relation, position_cache, "semantic3",
+                    prev_id, last_id, relative, key_id)
+                semantic2 = self._position_counts(
+                    position_relation, position_cache, "semantic2",
+                    prev_id, last_id, relative, key_id)
+                if semantic2:
+                    semantic2_rows.append((weight, semantic2))
+            if position_relation is None:
+                counts = record["semantic_ffn3"].get(
+                    (prev_id, last_id, key_id))
+                if not counts:
+                    counts = record["semantic_ffn"].get((last_id, key_id))
             if counts:
                 semantic_rows.append((weight, counts))
         semantic_weight = sum((weight for weight, _ in semantic_rows), Fraction(0))
         if semantic_weight > 0:
             for weight, counts in semantic_rows:
                 self._add_integer_row(groups, counts, weight / semantic_weight)
+        semantic2_weight = sum(
+            (weight for weight, _ in semantic2_rows), Fraction(0))
+        if semantic2_weight > 0:
+            for weight, counts in semantic2_rows:
+                self._add_integer_row(
+                    groups, counts, weight / semantic2_weight)
 
         counts = record["ffn3"].get((prev_id, last_id))
         if not counts:
@@ -716,12 +840,16 @@ class CountedCausalTransformer:
                       keys: Mapping[int, Fraction],
                       prepared_values=None,
                       decoder_context=None,
-                      copy_counts: Mapping[int, int] | None = None) \
+                      copy_counts: Mapping[int, int] | None = None,
+                      position_relation=None,
+                      position_cache: dict | None = None) \
             -> Optional[int]:
         """Exact integer greedy argmax, equivalent to the normalized LM head."""
         scores = self._integer_residual_scores(
             prev_id, last_id, keys, prepared_values=prepared_values,
-            decoder_context=decoder_context, copy_counts=copy_counts)
+            decoder_context=decoder_context, copy_counts=copy_counts,
+            position_relation=position_relation,
+            position_cache=position_cache)
         if not scores:
             return None
         rewards = self._rewards()
@@ -870,12 +998,16 @@ class CountedCausalTransformer:
         out: list[str] = []
         generated_ids: list[int] = []
         copy_admitted = self._induction_copy_admitted(decoder_context)
+        position_relation = self._position_store()
+        position_cache = {}
         for _ in range(token_budget):
             copy_counts = (self._induction_copy_counts(
                 decoder_context, generated_ids) if copy_admitted else {})
             next_id = self.next_token_id(
                 prev_id, last_id, keys, prepared_values=prepared_values,
-                decoder_context=decoder_context, copy_counts=copy_counts)
+                decoder_context=decoder_context, copy_counts=copy_counts,
+                position_relation=position_relation,
+                position_cache=position_cache)
             if next_id is None:
                 break
             if next_id == record["eos_id"]:
@@ -883,6 +1015,21 @@ class CountedCausalTransformer:
             out.append(record["words"][next_id])
             generated_ids.append(next_id)
             prev_id, last_id = last_id, next_id
+        if position_relation is not None:
+            by_namespace = {}
+            for namespace in ("value", "semantic2", "semantic3"):
+                rows = [counts for address, counts in position_cache.items()
+                        if address[0] == namespace]
+                by_namespace[namespace] = {
+                    "queries": len(rows),
+                    "observed": sum(bool(counts) for counts in rows),
+                    "unobserved": sum(not counts for counts in rows),
+                }
+            self.last_position_runtime = {
+                "schema": "unison-position-runtime-trace/v1",
+                "canonical_queries": len(position_cache),
+                "by_namespace": by_namespace,
+            }
         return out
 
     def generate_contextual_tokens(self, text: str,

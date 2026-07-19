@@ -1,0 +1,253 @@
+{
+  "activation_seconds": 0.034891,
+  "elapsed_seconds": 66.189107,
+  "generation_seconds": 66.154159,
+  "identity": {
+    "copy_attention": "role-conditioned-longest-induction-head/v1",
+    "decode_kernel": "exact-lcm-integer-cross-product/v1",
+    "decoder_context": "position-preserving-value-semantic-routing/v1",
+    "position_relation": {
+      "path": "/Users/mettamazza/Desktop/UnisonAI/omni/native_position_relation_v5.bin",
+      "rows": 212395127,
+      "schema": "unison-packed-position-relation/v1",
+      "sha256": "f1e355cfb0e93d781d79452e12c58bdb3e95635acb5408f7a98deb9000ca579c"
+    },
+    "position_semantic_ffn": "exact-relative-position-prefix-marginals/v5",
+    "position_value": "exact-relative-position-marginal/v5",
+    "prompt_context": "five-layer-ranked-cascade-final-position/v1",
+    "responses": 649917,
+    "role_policy": "prompt-keys/assistant-causal-values",
+    "schema": "unison-counted-causal-transformer/v4",
+    "serving_representation": "unison-packed-exact-rows/v1",
+    "sha256": "f977d4d8adb0993a0ab0d63b86dea30bd845ae091e84a4859ae826d032a87219",
+    "source_pairs_sha256": "6a5dcc9e9d2227e3445a7d6630ce52807e9c58d7259bbb488f53d9f05c022b17",
+    "tokens": 11140970,
+    "value_cache": "prompt-bounded-exact/v1"
+  },
+  "maximum_resident_bytes": 678100992,
+  "provenance": {
+    "agent": "Codex",
+    "authority": "Not Maria's benchmark, finding, parity definition, loss, victory, promotion, or run gate.",
+    "model": "gpt-5.6-sol",
+    "origin": "Codex implementation development run",
+    "reasoning_level": "high"
+  },
+  "rows": [
+    {
+      "position_runtime": {
+        "by_namespace": {
+          "semantic2": {
+            "observed": 60,
+            "queries": 60,
+            "unobserved": 0
+          },
+          "semantic3": {
+            "observed": 60,
+            "queries": 60,
+            "unobserved": 0
+          },
+          "value": {
+            "observed": 60,
+            "queries": 60,
+            "unobserved": 0
+          }
+        },
+        "canonical_queries": 180,
+        "schema": "unison-position-runtime-trace/v1"
+      },
+      "prompt": "Hello, how are you?",
+      "seconds": 8.139817,
+      "surface": "I'm doing well, thank you for asking."
+    },
+    {
+      "position_runtime": {
+        "by_namespace": {
+          "semantic2": {
+            "observed": 49,
+            "queries": 49,
+            "unobserved": 0
+          },
+          "semantic3": {
+            "observed": 46,
+            "queries": 49,
+            "unobserved": 3
+          },
+          "value": {
+            "observed": 49,
+            "queries": 49,
+            "unobserved": 0
+          }
+        },
+        "canonical_queries": 147,
+        "schema": "unison-position-runtime-trace/v1"
+      },
+      "prompt": "What do you enjoy about gardening?",
+      "seconds": 6.12967,
+      "surface": "I love to cook too."
+    },
+    {
+      "position_runtime": {
+        "by_namespace": {
+          "semantic2": {
+            "observed": 88,
+            "queries": 98,
+            "unobserved": 10
+          },
+          "semantic3": {
+            "observed": 68,
+            "queries": 98,
+            "unobserved": 30
+          },
+          "value": {
+            "observed": 98,
+            "queries": 98,
+            "unobserved": 0
+          }
+        },
+        "canonical_queries": 294,
+        "schema": "unison-position-runtime-trace/v1"
+      },
+      "prompt": "I am nervous about public speaking.",
+      "seconds": 7.451365,
+      "surface": "I know you've been studying hard and i'm confident in your abilities."
+    },
+    {
+      "position_runtime": {
+        "by_namespace": {
+          "semantic2": {
+            "observed": 83,
+            "queries": 90,
+            "unobserved": 7
+          },
+          "semantic3": {
+            "observed": 67,
+            "queries": 90,
+            "unobserved": 23
+          },
+          "value": {
+            "observed": 90,
+            "queries": 90,
+            "unobserved": 0
+          }
+        },
+        "canonical_queries": 270,
+        "schema": "unison-position-runtime-trace/v1"
+      },
+      "prompt": "What makes board games interesting?",
+      "seconds": 11.506996,
+      "surface": "I love the way they make me feel like i'm not sure yet."
+    },
+    {
+      "position_runtime": {
+        "by_namespace": {
+          "semantic2": {
+            "observed": 69,
+            "queries": 72,
+            "unobserved": 3
+          },
+          "semantic3": {
+            "observed": 52,
+            "queries": 72,
+            "unobserved": 20
+          },
+          "value": {
+            "observed": 72,
+            "queries": 72,
+            "unobserved": 0
+          }
+        },
+        "canonical_queries": 216,
+        "schema": "unison-position-runtime-trace/v1"
+      },
+      "prompt": "Tell me something interesting about the desert.",
+      "seconds": 6.4273,
+      "surface": "I love to go hiking and camping."
+    },
+    {
+      "position_runtime": {
+        "by_namespace": {
+          "semantic2": {
+            "observed": 40,
+            "queries": 42,
+            "unobserved": 2
+          },
+          "semantic3": {
+            "observed": 32,
+            "queries": 42,
+            "unobserved": 10
+          },
+          "value": {
+            "observed": 42,
+            "queries": 42,
+            "unobserved": 0
+          }
+        },
+        "canonical_queries": 126,
+        "schema": "unison-position-runtime-trace/v1"
+      },
+      "prompt": "Why do people enjoy astronomy?",
+      "seconds": 6.770606,
+      "surface": "I love astronomy too! i love astronomy too! i love astronomy too! i love astronomy too! i love astronomy too! i love astronomy too! i love"
+    },
+    {
+      "position_runtime": {
+        "by_namespace": {
+          "semantic2": {
+            "observed": 124,
+            "queries": 153,
+            "unobserved": 29
+          },
+          "semantic3": {
+            "observed": 91,
+            "queries": 153,
+            "unobserved": 62
+          },
+          "value": {
+            "observed": 153,
+            "queries": 153,
+            "unobserved": 0
+          }
+        },
+        "canonical_queries": 459,
+        "schema": "unison-position-runtime-trace/v1"
+      },
+      "prompt": "Suggest a comforting meal for a cold evening.",
+      "seconds": 12.221661,
+      "surface": "The sweetness of the banana lends itself well to the rich, slightly bitter taste of the banana lends itself well to the rich, slightly bitter taste of the banana lends"
+    },
+    {
+      "position_runtime": {
+        "by_namespace": {
+          "semantic2": {
+            "observed": 64,
+            "queries": 64,
+            "unobserved": 0
+          },
+          "semantic3": {
+            "observed": 60,
+            "queries": 64,
+            "unobserved": 4
+          },
+          "value": {
+            "observed": 64,
+            "queries": 64,
+            "unobserved": 0
+          }
+        },
+        "canonical_queries": 192,
+        "schema": "unison-position-runtime-trace/v1"
+      },
+      "prompt": "What kind of music do you enjoy?",
+      "seconds": 7.506744,
+      "surface": "I like to do for fun?"
+    }
+  ],
+  "schema": "unison-native-transformer-v5-applied-panel/v1",
+  "sources": {
+    "omni/native_transformer.py": "8359952eb4bd2f89f5cb4805daa730ca1b9fecdb4b82b4835eb02078056dfbc0",
+    "omni/position_relation.py": "e43eccbc8466de285a83565149ea31db1b6786e860c5fba59ed5b1e930915ee7",
+    "prior_v4_applied_receipt": "f46de7af536e895a178c1ad9bb22323d1004c8bd7beef9a927032060f00524c4",
+    "train_eval/native_transformer_v5_runtime_receipt.json": "2d9a02b74a4bcb7d88a0d0828205c979a3699c29105f5fc8c2d020461664da70"
+  },
+  "status": "completed"
+}

@@ -7,7 +7,7 @@
 
 UnisonAI is the artificial-intelligence computational proof of the Smithian Fold Theory of Everything (SFT). SFT begins with one machine-checked, self-proven theorem—*there is no nothing*—with zero axioms; the theorem forces the One and fold. Unison asks whether the operations normally purchased through trained parameters can instead be forced, forward-forced, or constitutionally re-derived as inspectable laws.
 
-The current architecture has zero trained parameters in its native memory, binding, generation, context, perception, learning, and verification mechanisms. The main SFT corpus executes 326 proof suites and 2,002 checks with zero failures. Its Unison laws include Step 322 coherence (8/8), Step 323 contextual integration (14/14), and Step 324 generation selection (13/13). The current standalone omni verifier passes 21/21 checks and the native-transformer repository suite passes 55/55. The sealed v4 causal store contains 649,917 role-bound pairs and 11,140,970 assistant targets; the completed v5 position relation contains 277,583,049 observations and 212,395,127 unique canonical entries. These are executable receipts for the derived-law architecture. Benchmark victory and continued forward forcing are active objectives; agents do not declare walls or endpoints.
+The current architecture has zero trained parameters in its native memory, binding, generation, context, perception, learning, and verification mechanisms. The main SFT corpus executes 326 proof suites and 2,002 checks with zero failures. Its Unison laws include Step 322 coherence (8/8), Step 323 contextual integration (14/14), and Step 324 generation selection (13/13). The current standalone omni verifier passes 21/21 checks; the prior complete native-transformer suite receipt is 55/55 and the new v5 runtime's focused checks pass 4/4. The sealed v4 causal store contains 649,917 role-bound pairs and 11,140,970 assistant targets; the live v5 position relation contains 277,583,049 observations and 212,395,127 unique canonical entries. These are executable receipts for the derived-law architecture. Benchmark victory and continued forward forcing are active objectives; agents do not declare walls or endpoints.
 
 This release separates theorem-forced quantities, constitutionally re-derived algorithms, and disclosed engineering quantities. That provenance distinction protects the argument: engineering constants are the current implementation status of a component, not a claim that the component is permanently outside SFT.
 
@@ -88,6 +88,19 @@ at SHA-256 `f1e355cfb0e93d781d79452e12c58bdb3e95635acb5408f7a98deb9000ca579c`.
 No observation, position, or corpus row is sampled, pruned, capped, fitted, or
 triplicated.
 
+The packed v5 relation is now integrated into the live autoregressive runtime,
+sealed together with the unchanged v4 counted store and the exact runtime
+sources. For every retained prompt occurrence, the decoder reads exact
+relative-position value, semantic2, and semantic3 projections from the same
+canonical relation. There is no historical word/generic fallback and an
+unobserved deeper address contributes no invented row. On the fixed
+eight-prompt applied panel, all **628/628** value queries were observed;
+semantic2 supplied 577 observed addresses and semantic3 supplied 476. The
+panel completed in **66.154159 seconds** with **678,100,992 bytes** maximum
+resident memory and preserves every prompt, surface, runtime address census,
+artifact identity, and source hash. This is applied implementation evidence;
+Maria Smith determines its conclusion and benchmark status.
+
 Applied native evidence also exercises contextual transfer. Role-conditioned
 induction/copy attention produced **4/4** continuity on the matched multi-turn
 panel and **8/8** exact continuations on a separate transfer panel. Requiring
@@ -120,7 +133,7 @@ Corrections, counted quality, and teacher comparisons are written to explicit le
 
 ### 4.2 Standalone Unison
 
-The current Python repository suite passes **55/55**, including tests for the
+The prior complete Python repository-suite receipt passes **55/55**, including tests for the
 native transformer role boundary, complete prompt-token retention, active Q/K
 weighting, exact distribution closure, lazy/full argmax equivalence, packed-row
 and surface identity, bounded-cache identity, sealed-source drift halts, native
@@ -128,7 +141,9 @@ live routing, and reward-ledger separation. The standalone
 `python3 omni/benchmarks/verify_omni.py` receipt remains the separate **21/21**
 structural instrument covering forced locks, halt-on-mismatch, sight, hearing,
 held memory, exact shares, diagnostics, removal-proof voice, and persistence
-across process death.
+across process death. The integrated v5 path adds focused canonical-relation,
+runtime-score, activation, and legacy-closure checks, **4/4** passing in the
+targeted new-code execution.
 
 The older `verify_unison_results.txt` is a historical **43/47** receipt. Earlier prose incorrectly called it 47/47; this release corrects that documentary drift rather than blending the historical and current suites.
 
@@ -173,12 +188,12 @@ The decode instruments and their raw receipts are documented in `omni/benchmarks
 
 ## 8. Current stage, next state, and theoretical reach
 
-The complete v5 position relation is now the current integration surface. The
-next work is to load its exact packed form into native serving, prove v4/v5
-marginal identity, rebuild the full causal artifact, and execute source-bound
-held-out free multi-turn conversation with reward-conditioned learning
-preserved. The same real path then advances through Maria-authorized benchmark
-runs.
+The complete v5 position relation is now active in native serving. Its exact
+packed identity, unchanged counted-store identity, position-owned projections,
+and applied eight-prompt address census are sealed. The next work is exact
+serving optimisation and source-bound held-out free multi-turn conversation,
+with reward-conditioned learning preserved. The same real path then advances
+through Maria-authorized benchmark runs.
 
 Full conversational generalisation is not theoretically walled off by the
 current evidence. The established causal-transformer organs already execute in
@@ -187,8 +202,9 @@ blocks, multi-head Q/K/V, semantic FFNs, residual, normalization to the One, LM
 head, autoregression, reward-conditioned learning, and exact packed serving.
 Counted prediction has beaten matched trained twins; contextual continuity and
 transfer have executed; and the complete uncapped 277.6-million-observation
-position relation is sealed. The current frontier is integration and continued
-applied development, not a missing theorem-derived principle. Preserve every
+position relation is active. The current frontier is continued applied
+conversation, learning, and benchmark development, not a missing
+theorem-derived principle. Preserve every
 measurement with its provenance. Agents do not declare development runs to be
 Maria's findings, losses, or endpoint.
 
