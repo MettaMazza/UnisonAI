@@ -56,7 +56,10 @@ def main() -> None:
         "maximum_resident_bytes": maximum_bytes,
         "rows": rows,
     }
-    suffix = "bounded" if identity.get("value_cache") else "baseline"
+    if identity.get("prompt_context"):
+        suffix = "contextual"
+    else:
+        suffix = "bounded" if identity.get("value_cache") else "baseline"
     output = ROOT / f"train_eval/native_transformer_latency_v4_packed_{suffix}_20260719.json"
     stage = output.with_name(output.name + ".building")
     stage.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")

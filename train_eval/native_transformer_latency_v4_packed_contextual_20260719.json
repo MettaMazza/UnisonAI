@@ -1,0 +1,69 @@
+{
+  "generation_seconds": 37.813314,
+  "identity": {
+    "decode_kernel": "exact-lcm-integer-cross-product/v1",
+    "prompt_context": "five-layer-ranked-cascade-final-position/v1",
+    "responses": 649917,
+    "role_policy": "prompt-keys/assistant-causal-values",
+    "schema": "unison-counted-causal-transformer/v4",
+    "serving_representation": "unison-packed-exact-rows/v1",
+    "sha256": "f977d4d8adb0993a0ab0d63b86dea30bd845ae091e84a4859ae826d032a87219",
+    "source_pairs_sha256": "6a5dcc9e9d2227e3445a7d6630ce52807e9c58d7259bbb488f53d9f05c022b17",
+    "tokens": 11140970,
+    "value_cache": "prompt-bounded-exact/v1"
+  },
+  "load_seconds": 0.046478,
+  "maximum_resident_bytes": 583368704,
+  "provenance": {
+    "agent": "Codex",
+    "authority": "Not Maria's benchmark, finding, parity definition, or run gate.",
+    "model": "gpt-5.6-sol",
+    "origin": "Codex-authored implementation timing",
+    "reasoning_level": "high"
+  },
+  "rows": [
+    {
+      "prompt": "Hello, how are you?",
+      "seconds": 4.522281,
+      "surface": "I like to do for fun?"
+    },
+    {
+      "prompt": "What do you enjoy about gardening?",
+      "seconds": 4.129148,
+      "surface": "I like to do for fun?"
+    },
+    {
+      "prompt": "I am nervous about public speaking.",
+      "seconds": 4.315472,
+      "surface": "I don't know. i just want to do for fun?"
+    },
+    {
+      "prompt": "What makes board games interesting?",
+      "seconds": 2.339068,
+      "surface": "I like to play video games."
+    },
+    {
+      "prompt": "Tell me something interesting about the desert.",
+      "seconds": 5.633799,
+      "surface": "I don't have access to the desert."
+    },
+    {
+      "prompt": "Why do people enjoy astronomy?",
+      "seconds": 5.630464,
+      "surface": "I do not have access to the earliest civilizations, including the babylonians and the egyptians."
+    },
+    {
+      "prompt": "Suggest a comforting meal for a cold evening.",
+      "seconds": 3.993733,
+      "surface": "I know, right?"
+    },
+    {
+      "prompt": "What kind of music do you enjoy?",
+      "seconds": 7.249349,
+      "surface": "I like to do for fun?"
+    }
+  ],
+  "schema": "unison-native-transformer-latency/v4-packed-integer",
+  "source_sha256": "c571aa2c13b0640dba41cfcfb96cbe39b729a197a573a8d426404963452ba4cf",
+  "status": "completed"
+}

@@ -132,10 +132,13 @@ thousands of real responses to "hello, how are you").
   and bounded per-response row preparation preserve token identity. Its Codex smoke improves
   several topical operations. The exact corpus sizing receipt finds 475,093,198 dense
   position pairs per layer and 2,375,465,990 pair touches through the forced five-step
-  integration depth. Port within-turn positional addresses and stacked prompt self-attention
-  through shared counted relations and streamed response-local position state—preserving the
-  complete computation without materializing duplicate layer rows—then remeasure the same
-  native route.
+  integration depth. Within-turn positional addresses and the five stacked prompt blocks are
+  now built through shared counted relations and response-local position state. Exact Q/K
+  products select the forced ranked cascade, all 49 repository tests pass, and the promoted
+  native route completes the fixed eight-prompt Codex timing in 37.813314 seconds at
+  583,368,704 bytes resident. Port the established contextual hidden-state→decoder value/FFN
+  training relation so the final prompt position drives context-conditioned response state,
+  then remeasure the same native route.
 - **Stage 4 — Learning + state.** Pair-quality counts; taught-pair precedence; **port the
   relation-facts channel** (name recall); verify multi-turn recall on the no-stubs e2e.
 - **Stage 5 — Honest replacements.** Re-measure everything retracted (gen quality n≥32,

@@ -1,0 +1,105 @@
+{
+  "context_seconds": 7.886847,
+  "generation_seconds": 32.25929,
+  "identity": {
+    "decode_kernel": "exact-lcm-integer-cross-product/v1",
+    "prompt_context": "five-layer-ranked-cascade-final-position/v1",
+    "responses": 649917,
+    "role_policy": "prompt-keys/assistant-causal-values",
+    "schema": "unison-counted-causal-transformer/v4",
+    "serving_representation": "unison-packed-exact-rows/v1",
+    "sha256": "f977d4d8adb0993a0ab0d63b86dea30bd845ae091e84a4859ae826d032a87219",
+    "source_pairs_sha256": "6a5dcc9e9d2227e3445a7d6630ce52807e9c58d7259bbb488f53d9f05c022b17",
+    "tokens": 11140970,
+    "value_cache": "prompt-bounded-exact/v1"
+  },
+  "maximum_resident_bytes": 560889856,
+  "provenance": {
+    "agent": "Codex",
+    "authority": "Not Maria's benchmark, finding, loss, parity definition, or real-run gate.",
+    "model": "gpt-5.6-sol",
+    "origin": "Codex-authored auxiliary implementation probe",
+    "reasoning_level": "high"
+  },
+  "rows": [
+    {
+      "context_seconds": 1.086217,
+      "contextual_key_closure": "1",
+      "contextual_key_support": 6,
+      "generation_seconds": 3.831666,
+      "prompt": "Hello, how are you?",
+      "prompt_positions": 6,
+      "surface": "I like to do for fun?"
+    },
+    {
+      "context_seconds": 1.022776,
+      "contextual_key_closure": "1",
+      "contextual_key_support": 7,
+      "generation_seconds": 3.976799,
+      "prompt": "What do you enjoy about gardening?",
+      "prompt_positions": 7,
+      "surface": "I like to do for fun?"
+    },
+    {
+      "context_seconds": 0.722082,
+      "contextual_key_closure": "1",
+      "contextual_key_support": 7,
+      "generation_seconds": 4.023902,
+      "prompt": "I am nervous about public speaking.",
+      "prompt_positions": 7,
+      "surface": "I don't know. i just want to do for fun?"
+    },
+    {
+      "context_seconds": 0.518712,
+      "contextual_key_closure": "1",
+      "contextual_key_support": 6,
+      "generation_seconds": 2.182392,
+      "prompt": "What makes board games interesting?",
+      "prompt_positions": 6,
+      "surface": "I like to play video games."
+    },
+    {
+      "context_seconds": 1.460664,
+      "contextual_key_closure": "1",
+      "contextual_key_support": 8,
+      "generation_seconds": 7.261166,
+      "prompt": "Tell me something interesting about the desert.",
+      "prompt_positions": 8,
+      "surface": "I don't have access to the desert."
+    },
+    {
+      "context_seconds": 0.461309,
+      "contextual_key_closure": "1",
+      "contextual_key_support": 6,
+      "generation_seconds": 4.56604,
+      "prompt": "Why do people enjoy astronomy?",
+      "prompt_positions": 6,
+      "surface": "I do not have access to the earliest civilizations, including the babylonians and the egyptians."
+    },
+    {
+      "context_seconds": 1.405946,
+      "contextual_key_closure": "1",
+      "contextual_key_support": 8,
+      "generation_seconds": 1.901348,
+      "prompt": "Suggest a comforting meal for a cold evening.",
+      "prompt_positions": 9,
+      "surface": "I know, right?"
+    },
+    {
+      "context_seconds": 1.209141,
+      "contextual_key_closure": "1",
+      "contextual_key_support": 8,
+      "generation_seconds": 4.515977,
+      "prompt": "What kind of music do you enjoy?",
+      "prompt_positions": 8,
+      "surface": "I like to do for fun?"
+    }
+  ],
+  "schema": "unison-native-prompt-context-probe/v1",
+  "sources": {
+    "omni/native_transformer.py": "c571aa2c13b0640dba41cfcfb96cbe39b729a197a573a8d426404963452ba4cf",
+    "omni/prompt_context.py": "909aa1e33261ad302fd195a37d2b7ef8c535898ae32006bfb3b500e02c27ac87",
+    "train_eval/native_prompt_context_probe.py": "25b8e18bab2542b6e9c6f3ec906943a5aa9147e5093315d6aecc800749c224e5"
+  },
+  "status": "completed"
+}

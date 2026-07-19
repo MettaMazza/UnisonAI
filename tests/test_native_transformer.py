@@ -214,6 +214,13 @@ class CountedCausalTransformerTests(unittest.TestCase):
         self.assertEqual(keys[vocab["gardening"]], Fraction(1))
         self.assertEqual(keys[vocab["astronomy"]], Fraction(1, 2))
 
+    def test_contextual_position_route_closes_and_preserves_order(self):
+        forward = self.model._contextual_keys("red gardening astronomy")
+        reordered = self.model._contextual_keys("red astronomy gardening")
+        self.assertEqual(sum(forward.values(), Fraction(0)), 1)
+        self.assertEqual(sum(reordered.values(), Fraction(0)), 1)
+        self.assertNotEqual(forward, reordered)
+
     def test_reward_conditioning_is_counted_and_persistent(self):
         before = self.model.generate("gardening")
         self.model.mark_feedback("gardening", before, good=True)

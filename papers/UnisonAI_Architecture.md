@@ -61,13 +61,21 @@ probe, resident memory fell from approximately 59 GB to 559,185,920 bytes and
 generation time fell from 1,514.370707 seconds to 11.407350 seconds while every
 surface remained byte-identical across the representation change.
 
-A Codex-authored eight-prompt development probe preserved exact
-closure and improved the board-game, desert, astronomy, and public-speaking
-surfaces, while gardening, meal, music, and greeting prompts remained generic.
-The next one-to-one port is stacked prompt self-attention with distinct
-within-turn positional addresses, so value keys represent the whole prompt
-relation rather than one token's marginal response distribution. These are
-implementation observations and directions, not Maria's benchmark result.
+Distinct prompt occurrences now retain turn age, within-turn position, and
+sequence position through five exact contextual attention/FFN blocks. Counted
+embedding Q/K products select the complete theorem-traced dyadic cascade; the
+closing remainder stays on the identity address, shared-denominator integer
+state preserves exact rational output, and the final prompt position supplies
+the decoder readout. The complete hidden support is the observed prompt
+position set, with no cap or dense corpus-layer materialization.
+
+On the fixed Codex eight-prompt probe, all contextual states closed exactly;
+the eight promoted-route generations took 37.813314 seconds with 583,368,704 bytes maximum
+resident memory. Seven surfaces were unchanged and public speaking changed.
+This is an implementation observation, not Maria's benchmark result. The next
+one-to-one training port is the contextual hidden-state to decoder value/FFN
+relation, replacing the remaining v4 token-marginal conditioning at that
+boundary.
 
 ### 3.4 Perception and common memory
 
@@ -93,7 +101,7 @@ Corrections, counted quality, and teacher comparisons are written to explicit le
 
 ### 4.2 Standalone Unison
 
-The current Python repository suite passes **42/42**, including tests for the
+The current Python repository suite passes **49/49**, including tests for the
 native transformer role boundary, complete prompt-token retention, active Q/K
 weighting, exact distribution closure, lazy/full argmax equivalence, packed-row
 and surface identity, bounded-cache identity, sealed-source drift halts, native

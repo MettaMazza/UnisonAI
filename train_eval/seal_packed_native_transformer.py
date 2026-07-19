@@ -57,6 +57,7 @@ def main() -> None:
             "omni/native_transformer.py": sha256(
                 ROOT / "omni/native_transformer.py"),
             "omni/packed_rows.py": sha256(ROOT / "omni/packed_rows.py"),
+            "omni/prompt_context.py": sha256(ROOT / "omni/prompt_context.py"),
             "train_eval/pack_native_transformer.py": sha256(
                 ROOT / "train_eval/pack_native_transformer.py"),
             "train_eval/seal_packed_native_transformer.py": sha256(

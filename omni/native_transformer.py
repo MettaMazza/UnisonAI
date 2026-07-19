@@ -252,6 +252,7 @@ class CountedCausalTransformer:
                     runtime_sources = (
                         "omni/native_transformer.py",
                         "omni/packed_rows.py",
+                        "omni/prompt_context.py",
                     )
                     source_match = True
                     for relative_path in runtime_sources:
@@ -304,6 +305,8 @@ class CountedCausalTransformer:
             identity["serving_representation"] = record.get("packed_schema")
             identity["decode_kernel"] = "exact-lcm-integer-cross-product/v1"
             identity["value_cache"] = "prompt-bounded-exact/v1"
+            identity["prompt_context"] = (
+                "five-layer-ranked-cascade-final-position/v1")
         elif os.path.exists(self.store_path):
             with open(self.store_path, "rb") as handle:
                 identity["sha256"] = hashlib.sha256(handle.read()).hexdigest()
@@ -339,8 +342,59 @@ class CountedCausalTransformer:
         return dict(weighted)
 
     def _context_keys(self, text: str, history: Iterable | None = None) -> dict[int, Fraction]:
-        """Causally available full-token keys with exact turn-position shares."""
+        """Production five-layer contextual keys at the final prompt position."""
+        return self._contextual_keys(text, history)
+
+    def _flat_context_keys(self, text: str,
+                           history: Iterable | None = None) -> dict[int, Fraction]:
+        """V4 implementation baseline retained for exact comparison only."""
         return self._positional_keys(text, history)
+
+    def _position_addresses(self, text: str, history: Iterable | None = None):
+        """Preserve every prompt occurrence as a distinct within-turn address."""
+        from omni.prompt_context import PositionAddress
+
+        history_texts: list[str] = []
+        for event in history or ():
+            if isinstance(event, (tuple, list)) and len(event) >= 2:
+                role, value = str(event[0]).lower(), str(event[1])
+                if role in {"user", "human", "prompt"}:
+                    history_texts.append(value)
+            elif isinstance(event, dict):
+                role = str(event.get("role", "")).lower()
+                if role in {"user", "human", "prompt"}:
+                    history_texts.append(str(event.get("content", "")))
+
+        turns = history_texts + [text]
+        if len(turns) >= 2 and turns[-2].strip().lower() == text.strip().lower():
+            del turns[-2]
+        vocab = self._store()["vocab"]
+        addresses = []
+        sequence_index = 0
+        for turn_index, turn in enumerate(turns):
+            turn_age = len(turns) - turn_index - 1
+            for within_turn, word in enumerate(_prompt_tokens(turn)):
+                token_id = vocab.get(word)
+                if token_id is not None:
+                    addresses.append(PositionAddress(
+                        token_id=token_id,
+                        turn_age=turn_age,
+                        within_turn=within_turn,
+                        sequence_index=sequence_index,
+                    ))
+                sequence_index += 1
+        return addresses
+
+    def _contextual_keys(self, text: str,
+                         history: Iterable | None = None) -> dict[int, Fraction]:
+        """Five-layer contextual position state projected to decoder keys."""
+        from omni.prompt_context import aggregate_keys, contextualize
+
+        addresses = self._position_addresses(text, history)
+        if not addresses:
+            return {}
+        return aggregate_keys(contextualize(
+            addresses, self._store()["profiles"]))
 
     def _attention_key_weights(self, last_id: int,
                                keys: Mapping[int, Fraction],
@@ -653,8 +707,12 @@ class CountedCausalTransformer:
         """Standard greedy autoregressive decode under an explicit resource budget."""
         if not isinstance(token_budget, int) or token_budget <= 0:
             raise ValueError("token_budget must be a positive integer")
-        record = self._store()
         keys = self._context_keys(text, history)
+        return self._generate_tokens_from_keys(keys, token_budget)
+
+    def _generate_tokens_from_keys(self, keys: Mapping[int, Fraction],
+                                   token_budget: int) -> list[str]:
+        record = self._store()
         if not keys:
             return []
         # Bounded per-response cache: the same prompt-key value rows and their
@@ -678,6 +736,15 @@ class CountedCausalTransformer:
             prev_id, last_id = last_id, next_id
         return out
 
+    def generate_contextual_tokens(self, text: str,
+                                   history: Iterable | None = None,
+                                   token_budget: int = BAND) -> list[str]:
+        """Execute the traced stacked prompt-context development route."""
+        if not isinstance(token_budget, int) or token_budget <= 0:
+            raise ValueError("token_budget must be a positive integer")
+        return self._generate_tokens_from_keys(
+            self._contextual_keys(text, history), token_budget)
+
     @staticmethod
     def _surface(tokens: Sequence[str]) -> str:
         surface = ""
@@ -693,6 +760,11 @@ class CountedCausalTransformer:
     def generate(self, text: str, history: Iterable | None = None,
                  token_budget: int = BAND) -> str:
         return self._surface(self.generate_tokens(text, history, token_budget))
+
+    def generate_contextual(self, text: str, history: Iterable | None = None,
+                            token_budget: int = BAND) -> str:
+        return self._surface(
+            self.generate_contextual_tokens(text, history, token_budget))
 
     def mark_feedback(self, text: str, response: str, good: bool) -> None:
         """Deposit one reward observation for each served causal transition."""

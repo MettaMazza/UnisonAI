@@ -115,6 +115,14 @@ token-equivalent to the materialized rational head. Codex development probes
 remain implementation evidence only and do not authorize a Maria benchmark
 conclusion.
 
+The production native key path now preserves every prompt occurrence as a
+distinct position through five contextual attention/FFN blocks. Exact counted
+embedding products rank the complete dyadic cascade, with equality-safe tie
+sharing and the closing remainder on the identity address. Hidden state stays
+on the complete response-local position basis and the final prompt position
+supplies the decoder readout. The flat v4 token aggregation remains an explicit
+comparison method only; it is not a fallback or serving admission path.
+
 ## Explicit response-only surface
 
 `WordEngine(fluency_path=...)` and `configure_fluency_store(...)` now provide an
