@@ -1562,6 +1562,13 @@ if __name__ == "__main__":
                 if line.startswith("DISCORD_TOKEN="):
                     token = line.strip().split("=", 1)[1]
                     break
+    # The project benchmark tooling already uses this user-private token file.
+    # Accept the same 0600-protected source for the live launcher so a clean
+    # restart does not require copying the secret into the repository.
+    private_token_path = os.path.expanduser("~/.unison_discord_token")
+    if not token and os.path.isfile(private_token_path):
+        with open(private_token_path, "r") as handle:
+            token = handle.read().strip()
                     
     if token:
         logger.info("Token loaded successfully. Connecting to Discord...")

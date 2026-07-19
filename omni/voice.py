@@ -208,11 +208,15 @@ class WhisperListener:
     def __init__(self):
         self.model = None
         self.processor = None
-        self.available = False
-        self._init_whisper()
+        # Whisper is an optional input organ. Loading its multi-gigabyte local
+        # weights here blocked Discord text service before connection even
+        # when no audio was requested. Advertise the locally present organ and
+        # materialise it on the first actual listen instead.
+        self.available = os.path.exists(_WHISPER_MODEL)
     
     def _init_whisper(self):
         """Initialise Whisper model from local weights."""
+        self.available = False
         try:
             from transformers import WhisperProcessor, WhisperForConditionalGeneration
             import torch
@@ -256,7 +260,9 @@ class WhisperListener:
             
         Returns (success: bool, text or error: str).
         """
-        if not self.available:
+        if self.model is None and self.available:
+            self._init_whisper()
+        if not self.available or self.model is None or self.processor is None:
             return False, "Whisper not available"
         
         try:

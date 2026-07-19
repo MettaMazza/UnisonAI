@@ -1,0 +1,41 @@
+{
+  "schema": "unison-manual-startup-development/v1",
+  "status": "completed-with-external-credential-blocker",
+  "result_type": "cumulative development benchmark",
+  "official_run": false,
+  "governance_authority": false,
+  "benchmark_authority": false,
+  "provenance": {
+    "origin": "Codex applied launch measurement",
+    "agent": "Codex",
+    "model": "gpt-5.6-sol",
+    "reasoning_level": "high",
+    "authority": "Maria Smith alone registers official runs and assigns conclusions."
+  },
+  "declared_purpose": "Stop every live Unison instance and provide one clean text-conversation launch for Maria's manual test.",
+  "baseline": {
+    "whisper_loaded_during_text_startup": true,
+    "observed_stall_seconds_before_manual_termination": 288,
+    "discord_connection_reached": false
+  },
+  "candidate": {
+    "whisper_policy": "load local weights on first audio request",
+    "constructor_seconds": 0.000878583,
+    "constructor_model_loaded": false,
+    "subsystem_initialisation_seconds": 0.55,
+    "token_source": "existing user-private ~/.unison_discord_token convention; value never copied or logged",
+    "discord_connection_reached": true,
+    "discord_authentication": "401 Unauthorized; stored external credential is no longer accepted"
+  },
+  "improved": {
+    "text_startup_unblocked": true,
+    "optional_voice_semantics_changed": false,
+    "repository_secret_created": false
+  },
+  "remaining_external_action": "Replace the revoked Discord bot token in ~/.unison_discord_token or supply DISCORD_TOKEN, then rerun ./run.sh.",
+  "sources": {
+    "omni/voice.py": "b8724f8b6f99ac3a60792384f016f5598feb8788a01cdb5e4458b7891eacf4f8",
+    "omni/discord_bot.py": "d260f0ee77da46619b368e479f5c35d1de9e013696bb5016409e04a52a697c86",
+    "run.sh": "81c63b9d429e985740b83f37485fbfc74cdb424257d8fac1d94fa92dffd8b5d8"
+  }
+}

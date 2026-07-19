@@ -380,6 +380,13 @@ echo "DISCORD_TOKEN=your_token_here" > .env
 PYTHONPATH=. python3 omni/discord_bot.py    # or: bash run.sh
 ```
 
+Text service no longer waits for the optional multi-gigabyte Whisper organ:
+Whisper advertises availability from its local model path and materialises its
+unchanged transcription model on the first audio request. The clean launcher
+accepts `DISCORD_TOKEN`, a repository-local `.env`, or the existing
+0600-protected `~/.unison_discord_token` convention, in that order; no token is
+copied into source or logs.
+
 Enable the **Message Content Intent** on the bot. The bot only responds in its configured channel (`ALLOWED_CHANNEL_ID` in `on_message`).
 
 > **Note on the context window:** `num_ctx` is set to the model's full provider-reported window (262144 for `gemma-4-31b`). This is a large KV-cache allocation — comfortable on a high-memory machine (e.g. a 512 GB Mac Studio), but expect a heavier/slower *first* teacher call as the model reloads at that context size.
