@@ -1,0 +1,74 @@
+{
+  "schema": "unison-native-induction-copy-evidence/v1",
+  "status": "development-measured",
+  "authority": "Measured implementation evidence; Maria Smith assigns conclusions, retention, benchmark status, and publication.",
+  "declared_effect": "Preserve copy-capable token identity across user-role turns through the native causal-transformer architecture without a retrieval or generic fallback.",
+  "architecture": {
+    "organ": "role-conditioned-longest-induction-head/v1",
+    "standard_operation": "A causal query suffix addresses an earlier equal user-role token sequence and the following value token supplies the next-token copy distribution.",
+    "exact_execution": "Longest observed suffix relation; all tied continuations counted; earlier turns carry dyadic age shares; the resulting unit distribution enters the residual LM head with the other unit heads.",
+    "forbidden_inputs_absent": [
+      "answer templates",
+      "lexical query rewrites",
+      "acceptance thresholds",
+      "candidate caps",
+      "fitted blend weights",
+      "assistant-role copy keys"
+    ]
+  },
+  "matched_multiturn_measurement": {
+    "baseline": {
+      "observed": 0,
+      "scenarios": 4,
+      "receipt": "train_eval/native_multiturn_current_20260719.json",
+      "sha256": "dd097900011bbff9a18bb58af46d7f27b5cea35a8ebcb90566b73c6756ba3622"
+    },
+    "changed": {
+      "observed": 4,
+      "scenarios": 4,
+      "receipt": "train_eval/native_multiturn_copy_attention_20260719.json",
+      "sha256": "e713f8fa7a7329608986c61a27d22fc42d22a0af84dd4ab7a8bb1d5eb4a0946a"
+    },
+    "delta": 4
+  },
+  "separate_transfer_measurement": {
+    "observed": 8,
+    "scenarios": 8,
+    "receipt": "train_eval/native_induction_transfer_20260719.json",
+    "sha256": "4cec70ebbcd5814c38c9babff7c401b4c04122671ec7bd8639c0a8240f9bafd5"
+  },
+  "served_fallback_removal": {
+    "before": {
+      "observed": 4,
+      "scenarios": 4,
+      "receipt": "train_eval/native_served_multiturn_before_fallback_removal_20260719.json",
+      "sha256": "ae62cdf7ba533507ab64f981c6e43a2fa7cc4f003c3beabfc16e8192db2ca33c"
+    },
+    "after": {
+      "observed": 4,
+      "scenarios": 4,
+      "receipt": "train_eval/native_served_multiturn_after_fallback_removal_20260719.json",
+      "sha256": "c43ddda33dd1d5e0725803147b99016d40b212cf6e97ad53aa8eddc9dd841986"
+    },
+    "rows_identical": true,
+    "served_retrieval_fallback_present_after": false
+  },
+  "focused_tests": {
+    "passed": 20,
+    "failed": 0,
+    "command": "python3 -m unittest tests.test_native_transformer"
+  },
+  "packed_artifact": {
+    "bytes": 6832650424,
+    "artifact_sha256": "f977d4d8adb0993a0ab0d63b86dea30bd845ae091e84a4859ae826d032a87219",
+    "receipt": "train_eval/native_transformer_v4_packed_receipt.json",
+    "receipt_sha256": "34ef919d78050ac5da8d2baca2e458ad5bf51ed84005e2002523ef78c1c45686",
+    "verification_status": "verified"
+  },
+  "source_sha256": {
+    "omni/native_transformer.py": "5ba1aa68b19ddc41decfa92bb40bef5b1472bd23755083e8bc7d3c1062c70ece",
+    "omni/discord_bot.py": "d7c25cfe9948cba291b7bd1365bbb4b2dff4c6bb8b0da55240d18c8c0922e0ee",
+    "tests/test_native_transformer.py": "129a1a1c6f31a0db3c4aa827d9b24743921dc40fd758f5a49dfdb63aa84fa9a4"
+  },
+  "next_measurement": "Free multi-turn response composition and paraphrased contextual generalisation beyond direct induction copying."
+}

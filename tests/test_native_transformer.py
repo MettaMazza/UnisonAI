@@ -257,6 +257,41 @@ class CountedCausalTransformerTests(unittest.TestCase):
             {key: value // right_gcd for key, value in right.items()},
         )
 
+    def test_role_conditioned_induction_head_copies_longest_user_continuation(self):
+        record = build_counted_transformer(
+            ["My name is Maria", "I prefer tea", "What is your name"],
+            ["Hello Maria.", "Tea is pleasant.", "My name is Unison."],
+        )
+        model = CountedCausalTransformer(record=record)
+        context = model._contextual_decoder_state(
+            "What is my name?", history=[("user", "My name is Maria.")])
+        counts = model._induction_copy_counts(context, [])
+        self.assertEqual(counts, {record["vocab"]["is"]: 1})
+        counts = model._induction_copy_counts(
+            context, [record["vocab"]["is"]])
+        self.assertEqual(counts, {record["vocab"]["maria"]: 1})
+
+    def test_induction_copy_head_is_role_bound_and_closes_in_lm_head(self):
+        context = self.model._contextual_decoder_state(
+            "What studies?",
+            history=[("assistant", "gardening studies soil"),
+                     ("user", "astronomy studies stars")],
+        )
+        counts = self.model._induction_copy_counts(context, [])
+        self.assertEqual(counts, {
+            self.record["vocab"]["stars"]: 1,
+        })
+        bos = self.record["bos_id"]
+        distribution = self.model.next_distribution(
+            bos, bos, context.token_keys, copy_counts=counts)
+        lazy = self.model.next_token_id(
+            bos, bos, context.token_keys, decoder_context=context,
+            copy_counts=counts)
+        self.assertEqual(sum(distribution.values(), Fraction(0)), 1)
+        self.assertEqual(lazy, min(
+            distribution,
+            key=lambda token_id: (-distribution[token_id], token_id)))
+
     def test_reward_conditioning_is_counted_and_persistent(self):
         before = self.model.generate("gardening")
         self.model.mark_feedback("gardening", before, good=True)
@@ -286,19 +321,19 @@ class CountedCausalTransformerTests(unittest.TestCase):
         self.assertEqual(client._last_native_feedback, [("gardening", reply)])
         self.assertFalse(client._last_rag_feedback)
 
-    def test_rag_surface_cannot_enter_native_reward_provenance(self):
+    def test_native_empty_defers_without_retrieval_fallback(self):
         from omni.discord_bot import SFTDiscordClient
         client = object.__new__(SFTDiscordClient)
         session = SimpleNamespace(history_log=[])
         unavailable = SimpleNamespace(available=lambda: False)
         with patch("omni.discord_bot.native_transformer", unavailable), \
                 patch("omni.discord_bot.pair_retrieval.reply",
-                      return_value="A RAG response."):
+                      side_effect=AssertionError("retrieval fallback must not run")):
             reply = asyncio.run(client._generate_turn_surface(
                 "gardening", [], session, "fixture", object()))
-        self.assertEqual(reply, "A RAG response.")
+        self.assertEqual(reply, "")
         self.assertEqual(client._last_native_feedback, [])
-        self.assertTrue(client._last_rag_feedback)
+        self.assertFalse(client._last_rag_feedback)
 
 
 if __name__ == "__main__":

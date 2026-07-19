@@ -1,0 +1,277 @@
+{
+  "authority": "Source-bound development evidence; Maria Smith assigns conclusions.",
+  "auxiliary_continuity_observed": 4,
+  "completed_at_utc": "2026-07-19T11:03:46.041756+00:00",
+  "rows": [
+    {
+      "auxiliary_continuity_observed": true,
+      "auxiliary_expected_any": [
+        "maria"
+      ],
+      "scenario": "name",
+      "trace": {
+        "first": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "My name is Maria.",
+                "stages": [
+                  {
+                    "segment": "My name is Maria.",
+                    "stage": "native_causal_transformer",
+                    "surface": "I know, right?"
+                  }
+                ]
+              }
+            ],
+            "surface": "I know, right?"
+          }
+        ],
+        "second": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "What is my name?",
+                "stages": [
+                  {
+                    "segment": "What is my name?",
+                    "stage": "native_causal_transformer",
+                    "surface": "Is maria."
+                  }
+                ]
+              }
+            ],
+            "surface": "Is maria."
+          }
+        ]
+      },
+      "turns": [
+        {
+          "content": "My name is Maria.",
+          "role": "user"
+        },
+        {
+          "content": "I know, right?",
+          "role": "assistant"
+        },
+        {
+          "content": "What is my name?",
+          "role": "user"
+        },
+        {
+          "content": "Is maria.",
+          "role": "assistant"
+        }
+      ]
+    },
+    {
+      "auxiliary_continuity_observed": true,
+      "auxiliary_expected_any": [
+        "tea"
+      ],
+      "scenario": "preference",
+      "trace": {
+        "first": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "I prefer tea to coffee.",
+                "stages": [
+                  {
+                    "segment": "I prefer tea to coffee.",
+                    "stage": "native_causal_transformer",
+                    "surface": "I don't have access to the specific content of the most popular beverages around the world."
+                  }
+                ]
+              }
+            ],
+            "surface": "I don't have access to the specific content of the most popular beverages around the world."
+          }
+        ],
+        "second": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "Which drink did I say I prefer?",
+                "stages": [
+                  {
+                    "segment": "Which drink did I say I prefer?",
+                    "stage": "native_causal_transformer",
+                    "surface": "Tea to coffee."
+                  }
+                ]
+              }
+            ],
+            "surface": "Tea to coffee."
+          }
+        ]
+      },
+      "turns": [
+        {
+          "content": "I prefer tea to coffee.",
+          "role": "user"
+        },
+        {
+          "content": "I don't have access to the specific content of the most popular beverages around the world.",
+          "role": "assistant"
+        },
+        {
+          "content": "Which drink did I say I prefer?",
+          "role": "user"
+        },
+        {
+          "content": "Tea to coffee.",
+          "role": "assistant"
+        }
+      ]
+    },
+    {
+      "auxiliary_continuity_observed": true,
+      "auxiliary_expected_any": [
+        "tomato",
+        "tomatoes"
+      ],
+      "scenario": "topic",
+      "trace": {
+        "first": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "I am growing tomatoes in my garden.",
+                "stages": [
+                  {
+                    "segment": "I am growing tomatoes in my garden.",
+                    "stage": "native_causal_transformer",
+                    "surface": "I don't have access to the filling."
+                  }
+                ]
+              }
+            ],
+            "surface": "I don't have access to the filling."
+          }
+        ],
+        "second": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "What am I growing?",
+                "stages": [
+                  {
+                    "segment": "What am I growing?",
+                    "stage": "native_causal_transformer",
+                    "surface": "Tomatoes in my garden."
+                  }
+                ]
+              }
+            ],
+            "surface": "Tomatoes in my garden."
+          }
+        ]
+      },
+      "turns": [
+        {
+          "content": "I am growing tomatoes in my garden.",
+          "role": "user"
+        },
+        {
+          "content": "I don't have access to the filling.",
+          "role": "assistant"
+        },
+        {
+          "content": "What am I growing?",
+          "role": "user"
+        },
+        {
+          "content": "Tomatoes in my garden.",
+          "role": "assistant"
+        }
+      ]
+    },
+    {
+      "auxiliary_continuity_observed": true,
+      "auxiliary_expected_any": [
+        "nervous"
+      ],
+      "scenario": "feeling",
+      "trace": {
+        "first": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "I feel nervous about speaking tomorrow.",
+                "stages": [
+                  {
+                    "segment": "I feel nervous about speaking tomorrow.",
+                    "stage": "native_causal_transformer",
+                    "surface": "I don't know. i just want to do for fun?"
+                  }
+                ]
+              }
+            ],
+            "surface": "I don't know. i just want to do for fun?"
+          }
+        ],
+        "second": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "How did I say I feel?",
+                "stages": [
+                  {
+                    "segment": "How did I say I feel?",
+                    "stage": "native_causal_transformer",
+                    "surface": "Nervous about speaking tomorrow."
+                  }
+                ]
+              }
+            ],
+            "surface": "Nervous about speaking tomorrow."
+          }
+        ]
+      },
+      "turns": [
+        {
+          "content": "I feel nervous about speaking tomorrow.",
+          "role": "user"
+        },
+        {
+          "content": "I don't know. i just want to do for fun?",
+          "role": "assistant"
+        },
+        {
+          "content": "How did I say I feel?",
+          "role": "user"
+        },
+        {
+          "content": "Nervous about speaking tomorrow.",
+          "role": "assistant"
+        }
+      ]
+    }
+  ],
+  "scenarios": 4,
+  "schema": "unison-native-served-multiturn/v1",
+  "source_commit": "15ebb477d2ce385f3b6c61d042e269367442fd81",
+  "sources": {
+    "omni/discord_bot.py": "d7c25cfe9948cba291b7bd1365bbb4b2dff4c6bb8b0da55240d18c8c0922e0ee",
+    "omni/native_transformer.py": "5ba1aa68b19ddc41decfa92bb40bef5b1472bd23755083e8bc7d3c1062c70ece",
+    "train_eval/native_served_multiturn.py": "0ba247ddfe565631f2422bd18e38bb9710337425e2857d8bcc27db2be9227985"
+  },
+  "status": "completed"
+}

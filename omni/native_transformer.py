@@ -10,6 +10,7 @@ role-bound causal training sequence    full prompt tokens + assistant BOS/respon
 token embedding                        exact prompt co-occurrence profile
 causal Q/K/V attention                 prefix query + prompt-token keys -> next-token counts
 positional/context representation      current turn plus dyadically aged history
+role-conditioned induction head        current user suffix -> earlier user continuation
 feed-forward key/value memory          assistant-prefix -> next-token count table
 residual connection                    unit attention distribution + unit FFN distribution
 normalisation                          exact ``Fraction`` shares closing to the One
@@ -309,6 +310,8 @@ class CountedCausalTransformer:
                 "five-layer-ranked-cascade-final-position/v1")
             identity["decoder_context"] = (
                 "position-preserving-value-semantic-routing/v1")
+            identity["copy_attention"] = (
+                "role-conditioned-longest-induction-head/v1")
         elif os.path.exists(self.store_path):
             with open(self.store_path, "rb") as handle:
                 identity["sha256"] = hashlib.sha256(handle.read()).hexdigest()
@@ -441,6 +444,69 @@ class CountedCausalTransformer:
                 addressed, context)
         ]
 
+    def _induction_copy_counts(self, context, generated_ids: Sequence[int]) \
+            -> dict[int, int]:
+        """Exact role-conditioned induction head over earlier user turns.
+
+        Decoder transformers implement copy through attention: a suffix of the
+        current causal stream addresses an earlier equal token sequence and the
+        value at its following position supplies the next token.  The counted
+        translation retains only user-role history as copy keys, chooses the
+        longest observed suffix relation, and counts every tied continuation.
+        Earlier turns carry the already-forced dyadic age share.  No lexical
+        rewrite, answer template, acceptance threshold, candidate cap, or
+        fitted blend enters this head.
+        """
+        if context is None:
+            return {}
+        record = self._store()
+        words = record["words"]
+        by_age: defaultdict[int, list] = defaultdict(list)
+        for position in context.positions:
+            by_age[position.turn_age].append(position)
+        current = [position.token_id for position in sorted(
+            by_age.get(0, ()), key=lambda position: position.sequence_index)]
+        # A terminal punctuation token marks the end of the user utterance but
+        # is not part of the lexical suffix that an induction head addresses.
+        while current and words[current[-1]] in _CLOSE:
+            current.pop()
+        query = current + list(generated_ids)
+        histories = {
+            age: [position.token_id for position in sorted(
+                positions, key=lambda position: position.sequence_index)]
+            for age, positions in by_age.items() if age > 0
+        }
+        if not query or not histories:
+            return {}
+
+        longest = 0
+        matches: list[tuple[int, int]] = []
+        for age, history_ids in histories.items():
+            maximum = min(len(query), len(history_ids) - 1)
+            for length in range(maximum, 0, -1):
+                suffix = query[-length:]
+                found = [
+                    history_ids[start + length]
+                    for start in range(len(history_ids) - length)
+                    if history_ids[start:start + length] == suffix
+                ]
+                if found:
+                    if length > longest:
+                        longest = length
+                        matches = []
+                    if length == longest:
+                        matches.extend((age, next_id) for next_id in found)
+                    break
+        if not matches:
+            return {}
+
+        denominators = [GEN_B ** age for age, _ in matches]
+        common = math.lcm(*denominators)
+        counts: Counter[int] = Counter()
+        for (age, token_id), denominator in zip(matches, denominators):
+            counts[token_id] += common // denominator
+        return dict(counts)
+
     def _attention_key_weights(self, last_id: int,
                                keys: Mapping[int, Fraction],
                                prepared_values=None) -> dict[int, Fraction]:
@@ -572,7 +638,9 @@ class CountedCausalTransformer:
     def _integer_residual_scores(self, prev_id: int, last_id: int,
                                  keys: Mapping[int, Fraction],
                                  prepared_values=None,
-                                 decoder_context=None) -> dict[int, int]:
+                                 decoder_context=None,
+                                 copy_counts: Mapping[int, int] | None = None) \
+            -> dict[int, int]:
         """Return one common-denominator integer form of the exact residual.
 
         This is algebraically identical to ``_unnormalized_residual`` before
@@ -619,6 +687,12 @@ class CountedCausalTransformer:
             counts = record["unigram"]
         self._add_integer_row(groups, counts, Fraction(1))
 
+        if copy_counts:
+            # One standard residual head: its exact unit distribution is added
+            # with the same identity coefficient as attention, semantic FFN,
+            # and causal-prefix FFN.
+            self._add_integer_row(groups, copy_counts, Fraction(1))
+
         if not groups:
             return {}
         denominator = math.lcm(*groups.keys())
@@ -632,11 +706,13 @@ class CountedCausalTransformer:
     def next_token_id(self, prev_id: int, last_id: int,
                       keys: Mapping[int, Fraction],
                       prepared_values=None,
-                      decoder_context=None) -> Optional[int]:
+                      decoder_context=None,
+                      copy_counts: Mapping[int, int] | None = None) \
+            -> Optional[int]:
         """Exact integer greedy argmax, equivalent to the normalized LM head."""
         scores = self._integer_residual_scores(
             prev_id, last_id, keys, prepared_values=prepared_values,
-            decoder_context=decoder_context)
+            decoder_context=decoder_context, copy_counts=copy_counts)
         if not scores:
             return None
         rewards = self._rewards()
@@ -731,7 +807,9 @@ class CountedCausalTransformer:
         return _normalize(out)
 
     def next_distribution(self, prev_id: int, last_id: int,
-                          keys: Mapping[int, Fraction]) -> dict[int, Fraction]:
+                          keys: Mapping[int, Fraction],
+                          copy_counts: Mapping[int, int] | None = None) \
+            -> dict[int, Fraction]:
         """Attention -> residual -> FFN -> residual -> exact LM-head normalization."""
         attention = self._attention(prev_id, last_id, keys)
         semantic_ffn = self._semantic_ffn(prev_id, last_id, keys)
@@ -743,6 +821,8 @@ class CountedCausalTransformer:
             _add(residual, semantic_ffn)
         if ffn:
             _add(residual, ffn)
+        if copy_counts:
+            _add(residual, _unit(copy_counts))
 
         rewards = self._rewards()
         for token_id in list(residual):
@@ -779,15 +859,19 @@ class CountedCausalTransformer:
                 prepared_values[key_id] = (counts, sum(counts.values()))
         prev_id = last_id = record["bos_id"]
         out: list[str] = []
+        generated_ids: list[int] = []
         for _ in range(token_budget):
+            copy_counts = self._induction_copy_counts(
+                decoder_context, generated_ids)
             next_id = self.next_token_id(
                 prev_id, last_id, keys, prepared_values=prepared_values,
-                decoder_context=decoder_context)
+                decoder_context=decoder_context, copy_counts=copy_counts)
             if next_id is None:
                 break
             if next_id == record["eos_id"]:
                 break
             out.append(record["words"][next_id])
+            generated_ids.append(next_id)
             prev_id, last_id = last_id, next_id
         return out
 

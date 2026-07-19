@@ -1070,11 +1070,12 @@ class SFTDiscordClient(discord.Client):
 
     async def _generate_fragment_multiscale(self, seg_context, session, ukey, diag,
                                             rng=None, trace=None):
-        """Run the currently served RAG/response-selection development stage.
+        """Run the native causal-transformer conversational stage.
 
         The historical word/generic fallback is retired. It was an agent-authored
         interpretation, not a derived Unison component. The native generalisation
-        route is the separate one-to-one causal-transformer translation.
+        route is the one-to-one causal-transformer translation. No retrieval,
+        template, or generic fallback is admitted after native generation.
         """
         seg_text = ("".join(str(c) for c in seg_context)
                     .replace("\x02", " ").replace("\x03", " ").strip())
@@ -1089,28 +1090,9 @@ class SFTDiscordClient(discord.Client):
                     return native
         except Exception:
             logger.error("native causal transformer failed", exc_info=True)
-
-        # RAG/response selection is an established augmentation surface. It is
-        # not the retired word/generic fallback and does not define the native
-        # transformer architecture.
-        try:
-            if seg_text:
-                pr = await asyncio.to_thread(
-                    pair_retrieval.reply, seg_text, list(session.history_log), ukey)
-                if pr and not looks_repetitive(pr):
-                    if trace is not None:
-                        trace.append({"stage": "rag_pair_response", "segment": seg_text,
-                                      "surface": pr})
-                    return pr
-        except Exception:
-            logger.error("pair retrieval stage failed", exc_info=True)
-        # The historical fallback is retired, not quarantined for reconstruction.
-        if trace is not None:
-            trace.append({"stage": "retired_agent_fallback", "segment": seg_text,
-                          "surface": ""})
-        # NO char-engine fallback: the char engine is longest-suffix memory recall =
-        # verbatim. There is no verbatim route. If foundation generation yields nothing,
-        # return empty rather than replay memory.
+        # No retrieval, word, generic, template, or character fallback. If the
+        # native transformer emits no admitted surface, this turn supplies no
+        # fragment; it is not replaced by an agent-authored response mechanism.
         if trace is not None:
             trace.append({"stage": "defer", "segment": seg_text, "surface": ""})
         return ""
@@ -1120,7 +1102,7 @@ class SFTDiscordClient(discord.Client):
         """Run the complete engine-owned conversational generation surface.
 
         Discord and the read-only end-to-end instrument call this same method:
-        utterance segmentation, pair-response selection, and fragment
+        utterance segmentation, native causal generation, and fragment
         composition. The historical word/generic fallback is retired. Teacher judgement and correction happen
         later and are deliberately not part of the engine-owned surface.
         """
