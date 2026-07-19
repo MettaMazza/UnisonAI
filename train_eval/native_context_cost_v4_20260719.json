@@ -1,0 +1,33 @@
+{
+  "dense_position_pair_touches_at_forced_depth": 2375465990,
+  "dense_position_pairs_per_layer": 475093198,
+  "implementation_guard": "Do not materialize per-layer dense position-pair rows. Preserve the five-layer computation through shared counted relations and response-local streamed position state.",
+  "inputs": {
+    "contextual_integration_law_sha256": "82ce37bacf1783955591be61bbb5e5eda9f2fee148f6bbbbf0d44d504c372126",
+    "pairs_sha256": "6a5dcc9e9d2227e3445a7d6630ce52807e9c58d7259bbb488f53d9f05c022b17",
+    "source_sha256": "0b9ab651669092d12c529c6fed8c96af6b5dda8a8a610b1d85b987017d517649"
+  },
+  "integration_depth": 5,
+  "prompt_count": 649917,
+  "prompt_length": {
+    "maximum": 177,
+    "mean_exact": {
+      "denominator": 649917,
+      "numerator": 14510060
+    },
+    "median_nearest_rank": 18,
+    "p95_nearest_rank": 57,
+    "p99_nearest_rank": 69
+  },
+  "prompt_positions": 14510060,
+  "provenance": {
+    "agent": "Codex",
+    "authority": "Not Maria's benchmark, finding, parity definition, or run gate. Counts implementation growth only.",
+    "model": "gpt-5.6-sol",
+    "origin": "Codex-authored exact implementation sizing",
+    "reasoning_level": "high"
+  },
+  "schema": "unison-native-context-cost/v1",
+  "status": "completed",
+  "uint64_value_only_lower_bound_bytes": 19003727920
+}

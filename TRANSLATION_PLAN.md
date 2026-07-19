@@ -130,9 +130,12 @@ thousands of real responses to "hello, how are you").
   decoder. Its exact memory-mapped representation retains every row and count while reducing
   measured resident serving memory from about 59 GB to 559,185,920 bytes; its integer decode
   and bounded per-response row preparation preserve token identity. Its Codex smoke improves
-  several topical operations. Port the next established organs: within-turn positional
-  addresses and stacked prompt self-attention so each decoder key is context-dependent, then
-  remeasure the same native route.
+  several topical operations. The exact corpus sizing receipt finds 475,093,198 dense
+  position pairs per layer and 2,375,465,990 pair touches through the forced five-step
+  integration depth. Port within-turn positional addresses and stacked prompt self-attention
+  through shared counted relations and streamed response-local position state—preserving the
+  complete computation without materializing duplicate layer rows—then remeasure the same
+  native route.
 - **Stage 4 — Learning + state.** Pair-quality counts; taught-pair precedence; **port the
   relation-facts channel** (name recall); verify multi-turn recall on the no-stubs e2e.
 - **Stage 5 — Honest replacements.** Re-measure everything retracted (gen quality n≥32,

@@ -87,6 +87,15 @@ before decoder attention. The exact memory-mapped representation and bounded
 decode kernel now remove the prior runtime-memory obstruction without changing
 the architectural computation.
 
+The source-bound contextual-cost receipt counts 14,510,060 prompt positions
+across the 649,917 training pairs. Dense within-prompt attention would produce
+475,093,198 position pairs per layer and 2,375,465,990 pair touches through the
+five-step depth forced by `contextual_integration.ep`—a 19,003,727,920-byte
+lower bound even if each touch held only one uint64 value and no key. The next
+port therefore keeps the complete five-layer computation but factorises shared
+counted relations and streams response-local position state; it does not
+materialize duplicated layer-pair rows or introduce a cap.
+
 ## Superseded development interpretation
 
 The Codex-authored v3 implementation reduced prompts to unique content words,
