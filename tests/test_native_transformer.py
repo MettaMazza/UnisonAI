@@ -227,7 +227,17 @@ class CountedCausalTransformerTests(unittest.TestCase):
             "gardening astronomy gardening")
         bos = self.record["bos_id"]
         addressed = self.model._attention_key_weights(bos, context.token_keys)
+        position_sources = self.model._decoder_position_sources(
+            addressed, context)
         sources = self.model._decoder_value_sources(addressed, context)
+        self.assertEqual(
+            {position_index for position_index, _, _ in position_sources},
+            {0, 1, 2},
+        )
+        self.assertEqual(
+            [(weight, key_id) for _, weight, key_id in position_sources],
+            sources,
+        )
         self.assertEqual(len(sources), 3)
         self.assertEqual(
             sum((weight for weight, _ in sources), Fraction(0)),

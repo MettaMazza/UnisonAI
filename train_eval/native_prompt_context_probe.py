@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from fractions import Fraction
 from pathlib import Path
 import resource
 import sys
@@ -38,6 +39,12 @@ def main() -> None:
         addresses = model._position_addresses(prompt)
         context = model._contextual_decoder_state(prompt)
         keys = context.token_keys
+        bos_id = model._store()["bos_id"]
+        addressed = model._attention_key_weights(bos_id, keys)
+        position_sources = model._decoder_position_sources(addressed, context)
+        addressed_mass = sum(addressed.values(), Fraction(0))
+        branch_mass = sum(
+            (weight for _, weight, _ in position_sources), Fraction(0))
         context_seconds = time.monotonic() - began
         began = time.monotonic()
         tokens = model._generate_tokens_from_keys(
@@ -48,6 +55,10 @@ def main() -> None:
             "prompt_positions": len(addresses),
             "contextual_key_support": len(keys),
             "decoder_position_support": len(context.position_shares),
+            "decoder_value_position_branches": len(position_sources),
+            "decoder_addressed_head_mass": str(addressed_mass),
+            "decoder_value_branch_mass": str(branch_mass),
+            "decoder_value_branch_identity": branch_mass == addressed_mass,
             "contextual_key_closure": str(sum(keys.values())),
             "context_seconds": round(context_seconds, 6),
             "generation_seconds": round(generation_seconds, 6),

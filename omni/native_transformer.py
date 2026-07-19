@@ -405,18 +405,19 @@ class CountedCausalTransformer:
             addresses, self._store()["profiles"]))
 
     @staticmethod
-    def _decoder_value_sources(addressed: Mapping[int, Fraction], context=None):
-        """Route token-addressed decoder mass over every contextual position.
+    def _decoder_position_sources(addressed: Mapping[int, Fraction], context=None):
+        """Retain position identity through the shared V/semantic projection.
 
-        Existing v4 value/semantic rows are token-owned. The contextual state
-        is nevertheless preserved to the value and semantic-FFN boundary by
-        dividing each addressed token share among its exact source positions.
-        Summing these branches is algebraically identical to the token row;
-        later position-conditioned training can replace the row ownership
-        without changing the decoder organ again.
+        A standard transformer shares its learned V projection across sequence
+        positions; it does not learn a separate value table for every prompt
+        length. The exact counted translation therefore keeps each positional
+        branch distinct while applying the shared token-owned count row. This
+        is the sparse linear form of applying one V map to a contextual hidden
+        state and avoids an unbounded position-by-vocabulary artifact.
         """
         if context is None:
-            return [(weight, key_id) for key_id, weight in addressed.items()]
+            return [(None, weight, key_id)
+                    for key_id, weight in addressed.items()]
         routed = []
         for position_index, position_share in context.position_shares.items():
             key_id = context.positions[position_index].token_id
@@ -424,10 +425,21 @@ class CountedCausalTransformer:
             addressed_share = addressed.get(key_id, Fraction(0))
             if position_share > 0 and token_share > 0 and addressed_share > 0:
                 routed.append((
+                    position_index,
                     addressed_share * position_share / token_share,
                     key_id,
                 ))
         return routed
+
+    @staticmethod
+    def _decoder_value_sources(addressed: Mapping[int, Fraction], context=None):
+        """Compatibility readout of the position-preserving source relation."""
+        return [
+            (weight, key_id)
+            for _, weight, key_id in
+            CountedCausalTransformer._decoder_position_sources(
+                addressed, context)
+        ]
 
     def _attention_key_weights(self, last_id: int,
                                keys: Mapping[int, Fraction],
@@ -571,7 +583,8 @@ class CountedCausalTransformer:
         record = self._store()
         addressed = self._attention_key_weights(
             last_id, keys, prepared_values=prepared_values)
-        sources = self._decoder_value_sources(addressed, decoder_context)
+        position_sources = self._decoder_position_sources(
+            addressed, decoder_context)
         groups: dict[int, defaultdict[int, int]] = {}
 
         value_rows = [
@@ -579,7 +592,7 @@ class CountedCausalTransformer:
              (prepared_values[key_id][0]
               if prepared_values is not None and key_id in prepared_values
               else record["values"].get(key_id)))
-            for weight, key_id in sources
+            for _, weight, key_id in position_sources
         ]
         value_rows = [(weight, counts) for weight, counts in value_rows if counts]
         value_weight = sum((weight for weight, _ in value_rows), Fraction(0))
@@ -588,7 +601,7 @@ class CountedCausalTransformer:
                 self._add_integer_row(groups, counts, weight / value_weight)
 
         semantic_rows = []
-        for weight, key_id in sources:
+        for _, weight, key_id in position_sources:
             counts = record["semantic_ffn3"].get((prev_id, last_id, key_id))
             if not counts:
                 counts = record["semantic_ffn"].get((last_id, key_id))
