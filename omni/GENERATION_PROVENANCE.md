@@ -123,6 +123,13 @@ on the complete response-local position basis and the final prompt position
 supplies the decoder readout. The flat v4 token aggregation remains an explicit
 comparison method only; it is not a fallback or serving admission path.
 
+The final contextual position distribution also remains distinct through the
+decoder value and semantic-FFN routing boundary. Because the sealed v4 training
+artifact currently owns those rows by token, repeated-position branches are
+required and tested to recombine to the identical exact decoder scores. This
+is an architectural port, not a new heuristic. The next training artifact will
+count position-conditioned row ownership from the same role-bound observations.
+
 ## Explicit response-only surface
 
 `WordEngine(fluency_path=...)` and `configure_fluency_store(...)` now provide an

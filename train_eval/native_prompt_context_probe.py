@@ -36,15 +36,18 @@ def main() -> None:
     for prompt in PROMPTS:
         began = time.monotonic()
         addresses = model._position_addresses(prompt)
-        keys = model._contextual_keys(prompt)
+        context = model._contextual_decoder_state(prompt)
+        keys = context.token_keys
         context_seconds = time.monotonic() - began
         began = time.monotonic()
-        tokens = model._generate_tokens_from_keys(keys, 32)
+        tokens = model._generate_tokens_from_keys(
+            keys, 32, decoder_context=context)
         generation_seconds = time.monotonic() - began
         rows.append({
             "prompt": prompt,
             "prompt_positions": len(addresses),
             "contextual_key_support": len(keys),
+            "decoder_position_support": len(context.position_shares),
             "contextual_key_closure": str(sum(keys.values())),
             "context_seconds": round(context_seconds, 6),
             "generation_seconds": round(generation_seconds, 6),

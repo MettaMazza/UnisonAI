@@ -135,10 +135,11 @@ thousands of real responses to "hello, how are you").
   integration depth. Within-turn positional addresses and the five stacked prompt blocks are
   now built through shared counted relations and response-local position state. Exact Q/K
   products select the forced ranked cascade, all 49 repository tests pass, and the promoted
-  native route completes the fixed eight-prompt Codex timing in 37.813314 seconds at
-  583,368,704 bytes resident. Port the established contextual hidden-state→decoder value/FFN
-  training relation so the final prompt position drives context-conditioned response state,
-  then remeasure the same native route.
+  native route completes the fixed eight-prompt Codex timing in 19.627877 seconds at
+  701,612,032 bytes resident. The complete final-position basis now reaches decoder
+  value/semantic routing and recombines exactly to the existing token-owned rows. Count the
+  established position-conditioned decoder value/FFN training relation from the role-bound
+  corpus, then remeasure the same native route.
 - **Stage 4 — Learning + state.** Pair-quality counts; taught-pair precedence; **port the
   relation-facts channel** (name recall); verify multi-turn recall on the no-stubs e2e.
 - **Stage 5 — Honest replacements.** Re-measure everything retracted (gen quality n≥32,

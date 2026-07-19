@@ -22,9 +22,9 @@ below establish code behaviour only; they do not declare a benchmark result.
 | Causal query | The last two generated token identities form the current prefix query | `prev_id`, `last_id` |
 | Attention keys | Every addressed token occurrence from the current prompt and aged user history enters five contextual blocks; the final prompt position supplies the decoder readout, as in causal next-token prediction. No stop-word, punctuation, uniqueness, or authored semantic filter precedes attention | `prompt_context.contextualize`, `aggregate_keys`, `_contextual_keys` |
 | Multi-head Q/K compatibility | Prompt self-attention uses the exact counted-embedding Gram product plus the relative-position product; product order selects the complete forced dyadic cascade with its closing identity floor. Decoder attention then applies its structural, inverse-exposure information, and conditional counted Q/K heads. Head combination is exact identity addition with no fitted blend | `prompt_context._bilinear`, `_cascade_distribution`, `_attention_key_weights`, `_attention` |
-| Attention values | One exact response-token count vector owned by each prompt key, kept factorised from Q/K and FFN | `values`, `_attention` |
+| Attention values | Final hidden mass remains split over every distinct prompt position through decoder value routing. Existing v4 response-token vectors remain token-owned, so repeated-position branches provably recombine to the same exact row while preserving the architectural boundary for position-conditioned training | `DecoderContext`, `_decoder_value_sources`, `values` |
 | Causal mask | Only the already-generated prefix and preceding prompt/history are addressable; future response tokens are absent by construction | sequential build and `generate_tokens` |
-| Feed-forward KV memory | Each prompt block applies a counted embedding-relation FFN over a response-local position basis. Decoder attention then enters `(previous, last, attended-key)→next-token` semantic FFN, falling to `(last, key)` only when the deeper address is absent; a separate assistant-prefix table retains syntax | `prompt_context._feed_forward`, `semantic_ffn3`, `semantic_ffn`, `_semantic_ffn`, `ffn2`, `ffn3`, `_ffn` |
+| Feed-forward KV memory | Each prompt block applies a counted embedding-relation FFN over a response-local position basis. Decoder semantic branches now retain that position basis before reading `(previous, last, attended-key)→next-token`, falling to `(last, key)` only when the deeper address is absent; a separate assistant-prefix table retains syntax | `prompt_context._feed_forward`, `_decoder_value_sources`, `semantic_ffn3`, `semantic_ffn`, `ffn2`, `ffn3` |
 | Residual addition | Add the unit attention value, semantic-FFN, and prefix-FFN distributions with the standard identity coefficient | `next_distribution` |
 | Normalisation | Divide exact positive mass by its total and assert closure to the One | `_normalize` |
 | LM head | Exact categorical next-token shares | `next_distribution` |
@@ -76,7 +76,7 @@ route. Cold activation took 0.032017 seconds and the eight generations took
 unpacked projected-head probe. These are Codex implementation measurements,
 not a benchmark conclusion.
 
-The complete repository suite passes 49/49.
+The complete repository suite passes 50/50.
 
 The five-layer prompt-context route is now the production native key path.
 Hidden values remain factorised over the complete response-local position basis,
@@ -88,13 +88,16 @@ remainder stays on the identity address. The final prompt position is read into
 the decoder, preventing a bag-of-token aggregation from erasing order.
 
 The source-bound eight-prompt Codex probe closed every contextual key state to
-the One, used 583,368,704 bytes maximum resident memory on the promoted route,
-and completed the eight generations in 37.813314 seconds. Seven surfaces were
+the One, used 701,612,032 bytes maximum resident memory on the promoted route,
+and completed the eight generations in 19.627877 seconds. Seven surfaces were
 unchanged from the packed v4 probe; public speaking changed to
 `I don't know. i just want to do for fun?`. This is implementation evidence,
-not Maria's benchmark conclusion. The active next training port is to make the
-decoder value/semantic memories consume the contextual final-position relation
-rather than only reweighting v4's token-marginal rows.
+not Maria's benchmark conclusion. Decoder value and semantic routing now
+consume the complete contextual final-position basis; an exact equivalence
+test proves the branches recombine to the existing v4 token-owned rows. The
+active next training port is to count position-conditioned value/semantic rows
+from the role-bound corpus so those preserved branches can carry distinct
+learned observations.
 
 The source-bound contextual-cost receipt counts 14,510,060 prompt positions
 across the 649,917 training pairs. Dense within-prompt attention would produce

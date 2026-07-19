@@ -4,7 +4,8 @@ import unittest
 from omni.core import INTEGRATION_DEPTH
 from omni.native_transformer import build_counted_transformer
 from omni.prompt_context import (PositionAddress, aggregate_keys,
-                                 contextualize, positional_head, project_tokens,
+                                 contextualize, decoder_context, positional_head,
+                                 project_tokens,
                                  _distribution, _mix_distributions,
                                  _weighted_mix)
 
@@ -44,6 +45,13 @@ class PromptContextTests(unittest.TestCase):
             [position.address.within_turn for position in positions],
             [0, 1, 2],
         )
+        context = decoder_context(positions)
+        self.assertIsNotNone(context)
+        self.assertEqual(len(context.positions), 3)
+        self.assertIn(0, context.position_shares)
+        self.assertIn(2, context.position_shares)
+        self.assertEqual(sum(context.position_shares.values(), Fraction(0)), 1)
+        self.assertEqual(sum(context.token_keys.values(), Fraction(0)), 1)
 
     def test_relative_position_head_closes_exactly(self):
         addresses = self.addresses(["red", "stars", "glow"])

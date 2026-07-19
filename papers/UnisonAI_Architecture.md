@@ -70,12 +70,13 @@ the decoder readout. The complete hidden support is the observed prompt
 position set, with no cap or dense corpus-layer materialization.
 
 On the fixed Codex eight-prompt probe, all contextual states closed exactly;
-the eight promoted-route generations took 37.813314 seconds with 583,368,704 bytes maximum
+the eight promoted-route generations took 19.627877 seconds with 701,612,032 bytes maximum
 resident memory. Seven surfaces were unchanged and public speaking changed.
-This is an implementation observation, not Maria's benchmark result. The next
-one-to-one training port is the contextual hidden-state to decoder value/FFN
-relation, replacing the remaining v4 token-marginal conditioning at that
-boundary.
+This is an implementation observation, not Maria's benchmark result. The final
+contextual position basis now remains distinct through decoder value and
+semantic-FFN routing; exact tests prove those branches recombine to the sealed
+v4 token-owned rows. The next one-to-one training port is position-conditioned
+ownership of those rows from the same role-bound corpus observations.
 
 ### 3.4 Perception and common memory
 
@@ -101,7 +102,7 @@ Corrections, counted quality, and teacher comparisons are written to explicit le
 
 ### 4.2 Standalone Unison
 
-The current Python repository suite passes **49/49**, including tests for the
+The current Python repository suite passes **50/50**, including tests for the
 native transformer role boundary, complete prompt-token retention, active Q/K
 weighting, exact distribution closure, lazy/full argmax equivalence, packed-row
 and surface identity, bounded-cache identity, sealed-source drift halts, native

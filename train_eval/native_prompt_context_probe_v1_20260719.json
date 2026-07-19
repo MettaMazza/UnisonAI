@@ -1,8 +1,9 @@
 {
-  "context_seconds": 7.886847,
-  "generation_seconds": 32.25929,
+  "context_seconds": 3.949365,
+  "generation_seconds": 15.282014,
   "identity": {
     "decode_kernel": "exact-lcm-integer-cross-product/v1",
+    "decoder_context": "position-preserving-value-semantic-routing/v1",
     "prompt_context": "five-layer-ranked-cascade-final-position/v1",
     "responses": 649917,
     "role_policy": "prompt-keys/assistant-causal-values",
@@ -13,7 +14,7 @@
     "tokens": 11140970,
     "value_cache": "prompt-bounded-exact/v1"
   },
-  "maximum_resident_bytes": 560889856,
+  "maximum_resident_bytes": 667926528,
   "provenance": {
     "agent": "Codex",
     "authority": "Not Maria's benchmark, finding, loss, parity definition, or real-run gate.",
@@ -23,73 +24,81 @@
   },
   "rows": [
     {
-      "context_seconds": 1.086217,
+      "context_seconds": 0.562844,
       "contextual_key_closure": "1",
       "contextual_key_support": 6,
-      "generation_seconds": 3.831666,
+      "decoder_position_support": 6,
+      "generation_seconds": 1.958001,
       "prompt": "Hello, how are you?",
       "prompt_positions": 6,
       "surface": "I like to do for fun?"
     },
     {
-      "context_seconds": 1.022776,
+      "context_seconds": 0.537066,
       "contextual_key_closure": "1",
       "contextual_key_support": 7,
-      "generation_seconds": 3.976799,
+      "decoder_position_support": 7,
+      "generation_seconds": 1.94367,
       "prompt": "What do you enjoy about gardening?",
       "prompt_positions": 7,
       "surface": "I like to do for fun?"
     },
     {
-      "context_seconds": 0.722082,
+      "context_seconds": 0.361436,
       "contextual_key_closure": "1",
       "contextual_key_support": 7,
-      "generation_seconds": 4.023902,
+      "decoder_position_support": 7,
+      "generation_seconds": 1.962828,
       "prompt": "I am nervous about public speaking.",
       "prompt_positions": 7,
       "surface": "I don't know. i just want to do for fun?"
     },
     {
-      "context_seconds": 0.518712,
+      "context_seconds": 0.252053,
       "contextual_key_closure": "1",
       "contextual_key_support": 6,
-      "generation_seconds": 2.182392,
+      "decoder_position_support": 6,
+      "generation_seconds": 1.117615,
       "prompt": "What makes board games interesting?",
       "prompt_positions": 6,
       "surface": "I like to play video games."
     },
     {
-      "context_seconds": 1.460664,
+      "context_seconds": 0.709521,
       "contextual_key_closure": "1",
       "contextual_key_support": 8,
-      "generation_seconds": 7.261166,
+      "decoder_position_support": 8,
+      "generation_seconds": 2.591462,
       "prompt": "Tell me something interesting about the desert.",
       "prompt_positions": 8,
       "surface": "I don't have access to the desert."
     },
     {
-      "context_seconds": 0.461309,
+      "context_seconds": 0.230877,
       "contextual_key_closure": "1",
       "contextual_key_support": 6,
-      "generation_seconds": 4.56604,
+      "decoder_position_support": 6,
+      "generation_seconds": 2.308986,
       "prompt": "Why do people enjoy astronomy?",
       "prompt_positions": 6,
       "surface": "I do not have access to the earliest civilizations, including the babylonians and the egyptians."
     },
     {
-      "context_seconds": 1.405946,
+      "context_seconds": 0.64082,
       "contextual_key_closure": "1",
       "contextual_key_support": 8,
-      "generation_seconds": 1.901348,
+      "decoder_position_support": 9,
+      "generation_seconds": 1.112463,
       "prompt": "Suggest a comforting meal for a cold evening.",
       "prompt_positions": 9,
       "surface": "I know, right?"
     },
     {
-      "context_seconds": 1.209141,
+      "context_seconds": 0.654748,
       "contextual_key_closure": "1",
       "contextual_key_support": 8,
-      "generation_seconds": 4.515977,
+      "decoder_position_support": 8,
+      "generation_seconds": 2.286989,
       "prompt": "What kind of music do you enjoy?",
       "prompt_positions": 8,
       "surface": "I like to do for fun?"
@@ -97,9 +106,9 @@
   ],
   "schema": "unison-native-prompt-context-probe/v1",
   "sources": {
-    "omni/native_transformer.py": "c571aa2c13b0640dba41cfcfb96cbe39b729a197a573a8d426404963452ba4cf",
-    "omni/prompt_context.py": "909aa1e33261ad302fd195a37d2b7ef8c535898ae32006bfb3b500e02c27ac87",
-    "train_eval/native_prompt_context_probe.py": "25b8e18bab2542b6e9c6f3ec906943a5aa9147e5093315d6aecc800749c224e5"
+    "omni/native_transformer.py": "45920dc3c4b4190ddcbb6608c2f3cebc94589de35a03d63788f1c7851ba0f54c",
+    "omni/prompt_context.py": "6b0e7b78190c39941e3342bfd0436b0f7f08542b43348629d3a3d6d89d307f69",
+    "train_eval/native_prompt_context_probe.py": "c3888d1db46587b5c18055081024922dae3f85b85e0029d11089b1bd471bfa63"
   },
   "status": "completed"
 }

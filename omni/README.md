@@ -456,11 +456,12 @@ count table without pruning, capping, quantization, or eviction. A sealed
 eight-prompt Codex probe preserved byte-identical surfaces while measured
 resident memory fell from about 59 GB to 559,185,920 bytes and generation time
 fell from 1,514.370707 seconds to 11.407350 seconds. The complete repository
-suite passes 49/49. Distinct prompt positions now pass through five exact
+suite passes 50/50. Distinct prompt positions now pass through five exact
 contextual attention/FFN blocks before the final prompt position supplies the
 decoder keys. A Codex-authored development smoke improved several
-subject/operation surfaces; context-conditioned decoder value/semantic training
-is the next established port.
+subject/operation surfaces. The final contextual position basis now reaches
+decoder value/semantic routing exactly; position-conditioned ownership of those
+training rows is the next established port.
 
 ### The conversational architecture
 Serving now attempts the native counted causal transformer first. Pair retrieval remains a

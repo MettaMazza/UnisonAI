@@ -42,6 +42,15 @@ class ContextualPosition:
 
 
 @dataclass(frozen=True)
+class DecoderContext:
+    """Final causal prompt state before decoder value/FFN projection."""
+
+    positions: tuple[PositionAddress, ...]
+    position_shares: Mapping[int, Fraction]
+    token_keys: Mapping[int, Fraction]
+
+
+@dataclass(frozen=True)
 class _Distribution:
     """One exact distribution as integer mass over a shared denominator."""
 
@@ -348,23 +357,35 @@ def contextualize(addresses: Sequence[PositionAddress],
     return contextual
 
 
-def aggregate_keys(positions: Iterable[ContextualPosition]) -> dict[int, Fraction]:
-    """Read the final prompt position into decoder key mass.
+def decoder_context(positions: Iterable[ContextualPosition]) -> DecoderContext | None:
+    """Preserve final-position hidden mass in position and token coordinates.
 
     A causal language model predicts from the final causally available hidden
     position. Summing every position would undo positional context and return a
-    bag of tokens, so the decoder reads the state whose sequence address is
-    latest after all five contextual layers.
+    bag of tokens. The decoder therefore retains that final state over distinct
+    prompt positions while also exposing its exact token projection for Q/K.
     """
     positions = list(positions)
     if not positions:
-        return {}
+        return None
     final = max(positions, key=lambda position: position.address.sequence_index)
+    position_shares = _normalize(
+        final.state, "final-position decoder state")
     output: defaultdict[int, Fraction] = defaultdict(Fraction)
-    for source_index, share in final.state.items():
+    for source_index, share in position_shares.items():
         token_id = positions[source_index].address.token_id
         output[token_id] += share
-    return _normalize(output, "final-position decoder projection")
+    return DecoderContext(
+        positions=tuple(position.address for position in positions),
+        position_shares=position_shares,
+        token_keys=_normalize(output, "final-position decoder projection"),
+    )
+
+
+def aggregate_keys(positions: Iterable[ContextualPosition]) -> dict[int, Fraction]:
+    """Compatibility readout of the final contextual state in token coordinates."""
+    context = decoder_context(positions)
+    return {} if context is None else dict(context.token_keys)
 
 
 def project_tokens(state: Mapping[int, Fraction],

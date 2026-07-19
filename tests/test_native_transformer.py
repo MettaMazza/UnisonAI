@@ -2,6 +2,7 @@ from fractions import Fraction
 import asyncio
 import hashlib
 import json
+import math
 import os
 import tempfile
 from pathlib import Path
@@ -220,6 +221,31 @@ class CountedCausalTransformerTests(unittest.TestCase):
         self.assertEqual(sum(forward.values(), Fraction(0)), 1)
         self.assertEqual(sum(reordered.values(), Fraction(0)), 1)
         self.assertNotEqual(forward, reordered)
+
+    def test_contextual_positions_reach_value_and_semantic_boundary_exactly(self):
+        context = self.model._contextual_decoder_state(
+            "gardening astronomy gardening")
+        bos = self.record["bos_id"]
+        addressed = self.model._attention_key_weights(bos, context.token_keys)
+        sources = self.model._decoder_value_sources(addressed, context)
+        self.assertEqual(len(sources), 3)
+        self.assertEqual(
+            sum((weight for weight, _ in sources), Fraction(0)),
+            sum(addressed.values(), Fraction(0)),
+        )
+        token_scores = self.model._integer_residual_scores(
+            bos, bos, context.token_keys)
+        position_scores = self.model._integer_residual_scores(
+            bos, bos, context.token_keys, decoder_context=context)
+        common = set(token_scores) | set(position_scores)
+        left = {key: token_scores.get(key, 0) for key in common}
+        right = {key: position_scores.get(key, 0) for key in common}
+        left_gcd = math.gcd(*left.values())
+        right_gcd = math.gcd(*right.values())
+        self.assertEqual(
+            {key: value // left_gcd for key, value in left.items()},
+            {key: value // right_gcd for key, value in right.items()},
+        )
 
     def test_reward_conditioning_is_counted_and_persistent(self):
         before = self.model.generate("gardening")

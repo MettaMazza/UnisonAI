@@ -307,6 +307,8 @@ class CountedCausalTransformer:
             identity["value_cache"] = "prompt-bounded-exact/v1"
             identity["prompt_context"] = (
                 "five-layer-ranked-cascade-final-position/v1")
+            identity["decoder_context"] = (
+                "position-preserving-value-semantic-routing/v1")
         elif os.path.exists(self.store_path):
             with open(self.store_path, "rb") as handle:
                 identity["sha256"] = hashlib.sha256(handle.read()).hexdigest()
@@ -388,13 +390,44 @@ class CountedCausalTransformer:
     def _contextual_keys(self, text: str,
                          history: Iterable | None = None) -> dict[int, Fraction]:
         """Five-layer contextual position state projected to decoder keys."""
-        from omni.prompt_context import aggregate_keys, contextualize
+        context = self._contextual_decoder_state(text, history)
+        return {} if context is None else dict(context.token_keys)
+
+    def _contextual_decoder_state(self, text: str,
+                                  history: Iterable | None = None):
+        """Final prompt state with distinct positions retained into decoding."""
+        from omni.prompt_context import contextualize, decoder_context
 
         addresses = self._position_addresses(text, history)
         if not addresses:
-            return {}
-        return aggregate_keys(contextualize(
+            return None
+        return decoder_context(contextualize(
             addresses, self._store()["profiles"]))
+
+    @staticmethod
+    def _decoder_value_sources(addressed: Mapping[int, Fraction], context=None):
+        """Route token-addressed decoder mass over every contextual position.
+
+        Existing v4 value/semantic rows are token-owned. The contextual state
+        is nevertheless preserved to the value and semantic-FFN boundary by
+        dividing each addressed token share among its exact source positions.
+        Summing these branches is algebraically identical to the token row;
+        later position-conditioned training can replace the row ownership
+        without changing the decoder organ again.
+        """
+        if context is None:
+            return [(weight, key_id) for key_id, weight in addressed.items()]
+        routed = []
+        for position_index, position_share in context.position_shares.items():
+            key_id = context.positions[position_index].token_id
+            token_share = context.token_keys.get(key_id, Fraction(0))
+            addressed_share = addressed.get(key_id, Fraction(0))
+            if position_share > 0 and token_share > 0 and addressed_share > 0:
+                routed.append((
+                    addressed_share * position_share / token_share,
+                    key_id,
+                ))
+        return routed
 
     def _attention_key_weights(self, last_id: int,
                                keys: Mapping[int, Fraction],
@@ -526,7 +559,8 @@ class CountedCausalTransformer:
 
     def _integer_residual_scores(self, prev_id: int, last_id: int,
                                  keys: Mapping[int, Fraction],
-                                 prepared_values=None) -> dict[int, int]:
+                                 prepared_values=None,
+                                 decoder_context=None) -> dict[int, int]:
         """Return one common-denominator integer form of the exact residual.
 
         This is algebraically identical to ``_unnormalized_residual`` before
@@ -537,6 +571,7 @@ class CountedCausalTransformer:
         record = self._store()
         addressed = self._attention_key_weights(
             last_id, keys, prepared_values=prepared_values)
+        sources = self._decoder_value_sources(addressed, decoder_context)
         groups: dict[int, defaultdict[int, int]] = {}
 
         value_rows = [
@@ -544,7 +579,7 @@ class CountedCausalTransformer:
              (prepared_values[key_id][0]
               if prepared_values is not None and key_id in prepared_values
               else record["values"].get(key_id)))
-            for key_id, weight in addressed.items()
+            for weight, key_id in sources
         ]
         value_rows = [(weight, counts) for weight, counts in value_rows if counts]
         value_weight = sum((weight for weight, _ in value_rows), Fraction(0))
@@ -553,7 +588,7 @@ class CountedCausalTransformer:
                 self._add_integer_row(groups, counts, weight / value_weight)
 
         semantic_rows = []
-        for key_id, weight in addressed.items():
+        for weight, key_id in sources:
             counts = record["semantic_ffn3"].get((prev_id, last_id, key_id))
             if not counts:
                 counts = record["semantic_ffn"].get((last_id, key_id))
@@ -583,10 +618,12 @@ class CountedCausalTransformer:
 
     def next_token_id(self, prev_id: int, last_id: int,
                       keys: Mapping[int, Fraction],
-                      prepared_values=None) -> Optional[int]:
+                      prepared_values=None,
+                      decoder_context=None) -> Optional[int]:
         """Exact integer greedy argmax, equivalent to the normalized LM head."""
         scores = self._integer_residual_scores(
-            prev_id, last_id, keys, prepared_values=prepared_values)
+            prev_id, last_id, keys, prepared_values=prepared_values,
+            decoder_context=decoder_context)
         if not scores:
             return None
         rewards = self._rewards()
@@ -707,11 +744,15 @@ class CountedCausalTransformer:
         """Standard greedy autoregressive decode under an explicit resource budget."""
         if not isinstance(token_budget, int) or token_budget <= 0:
             raise ValueError("token_budget must be a positive integer")
-        keys = self._context_keys(text, history)
-        return self._generate_tokens_from_keys(keys, token_budget)
+        context = self._contextual_decoder_state(text, history)
+        if context is None:
+            return []
+        return self._generate_tokens_from_keys(
+            context.token_keys, token_budget, decoder_context=context)
 
     def _generate_tokens_from_keys(self, keys: Mapping[int, Fraction],
-                                   token_budget: int) -> list[str]:
+                                   token_budget: int,
+                                   decoder_context=None) -> list[str]:
         record = self._store()
         if not keys:
             return []
@@ -727,7 +768,8 @@ class CountedCausalTransformer:
         out: list[str] = []
         for _ in range(token_budget):
             next_id = self.next_token_id(
-                prev_id, last_id, keys, prepared_values=prepared_values)
+                prev_id, last_id, keys, prepared_values=prepared_values,
+                decoder_context=decoder_context)
             if next_id is None:
                 break
             if next_id == record["eos_id"]:
@@ -742,8 +784,11 @@ class CountedCausalTransformer:
         """Execute the traced stacked prompt-context development route."""
         if not isinstance(token_budget, int) or token_budget <= 0:
             raise ValueError("token_budget must be a positive integer")
+        context = self._contextual_decoder_state(text, history)
+        if context is None:
+            return []
         return self._generate_tokens_from_keys(
-            self._contextual_keys(text, history), token_budget)
+            context.token_keys, token_budget, decoder_context=context)
 
     @staticmethod
     def _surface(tokens: Sequence[str]) -> str:
