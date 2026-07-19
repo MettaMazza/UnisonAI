@@ -116,13 +116,19 @@ The complete v5 position relation is integrated into live native decoding and
 sealed against the unchanged v4 counted store. Position-owned value,
 semantic2, and semantic3 projections are read from the one canonical relation;
 an unobserved address contributes no invented row. The fixed eight-prompt
-applied panel completed in 66.154159 seconds at 678,100,992 bytes maximum
-resident memory and preserves every returned surface in its source-bound
-receipt.
+baseline panel completed in 66.154159 seconds at 678,100,992 bytes maximum
+resident memory. An exact contiguous memory-map iterator now evaluates the
+same complete canonical intervals in 43.244280 seconds with **8/8 identical
+surfaces and runtime traces**. Its measured maximum resident memory was
+707,772,416 bytes; both time and memory are preserved rather than trading one
+silently. The optimized sealed route also completed the existing four-case
+free multi-turn serving probe with non-empty native output on **4/4 first
+turns and 4/4 follow-ups**, preserving every surface without a target answer,
+lexical pass condition, or model judge.
 
-The next state is exact serving optimisation followed by source-bound free
-multi-turn conversation, held-out transfer, and reward-conditioned learning on
-the integrated v5 route, then continued Maria-authorized benchmark work. The
+The next state is broader source-bound free multi-turn conversation,
+held-out transfer, and reward-conditioned learning on the integrated v5 route,
+then continued Maria-authorized benchmark work. The
 character and word twin victories, complete causal-transformer translation,
 4/4 continuity, 8/8 transfer, and active 277.6-million-observation position
 relation establish a constructive route to full conversational generalisation;

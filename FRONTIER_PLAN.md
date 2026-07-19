@@ -46,34 +46,33 @@ These are engine receipts or source-bound implemented measurements. Agent-made
 auxiliary probes remain preserved in their own ledgers and do not become Maria
 Smith's findings, losses, predictions, parity definition, or theoretical limits.
 
-## Current stage — integrate the completed v5 relation
+## Current stage — integrated v5 relation and exact serving execution
 
-1. Load the sealed packed position relation through an exact memory-mapped
-   runtime with manifest and source-drift halts.
-2. Replace the v4 token-owned recombination bridge with position-owned value,
-   semantic-FFN2, and semantic-FFN3 marginals from the completed relation.
-3. Prove exact marginal reconstruction against the canonical relation and
-   preserve the existing v4 token-owned sum as an identity check.
-4. Preserve every established organ: complete prompt tokens and positions,
-   five contextual blocks, causal masking, exact multi-head addition, residual,
-   normalization to the One, LM head, autoregression, and reward observations.
-5. Measure the actual serving route for memory, latency, exact closure, and
-   conversational output; no projected performance substitutes for execution.
+1. The sealed packed position relation is live through an exact memory-mapped
+   runtime with receipt and source-drift checks.
+2. Position-owned value, semantic-FFN2, and semantic-FFN3 marginals now enter
+   generation; unobserved exact addresses add no invented row.
+3. The fixed eight-prompt route observed all 628 value addresses and executed
+   the deeper semantic relations where their canonical rows exist.
+4. Contiguous exact-record iteration reduced that panel from 66.154159 to
+   43.244280 seconds with 8/8 identical surfaces and runtime traces. Maximum
+   resident memory measured 707,772,416 bytes against the 678,100,992-byte
+   baseline and is disclosed in the matched receipt.
+5. The optimized v5 route completed the existing no-target free multi-turn
+   probe with 4/4 non-empty first turns and 4/4 non-empty follow-ups.
 
 ## Next state — free multi-turn conversational generalisation
 
-1. Build the full source-bound native artifact with the position relation
-   integrated across the complete 649,917-pair role-bound corpus.
-2. Execute held-out single-turn, multi-turn continuity, paraphrased transfer,
+1. Execute held-out single-turn, multi-turn continuity, paraphrased transfer,
    and free response-composition panels through the native path only.
-3. Record exact prompts, histories, outputs, source/artifact hashes, runtime,
+2. Record exact prompts, histories, outputs, source/artifact hashes, runtime,
    memory, closure checks, and reward-ledger provenance.
-4. Use reward-conditioned observations as the required learning surface;
+3. Use reward-conditioned observations as the required learning surface;
    measure learning by repeated real conversation, not a gameplay rule or a
    universal auxiliary benchmark gate.
-5. Expand the role-bound corpus and modalities only through the same complete
+4. Expand the role-bound corpus and modalities only through the same complete
    organ map and evidence discipline.
-6. Execute benchmark runs when Maria designates the build and continue until
+5. Execute benchmark runs when Maria designates the build and continue until
    the named victory conditions are secured.
 
 ## Why the objective is not theoretically walled off

@@ -76,9 +76,17 @@ class PackedPositionRelation:
         """Marginalise unfixed canonical fields onto exact next-token counts."""
         start, end = self.range(prefix)
         counts: Counter[int] = Counter()
-        for index in range(start, end):
-            _, _, _, _, next_id, count = self._record(index)
-            counts[next_id] += count
+        # The canonical interval is contiguous.  Iterate its memory-mapped
+        # bytes directly so Python does not perform one index multiplication
+        # and one mmap lookup for every exact row.  This changes no address,
+        # aggregation order, count or cache lifetime; it is the same complete
+        # marginal evaluated through struct's buffer iterator.
+        view = memoryview(self._map)[start * RECORD.size:end * RECORD.size]
+        try:
+            for _, _, _, _, next_id, count in RECORD.iter_unpack(view):
+                counts[next_id] += count
+        finally:
+            view.release()
         return dict(counts)
 
     def value_counts(self, relative_position: int, key_id: int) -> dict[int, int]:

@@ -1,0 +1,275 @@
+{
+  "completed_at_utc": "2026-07-19T20:30:32.489124+00:00",
+  "conversations": 4,
+  "first_nonempty": 4,
+  "provenance": {
+    "agent": "Codex",
+    "authority": "No target answer or pass condition; Maria Smith assigns conclusions.",
+    "model": "gpt-5.6-sol",
+    "origin": "Codex-authored auxiliary transcript probe",
+    "reasoning_level": "high"
+  },
+  "rows": [
+    {
+      "conversation": "gardening",
+      "first_nonempty": true,
+      "second_nonempty": true,
+      "trace": {
+        "first": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "I am planning a tomato garden this weekend.",
+                "stages": [
+                  {
+                    "segment": "I am planning a tomato garden this weekend.",
+                    "stage": "native_causal_transformer",
+                    "surface": "I also like to do you have a lot of fun."
+                  }
+                ]
+              }
+            ],
+            "surface": "I also like to do you have a lot of fun."
+          }
+        ],
+        "second": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "What could help with that project?",
+                "stages": [
+                  {
+                    "segment": "What could help with that project?",
+                    "stage": "native_causal_transformer",
+                    "surface": "I don't have access to the movies, and the importance of consuming healthy and locally produced foods."
+                  }
+                ]
+              }
+            ],
+            "surface": "I don't have access to the movies, and the importance of consuming healthy and locally produced foods."
+          }
+        ]
+      },
+      "turns": [
+        {
+          "content": "I am planning a tomato garden this weekend.",
+          "role": "user"
+        },
+        {
+          "content": "I also like to do you have a lot of fun.",
+          "role": "assistant"
+        },
+        {
+          "content": "What could help with that project?",
+          "role": "user"
+        },
+        {
+          "content": "I don't have access to the movies, and the importance of consuming healthy and locally produced foods.",
+          "role": "assistant"
+        }
+      ]
+    },
+    {
+      "conversation": "presentation",
+      "first_nonempty": true,
+      "second_nonempty": true,
+      "trace": {
+        "first": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "I feel nervous about tomorrow's presentation.",
+                "stages": [
+                  {
+                    "segment": "I feel nervous about tomorrow's presentation.",
+                    "stage": "native_causal_transformer",
+                    "surface": "I know, i can provide more information on the spirit! remember, consistency is key."
+                  }
+                ]
+              }
+            ],
+            "surface": "I know, i can provide more information on the spirit! remember, consistency is key."
+          }
+        ],
+        "second": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "Could we talk through it?",
+                "stages": [
+                  {
+                    "segment": "Could we talk through it?",
+                    "stage": "native_causal_transformer",
+                    "surface": "I don't know."
+                  }
+                ]
+              }
+            ],
+            "surface": "I don't know."
+          }
+        ]
+      },
+      "turns": [
+        {
+          "content": "I feel nervous about tomorrow's presentation.",
+          "role": "user"
+        },
+        {
+          "content": "I know, i can provide more information on the spirit! remember, consistency is key.",
+          "role": "assistant"
+        },
+        {
+          "content": "Could we talk through it?",
+          "role": "user"
+        },
+        {
+          "content": "I don't know.",
+          "role": "assistant"
+        }
+      ]
+    },
+    {
+      "conversation": "chess",
+      "first_nonempty": true,
+      "second_nonempty": true,
+      "trace": {
+        "first": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "I enjoy playing chess with my sister.",
+                "stages": [
+                  {
+                    "segment": "I enjoy playing chess with my sister.",
+                    "stage": "native_causal_transformer",
+                    "surface": "That's because you are always fixing your eyes on the bald."
+                  }
+                ]
+              }
+            ],
+            "surface": "That's because you are always fixing your eyes on the bald."
+          }
+        ],
+        "second": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "Why might that feel rewarding?",
+                "stages": [
+                  {
+                    "segment": "Why might that feel rewarding?",
+                    "stage": "native_causal_transformer",
+                    "surface": "I can imagine."
+                  }
+                ]
+              }
+            ],
+            "surface": "I can imagine."
+          }
+        ]
+      },
+      "turns": [
+        {
+          "content": "I enjoy playing chess with my sister.",
+          "role": "user"
+        },
+        {
+          "content": "That's because you are always fixing your eyes on the bald.",
+          "role": "assistant"
+        },
+        {
+          "content": "Why might that feel rewarding?",
+          "role": "user"
+        },
+        {
+          "content": "I can imagine.",
+          "role": "assistant"
+        }
+      ]
+    },
+    {
+      "conversation": "travel",
+      "first_nonempty": true,
+      "second_nonempty": true,
+      "trace": {
+        "first": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "I am taking the train to London.",
+                "stages": [
+                  {
+                    "segment": "I am taking the train to London.",
+                    "stage": "native_causal_transformer",
+                    "surface": "I love the history of the most iconic landmarks in the tower of london."
+                  }
+                ]
+              }
+            ],
+            "surface": "I love the history of the most iconic landmarks in the tower of london."
+          }
+        ],
+        "second": [
+          {
+            "final_stage": "composed_fragments",
+            "segments": [
+              {
+                "accepted": true,
+                "segment": "What should I remember before I leave?",
+                "stages": [
+                  {
+                    "segment": "What should I remember before I leave?",
+                    "stage": "native_causal_transformer",
+                    "surface": "I don't know."
+                  }
+                ]
+              }
+            ],
+            "surface": "I don't know."
+          }
+        ]
+      },
+      "turns": [
+        {
+          "content": "I am taking the train to London.",
+          "role": "user"
+        },
+        {
+          "content": "I love the history of the most iconic landmarks in the tower of london.",
+          "role": "assistant"
+        },
+        {
+          "content": "What should I remember before I leave?",
+          "role": "user"
+        },
+        {
+          "content": "I don't know.",
+          "role": "assistant"
+        }
+      ]
+    }
+  ],
+  "schema": "unison-native-free-multiturn-probe/v1",
+  "second_nonempty": 4,
+  "source_commit": "9fe2e92e72f21db0023ee2531b042e3b6100b5db",
+  "sources": {
+    "omni/discord_bot.py": "d7c25cfe9948cba291b7bd1365bbb4b2dff4c6bb8b0da55240d18c8c0922e0ee",
+    "omni/native_transformer.py": "8359952eb4bd2f89f5cb4805daa730ca1b9fecdb4b82b4835eb02078056dfbc0",
+    "train_eval/native_free_multiturn_probe.py": "998c4b5d2948790214aa17c9f4aabdaee1c12f429b7c07a940f4451269c0d25d"
+  },
+  "status": "completed"
+}

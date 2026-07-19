@@ -65,24 +65,25 @@ observations. The factorisation passes independent reconstruction checks.
 
 ## Current stage
 
-The current work is to integrate the sealed v5 relation into the native decoder
-so that distinct contextual positions own their learned value and semantic-FFN
-observations, while preserving exact recombination to the v4 token-owned rows
-as an identity check. The packed runtime must bind the canonical and packed
-receipts and halt on source or manifest drift.
+The sealed v5 relation is now integrated into the native decoder: distinct
+contextual positions address exact value, semantic-FFN2 and semantic-FFN3 rows,
+and missing addresses contribute no invented row. The source-bound fixed panel
+observed 628/628 value addresses. Exact contiguous record iteration reduced
+generation time from 66.154159 to 43.244280 seconds with 8/8 identical surfaces
+and runtime traces; maximum resident memory was 707,772,416 bytes against the
+678,100,992-byte baseline. The same optimized route produced non-empty native
+surfaces on all four first turns and all four follow-ups in the no-target free
+multi-turn probe.
 
 ## Next state
 
-After integration:
-
-1. rebuild the complete native artifact from the full role-bound corpus;
-2. execute source-bound held-out single-turn, multi-turn, paraphrased-transfer,
+1. execute source-bound held-out single-turn, multi-turn, paraphrased-transfer,
    and free-composition conversations through the native path;
-3. preserve exact output, context, source/artifact identity, runtime, memory,
+2. preserve exact output, context, source/artifact identity, runtime, memory,
    closure, and reward provenance;
-4. continue reward-conditioned learning through real conversation and measure
+3. continue reward-conditioned learning through real conversation and measure
    the learned change on matched held-out prompts;
-5. run benchmark protocols when Maria designates the build and continue through
+4. run benchmark protocols when Maria designates the build and continue through
    the benchmark-victory campaign.
 
 ## Why full conversation is not theoretically walled off
