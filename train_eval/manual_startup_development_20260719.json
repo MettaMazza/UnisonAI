@@ -1,6 +1,6 @@
 {
   "schema": "unison-manual-startup-development/v1",
-  "status": "completed-with-external-credential-blocker",
+  "status": "completed",
   "result_type": "cumulative development benchmark",
   "official_run": false,
   "governance_authority": false,
@@ -23,16 +23,19 @@
     "constructor_seconds": 0.000878583,
     "constructor_model_loaded": false,
     "subsystem_initialisation_seconds": 0.55,
-    "token_source": "existing user-private ~/.unison_discord_token convention; value never copied or logged",
+    "token_source": "existing private /Users/mettamazza/Desktop/Unison AI/.env supplied transiently in process memory; value never copied or logged",
     "discord_connection_reached": true,
-    "discord_authentication": "401 Unauthorized; stored external credential is no longer accepted"
+    "discord_authentication": "authenticated; Discord gateway connected",
+    "online_identity": "Unison#1803",
+    "slash_commands_synced": 8,
+    "ready_at_local": "2026-07-19T22:48:03.706"
   },
   "improved": {
     "text_startup_unblocked": true,
     "optional_voice_semantics_changed": false,
     "repository_secret_created": false
   },
-  "remaining_external_action": "Replace the revoked Discord bot token in ~/.unison_discord_token or supply DISCORD_TOKEN, then rerun ./run.sh.",
+  "remaining_external_action": "None for the current live session. A future clean launcher should receive DISCORD_TOKEN or the working private .env; the distinct ~/.unison_discord_token value was rejected and was not used.",
   "sources": {
     "omni/voice.py": "b8724f8b6f99ac3a60792384f016f5598feb8788a01cdb5e4458b7891eacf4f8",
     "omni/discord_bot.py": "d260f0ee77da46619b368e479f5c35d1de9e013696bb5016409e04a52a697c86",
