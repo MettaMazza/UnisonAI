@@ -3,7 +3,7 @@
 ## The Fold Decode campaign: registered spectral instruments, function attribution, and attributed auxiliary hypotheses
 
 **Maria Smith — Ernos Labs**
-**Version 1.2 — 18 July 2026**
+**Version 1.3 — 22 July 2026**
 
 ## Abstract
 

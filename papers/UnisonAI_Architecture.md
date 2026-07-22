@@ -1,7 +1,7 @@
 # UnisonAI: A Computational Proof of Derived Law with Zero Trained Parameters
 
 **Maria Smith — Ernos Labs**
-**Version 6.4 — 19 July 2026**
+**Version 6.5 — 22 July 2026**
 
 ## Abstract
 
